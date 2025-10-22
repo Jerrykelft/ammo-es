@@ -1,0 +1,3940 @@
+import base64 from './ammo.wasm.base64';
+
+interface AnyTypedArray {
+    readonly BYTES_PER_ELEMENT: number;
+    [index: number]: number | bigint;
+}
+
+export const enum PHY {
+    Float,
+    Double,
+    Integer,
+    Short,
+    FixedPoint88,
+    Uchar
+}
+export const enum CollisionFilterGroups {
+    DefaultFilter = 1,
+    StaticFilter = 2,
+    KinematicFilter = 4,
+    DebrisFilter = 8,
+    SensorTrigger = 16,
+    CharacterFilter = 32,
+    AllFilter = -1
+    // all bits sets: DefaultFilter | StaticFilter | KinematicFilter | DebrisFilter | SensorTrigger
+}
+export const enum CollisionFlags {
+    StaticObject = 1,
+    KinematicObject = 2,
+    NoContactResponse = 4,
+    CustomMaterialCallback = 8,
+    CharacterObject = 16,
+    DisableVisualizeObject = 32,
+    DisableSpuCollisionProcessing = 64,
+    HasContactStiffnessDamping = 128,
+    HasCustomDebugRenderingColor = 256,
+    HasFrictionAnchor = 512,
+    HasCollisionSoundTrigger = 1024
+}
+export const enum CollisionObjectTypes {
+    CollisionObject = 1,
+    RigidBody = 2,
+    GhostObject = 4,
+    SoftBody = 8,
+    HfFluid = 16,
+    UserType = 32,
+    FeatherstoneLink = 64
+}
+export const enum AnisotropicFrictionFlags {
+    AnisotropicFrictionDisabled = 0,
+    AnisotropicFriction = 1,
+    AnisotropicRollingFriction = 2
+}
+export const enum ActivationState {
+    ActiveTag = 1,
+    IslandSleeping = 2,
+    WantsDeactivation = 3,
+    DisableDeactivation = 4,
+    DisableSimulation = 5
+}
+export const enum Constraint {
+    ERP = 1,
+    StopERP = 2,
+    CFM = 3,
+    StopCFM = 4
+}
+export const enum ConstantGimpact {
+    CompoundShape = 0,
+    TrimeshShapePart = 1,
+    TrimeshShape = 2
+}
+
+export type AmmoExports = [
+    'webidl_free', 'webidl_malloc', 'malloc', 'bind_btCollisionShape_setLocalScaling_1', 'bind_btCollisionShape_getLocalScaling_0', 'bind_btCollisionShape_calculateLocalInertia_2', 'bind_btCollisionShape_setMargin_1', 'bind_btCollisionShape_getMargin_0', 'bind_btCollisionShape___destroy___0', 'bind_btCollisionWorld_getDispatcher_0', 'bind_btCollisionWorld_rayTest_3', 'bind_btCollisionWorld_getPairCache_0', 'bind_btCollisionWorld_getDispatchInfo_0', 'bind_btCollisionWorld_addCollisionObject_1', 'bind_btCollisionWorld_addCollisionObject_2', 'bind_btCollisionWorld_addCollisionObject_3', 'bind_btCollisionWorld_removeCollisionObject_1', 'bind_btCollisionWorld_getBroadphase_0', 'bind_btCollisionWorld_convexSweepTest_5', 'bind_btCollisionWorld_contactPairTest_3', 'bind_btCollisionWorld_contactTest_2', 'bind_btCollisionWorld_updateSingleAabb_1', 'bind_btCollisionWorld___destroy___0', 'bind_btCollisionObject_setAnisotropicFriction_2', 'bind_btCollisionObject_getCollisionShape_0', 'bind_btCollisionObject_setContactProcessingThreshold_1', 'bind_btCollisionObject_setActivationState_1', 'bind_btCollisionObject_forceActivationState_1', 'bind_btCollisionObject_activate_0', 'bind_btCollisionObject_activate_1', 'bind_btCollisionObject_isActive_0', 'bind_btCollisionObject_isKinematicObject_0', 'bind_btCollisionObject_isStaticObject_0', 'bind_btCollisionObject_isStaticOrKinematicObject_0', 'bind_btCollisionObject_getRestitution_0', 'bind_btCollisionObject_getFriction_0', 'bind_btCollisionObject_getRollingFriction_0', 'bind_btCollisionObject_setRestitution_1', 'bind_btCollisionObject_setFriction_1', 'bind_btCollisionObject_setRollingFriction_1', 'bind_btCollisionObject_getWorldTransform_0', 'bind_btCollisionObject_getCollisionFlags_0', 'bind_btCollisionObject_setCollisionFlags_1', 'bind_btCollisionObject_setWorldTransform_1', 'bind_btCollisionObject_setCollisionShape_1', 'bind_btCollisionObject_setCcdMotionThreshold_1', 'bind_btCollisionObject_setCcdSweptSphereRadius_1', 'bind_btCollisionObject_getUserIndex_0', 'bind_btCollisionObject_setUserIndex_1', 'bind_btCollisionObject_getUserPointer_0', 'bind_btCollisionObject_setUserPointer_1', 'bind_btCollisionObject_getBroadphaseHandle_0', 'bind_btCollisionObject___destroy___0', 'bind_btConcaveShape_setLocalScaling_1', 'bind_btConcaveShape_getLocalScaling_0', 'bind_btConcaveShape_calculateLocalInertia_2', 'bind_btConcaveShape___destroy___0', 'bind_btCollisionAlgorithm___destroy___0', 'bind_btTypedConstraint_enableFeedback_1', 'bind_btTypedConstraint_getBreakingImpulseThreshold_0', 'bind_btTypedConstraint_setBreakingImpulseThreshold_1', 'bind_btTypedConstraint_getParam_2', 'bind_btTypedConstraint_setParam_3', 'bind_btTypedConstraint___destroy___0', 'bind_btDynamicsWorld_addAction_1', 'bind_btDynamicsWorld_removeAction_1', 'bind_btDynamicsWorld_getSolverInfo_0', 'bind_btDynamicsWorld_setInternalTickCallback_1', 'bind_btDynamicsWorld_setInternalTickCallback_2', 'bind_btDynamicsWorld_setInternalTickCallback_3', 'bind_btDynamicsWorld_getDispatcher_0', 'bind_btDynamicsWorld_rayTest_3', 'bind_btDynamicsWorld_getPairCache_0', 'bind_btDynamicsWorld_getDispatchInfo_0', 'bind_btDynamicsWorld_addCollisionObject_1', 'bind_btDynamicsWorld_addCollisionObject_2', 'bind_btDynamicsWorld_addCollisionObject_3', 'bind_btDynamicsWorld_removeCollisionObject_1', 'bind_btDynamicsWorld_getBroadphase_0', 'bind_btDynamicsWorld_convexSweepTest_5', 'bind_btDynamicsWorld_contactPairTest_3', 'bind_btDynamicsWorld_contactTest_2', 'bind_btDynamicsWorld_updateSingleAabb_1', 'bind_btDynamicsWorld___destroy___0', 'bind_btVector3_btVector3_0', 'bind_btVector3_btVector3_3', 'bind_btVector3_length_0', 'bind_btVector3_x_0', 'bind_btVector3_y_0', 'bind_btVector3_z_0', 'bind_btVector3_setX_1', 'bind_btVector3_setY_1', 'bind_btVector3_setZ_1', 'bind_btVector3_setValue_3', 'bind_btVector3_normalize_0', 'bind_btVector3_rotate_2', 'bind_btVector3_dot_1', 'bind_btVector3_op_mul_1', 'bind_btVector3_op_add_1', 'bind_btVector3_op_sub_1', 'bind_btVector3___destroy___0', 'bind_btQuadWord_x_0', 'bind_btQuadWord_y_0', 'bind_btQuadWord_z_0', 'bind_btQuadWord_w_0', 'bind_btQuadWord_setX_1', 'bind_btQuadWord_setY_1', 'bind_btQuadWord_setZ_1', 'bind_btQuadWord_setW_1', 'bind_btQuadWord___destroy___0', 'bind_btMotionState_getWorldTransform_1', 'bind_btMotionState_setWorldTransform_1', 'bind_btMotionState___destroy___0', 'bind_RayResultCallback_hasHit_0', 'bind_RayResultCallback_get_m_collisionFilterGroup_0', 'bind_RayResultCallback_set_m_collisionFilterGroup_1', 'bind_RayResultCallback_get_m_collisionFilterMask_0', 'bind_RayResultCallback_set_m_collisionFilterMask_1', 'bind_RayResultCallback_get_m_closestHitFraction_0', 'bind_RayResultCallback_set_m_closestHitFraction_1', 'bind_RayResultCallback_get_m_collisionObject_0', 'bind_RayResultCallback_set_m_collisionObject_1', 'bind_RayResultCallback_get_m_flags_0', 'bind_RayResultCallback_set_m_flags_1', 'bind_RayResultCallback___destroy___0', 'bind_ContactResultCallback_addSingleResult_7', 'bind_ContactResultCallback___destroy___0', 'bind_ConvexResultCallback_hasHit_0', 'bind_ConvexResultCallback_get_m_collisionFilterGroup_0', 'bind_ConvexResultCallback_set_m_collisionFilterGroup_1', 'bind_ConvexResultCallback_get_m_collisionFilterMask_0', 'bind_ConvexResultCallback_set_m_collisionFilterMask_1', 'bind_ConvexResultCallback_get_m_closestHitFraction_0', 'bind_ConvexResultCallback_set_m_closestHitFraction_1', 'bind_ConvexResultCallback___destroy___0', 'bind_btConvexShape_setLocalScaling_1', 'bind_btConvexShape_getLocalScaling_0', 'bind_btConvexShape_calculateLocalInertia_2', 'bind_btConvexShape_setMargin_1', 'bind_btConvexShape_getMargin_0', 'bind_btConvexShape___destroy___0', 'bind_btCapsuleShape_btCapsuleShape_2', 'bind_btCapsuleShape_setMargin_1', 'bind_btCapsuleShape_getMargin_0', 'bind_btCapsuleShape_getUpAxis_0', 'bind_btCapsuleShape_getRadius_0', 'bind_btCapsuleShape_getHalfHeight_0', 'bind_btCapsuleShape_setLocalScaling_1', 'bind_btCapsuleShape_getLocalScaling_0', 'bind_btCapsuleShape_calculateLocalInertia_2', 'bind_btCapsuleShape___destroy___0', 'bind_btCylinderShape_btCylinderShape_1', 'bind_btCylinderShape_setMargin_1', 'bind_btCylinderShape_getMargin_0', 'bind_btCylinderShape_setLocalScaling_1', 'bind_btCylinderShape_getLocalScaling_0', 'bind_btCylinderShape_calculateLocalInertia_2', 'bind_btCylinderShape___destroy___0', 'bind_btConeShape_btConeShape_2', 'bind_btConeShape_setLocalScaling_1', 'bind_btConeShape_getLocalScaling_0', 'bind_btConeShape_calculateLocalInertia_2', 'bind_btConeShape___destroy___0', 'bind_btStridingMeshInterface_setScaling_1', 'bind_btStridingMeshInterface___destroy___0', 'bind_btTriangleMeshShape_setLocalScaling_1', 'bind_btTriangleMeshShape_getLocalScaling_0', 'bind_btTriangleMeshShape_calculateLocalInertia_2', 'bind_btTriangleMeshShape___destroy___0', 'bind_btPrimitiveManagerBase_is_trimesh_0', 'bind_btPrimitiveManagerBase_get_primitive_count_0', 'bind_btPrimitiveManagerBase_get_primitive_box_2', 'bind_btPrimitiveManagerBase_get_primitive_triangle_2', 'bind_btPrimitiveManagerBase___destroy___0', 'bind_btGImpactShapeInterface_updateBound_0', 'bind_btGImpactShapeInterface_postUpdate_0', 'bind_btGImpactShapeInterface_getShapeType_0', 'bind_btGImpactShapeInterface_getName_0', 'bind_btGImpactShapeInterface_getGImpactShapeType_0', 'bind_btGImpactShapeInterface_getPrimitiveManager_0', 'bind_btGImpactShapeInterface_getNumChildShapes_0', 'bind_btGImpactShapeInterface_childrenHasTransform_0', 'bind_btGImpactShapeInterface_needsRetrieveTriangles_0', 'bind_btGImpactShapeInterface_needsRetrieveTetrahedrons_0', 'bind_btGImpactShapeInterface_getBulletTriangle_2', 'bind_btGImpactShapeInterface_getBulletTetrahedron_2', 'bind_btGImpactShapeInterface_getChildShape_1', 'bind_btGImpactShapeInterface_getChildTransform_1', 'bind_btGImpactShapeInterface_setChildTransform_2', 'bind_btGImpactShapeInterface_setLocalScaling_1', 'bind_btGImpactShapeInterface_getLocalScaling_0', 'bind_btGImpactShapeInterface_calculateLocalInertia_2', 'bind_btGImpactShapeInterface___destroy___0', 'bind_btActivatingCollisionAlgorithm___destroy___0', 'bind_btDefaultCollisionConfiguration_btDefaultCollisionConfiguration_0', 'bind_btDefaultCollisionConfiguration_btDefaultCollisionConfiguration_1', 'bind_btDefaultCollisionConfiguration___destroy___0', 'bind_btDispatcher_getNumManifolds_0', 'bind_btDispatcher_getManifoldByIndexInternal_1', 'bind_btDispatcher___destroy___0', 'bind_btGeneric6DofConstraint_btGeneric6DofConstraint_3', 'bind_btGeneric6DofConstraint_btGeneric6DofConstraint_5', 'bind_btGeneric6DofConstraint_setLinearLowerLimit_1', 'bind_btGeneric6DofConstraint_setLinearUpperLimit_1', 'bind_btGeneric6DofConstraint_setAngularLowerLimit_1', 'bind_btGeneric6DofConstraint_setAngularUpperLimit_1', 'bind_btGeneric6DofConstraint_getFrameOffsetA_0', 'bind_btGeneric6DofConstraint_enableFeedback_1', 'bind_btGeneric6DofConstraint_getBreakingImpulseThreshold_0', 'bind_btGeneric6DofConstraint_setBreakingImpulseThreshold_1', 'bind_btGeneric6DofConstraint_getParam_2', 'bind_btGeneric6DofConstraint_setParam_3', 'bind_btGeneric6DofConstraint___destroy___0', 'bind_btDiscreteDynamicsWorld_btDiscreteDynamicsWorld_4', 'bind_btDiscreteDynamicsWorld_setGravity_1', 'bind_btDiscreteDynamicsWorld_getGravity_0', 'bind_btDiscreteDynamicsWorld_addRigidBody_1', 'bind_btDiscreteDynamicsWorld_addRigidBody_3', 'bind_btDiscreteDynamicsWorld_removeRigidBody_1', 'bind_btDiscreteDynamicsWorld_addConstraint_1', 'bind_btDiscreteDynamicsWorld_addConstraint_2', 'bind_btDiscreteDynamicsWorld_removeConstraint_1', 'bind_btDiscreteDynamicsWorld_stepSimulation_1', 'bind_btDiscreteDynamicsWorld_stepSimulation_2', 'bind_btDiscreteDynamicsWorld_stepSimulation_3', 'bind_btDiscreteDynamicsWorld_setContactAddedCallback_1', 'bind_btDiscreteDynamicsWorld_setContactProcessedCallback_1', 'bind_btDiscreteDynamicsWorld_setContactDestroyedCallback_1', 'bind_btDiscreteDynamicsWorld_getDispatcher_0', 'bind_btDiscreteDynamicsWorld_rayTest_3', 'bind_btDiscreteDynamicsWorld_getPairCache_0', 'bind_btDiscreteDynamicsWorld_getDispatchInfo_0', 'bind_btDiscreteDynamicsWorld_addCollisionObject_1', 'bind_btDiscreteDynamicsWorld_addCollisionObject_2', 'bind_btDiscreteDynamicsWorld_addCollisionObject_3', 'bind_btDiscreteDynamicsWorld_removeCollisionObject_1', 'bind_btDiscreteDynamicsWorld_getBroadphase_0', 'bind_btDiscreteDynamicsWorld_convexSweepTest_5', 'bind_btDiscreteDynamicsWorld_contactPairTest_3', 'bind_btDiscreteDynamicsWorld_contactTest_2', 'bind_btDiscreteDynamicsWorld_updateSingleAabb_1', 'bind_btDiscreteDynamicsWorld_addAction_1', 'bind_btDiscreteDynamicsWorld_removeAction_1', 'bind_btDiscreteDynamicsWorld_getSolverInfo_0', 'bind_btDiscreteDynamicsWorld_setInternalTickCallback_1', 'bind_btDiscreteDynamicsWorld_setInternalTickCallback_2', 'bind_btDiscreteDynamicsWorld_setInternalTickCallback_3', 'bind_btDiscreteDynamicsWorld___destroy___0', 'bind_btVehicleRaycaster_castRay_3', 'bind_btVehicleRaycaster___destroy___0', 'bind_btActionInterface_updateAction_2', 'bind_btActionInterface___destroy___0', 'bind_btGhostObject_btGhostObject_0', 'bind_btGhostObject_getNumOverlappingObjects_0', 'bind_btGhostObject_getOverlappingObject_1', 'bind_btGhostObject_setAnisotropicFriction_2', 'bind_btGhostObject_getCollisionShape_0', 'bind_btGhostObject_setContactProcessingThreshold_1', 'bind_btGhostObject_setActivationState_1', 'bind_btGhostObject_forceActivationState_1', 'bind_btGhostObject_activate_0', 'bind_btGhostObject_activate_1', 'bind_btGhostObject_isActive_0', 'bind_btGhostObject_isKinematicObject_0', 'bind_btGhostObject_isStaticObject_0', 'bind_btGhostObject_isStaticOrKinematicObject_0', 'bind_btGhostObject_getRestitution_0', 'bind_btGhostObject_getFriction_0', 'bind_btGhostObject_getRollingFriction_0', 'bind_btGhostObject_setRestitution_1', 'bind_btGhostObject_setFriction_1', 'bind_btGhostObject_setRollingFriction_1', 'bind_btGhostObject_getWorldTransform_0', 'bind_btGhostObject_getCollisionFlags_0', 'bind_btGhostObject_setCollisionFlags_1', 'bind_btGhostObject_setWorldTransform_1', 'bind_btGhostObject_setCollisionShape_1', 'bind_btGhostObject_setCcdMotionThreshold_1', 'bind_btGhostObject_setCcdSweptSphereRadius_1', 'bind_btGhostObject_getUserIndex_0', 'bind_btGhostObject_setUserIndex_1', 'bind_btGhostObject_getUserPointer_0', 'bind_btGhostObject_setUserPointer_1', 'bind_btGhostObject_getBroadphaseHandle_0', 'bind_btGhostObject___destroy___0', 'bind_btSoftBodySolver___destroy___0', 'bind_VoidPtr___destroy___0', 'bind_btVector4_btVector4_0', 'bind_btVector4_btVector4_4', 'bind_btVector4_w_0', 'bind_btVector4_setValue_4', 'bind_btVector4_length_0', 'bind_btVector4_x_0', 'bind_btVector4_y_0', 'bind_btVector4_z_0', 'bind_btVector4_setX_1', 'bind_btVector4_setY_1', 'bind_btVector4_setZ_1', 'bind_btVector4_normalize_0', 'bind_btVector4_rotate_2', 'bind_btVector4_dot_1', 'bind_btVector4_op_mul_1', 'bind_btVector4_op_add_1', 'bind_btVector4_op_sub_1', 'bind_btVector4___destroy___0', 'bind_btQuaternion_btQuaternion_4', 'bind_btQuaternion_setValue_4', 'bind_btQuaternion_setEulerZYX_3', 'bind_btQuaternion_setRotation_2', 'bind_btQuaternion_normalize_0', 'bind_btQuaternion_length2_0', 'bind_btQuaternion_length_0', 'bind_btQuaternion_dot_1', 'bind_btQuaternion_normalized_0', 'bind_btQuaternion_getAxis_0', 'bind_btQuaternion_inverse_0', 'bind_btQuaternion_getAngle_0', 'bind_btQuaternion_getAngleShortestPath_0', 'bind_btQuaternion_angle_1', 'bind_btQuaternion_angleShortestPath_1', 'bind_btQuaternion_op_add_1', 'bind_btQuaternion_op_sub_1', 'bind_btQuaternion_op_mul_1', 'bind_btQuaternion_op_mulq_1', 'bind_btQuaternion_op_div_1', 'bind_btQuaternion_x_0', 'bind_btQuaternion_y_0', 'bind_btQuaternion_z_0', 'bind_btQuaternion_w_0', 'bind_btQuaternion_setX_1', 'bind_btQuaternion_setY_1', 'bind_btQuaternion_setZ_1', 'bind_btQuaternion_setW_1', 'bind_btQuaternion___destroy___0', 'bind_btMatrix3x3_setEulerZYX_3', 'bind_btMatrix3x3_getRotation_1', 'bind_btMatrix3x3_getRow_1', 'bind_btMatrix3x3___destroy___0', 'bind_btTransform_btTransform_0', 'bind_btTransform_btTransform_2', 'bind_btTransform_setIdentity_0', 'bind_btTransform_setOrigin_1', 'bind_btTransform_setRotation_1', 'bind_btTransform_getOrigin_0', 'bind_btTransform_getRotation_0', 'bind_btTransform_getBasis_0', 'bind_btTransform_setFromOpenGLMatrix_1', 'bind_btTransform_inverse_0', 'bind_btTransform_op_mul_1', 'bind_btTransform___destroy___0', 'bind_MotionState_MotionState_0', 'bind_MotionState_getWorldTransform_1', 'bind_MotionState_setWorldTransform_1', 'bind_MotionState___destroy___0', 'bind_btDefaultMotionState_btDefaultMotionState_0', 'bind_btDefaultMotionState_btDefaultMotionState_1', 'bind_btDefaultMotionState_btDefaultMotionState_2', 'bind_btDefaultMotionState_getWorldTransform_1', 'bind_btDefaultMotionState_setWorldTransform_1', 'bind_btDefaultMotionState_get_m_graphicsWorldTrans_0', 'bind_btDefaultMotionState_set_m_graphicsWorldTrans_1', 'bind_btDefaultMotionState___destroy___0', 'bind_btCollisionObjectWrapper_getWorldTransform_0', 'bind_btCollisionObjectWrapper_getCollisionObject_0', 'bind_btCollisionObjectWrapper_getCollisionShape_0', 'bind_ClosestRayResultCallback_ClosestRayResultCallback_2', 'bind_ClosestRayResultCallback_hasHit_0', 'bind_ClosestRayResultCallback_get_m_rayFromWorld_0', 'bind_ClosestRayResultCallback_set_m_rayFromWorld_1', 'bind_ClosestRayResultCallback_get_m_rayToWorld_0', 'bind_ClosestRayResultCallback_set_m_rayToWorld_1', 'bind_ClosestRayResultCallback_get_m_hitNormalWorld_0', 'bind_ClosestRayResultCallback_set_m_hitNormalWorld_1', 'bind_ClosestRayResultCallback_get_m_hitPointWorld_0', 'bind_ClosestRayResultCallback_set_m_hitPointWorld_1', 'bind_ClosestRayResultCallback_get_m_collisionFilterGroup_0', 'bind_ClosestRayResultCallback_set_m_collisionFilterGroup_1', 'bind_ClosestRayResultCallback_get_m_collisionFilterMask_0', 'bind_ClosestRayResultCallback_set_m_collisionFilterMask_1', 'bind_ClosestRayResultCallback_get_m_closestHitFraction_0', 'bind_ClosestRayResultCallback_set_m_closestHitFraction_1', 'bind_ClosestRayResultCallback_get_m_collisionObject_0', 'bind_ClosestRayResultCallback_set_m_collisionObject_1', 'bind_ClosestRayResultCallback_get_m_flags_0', 'bind_ClosestRayResultCallback_set_m_flags_1', 'bind_ClosestRayResultCallback___destroy___0', 'bind_btConstCollisionObjectArray_size_0', 'bind_btConstCollisionObjectArray_at_1', 'bind_btConstCollisionObjectArray___destroy___0', 'bind_btScalarArray_size_0', 'bind_btScalarArray_at_1', 'bind_btScalarArray___destroy___0', 'bind_AllHitsRayResultCallback_AllHitsRayResultCallback_2', 'bind_AllHitsRayResultCallback_hasHit_0', 'bind_AllHitsRayResultCallback_get_m_collisionObjects_0', 'bind_AllHitsRayResultCallback_set_m_collisionObjects_1', 'bind_AllHitsRayResultCallback_get_m_rayFromWorld_0', 'bind_AllHitsRayResultCallback_set_m_rayFromWorld_1', 'bind_AllHitsRayResultCallback_get_m_rayToWorld_0', 'bind_AllHitsRayResultCallback_set_m_rayToWorld_1', 'bind_AllHitsRayResultCallback_get_m_hitNormalWorld_0', 'bind_AllHitsRayResultCallback_set_m_hitNormalWorld_1', 'bind_AllHitsRayResultCallback_get_m_hitPointWorld_0', 'bind_AllHitsRayResultCallback_set_m_hitPointWorld_1', 'bind_AllHitsRayResultCallback_get_m_hitFractions_0', 'bind_AllHitsRayResultCallback_set_m_hitFractions_1', 'bind_AllHitsRayResultCallback_get_m_collisionFilterGroup_0', 'bind_AllHitsRayResultCallback_set_m_collisionFilterGroup_1', 'bind_AllHitsRayResultCallback_get_m_collisionFilterMask_0', 'bind_AllHitsRayResultCallback_set_m_collisionFilterMask_1', 'bind_AllHitsRayResultCallback_get_m_closestHitFraction_0', 'bind_AllHitsRayResultCallback_set_m_closestHitFraction_1', 'bind_AllHitsRayResultCallback_get_m_collisionObject_0', 'bind_AllHitsRayResultCallback_set_m_collisionObject_1', 'bind_AllHitsRayResultCallback_get_m_flags_0', 'bind_AllHitsRayResultCallback_set_m_flags_1', 'bind_AllHitsRayResultCallback___destroy___0', 'bind_btManifoldPoint_getPositionWorldOnA_0', 'bind_btManifoldPoint_getPositionWorldOnB_0', 'bind_btManifoldPoint_getAppliedImpulse_0', 'bind_btManifoldPoint_getDistance_0', 'bind_btManifoldPoint_get_m_localPointA_0', 'bind_btManifoldPoint_set_m_localPointA_1', 'bind_btManifoldPoint_get_m_localPointB_0', 'bind_btManifoldPoint_set_m_localPointB_1', 'bind_btManifoldPoint_get_m_positionWorldOnB_0', 'bind_btManifoldPoint_set_m_positionWorldOnB_1', 'bind_btManifoldPoint_get_m_positionWorldOnA_0', 'bind_btManifoldPoint_set_m_positionWorldOnA_1', 'bind_btManifoldPoint_get_m_normalWorldOnB_0', 'bind_btManifoldPoint_set_m_normalWorldOnB_1', 'bind_btManifoldPoint_get_m_userPersistentData_0', 'bind_btManifoldPoint_set_m_userPersistentData_1', 'bind_btManifoldPoint___destroy___0', 'bind_ConcreteContactResultCallback_ConcreteContactResultCallback_0', 'bind_ConcreteContactResultCallback_addSingleResult_7', 'bind_ConcreteContactResultCallback___destroy___0', 'bind_LocalShapeInfo_get_m_shapePart_0', 'bind_LocalShapeInfo_set_m_shapePart_1', 'bind_LocalShapeInfo_get_m_triangleIndex_0', 'bind_LocalShapeInfo_set_m_triangleIndex_1', 'bind_LocalShapeInfo___destroy___0', 'bind_LocalConvexResult_LocalConvexResult_5', 'bind_LocalConvexResult_get_m_hitCollisionObject_0', 'bind_LocalConvexResult_set_m_hitCollisionObject_1', 'bind_LocalConvexResult_get_m_localShapeInfo_0', 'bind_LocalConvexResult_set_m_localShapeInfo_1', 'bind_LocalConvexResult_get_m_hitNormalLocal_0', 'bind_LocalConvexResult_set_m_hitNormalLocal_1', 'bind_LocalConvexResult_get_m_hitPointLocal_0', 'bind_LocalConvexResult_set_m_hitPointLocal_1', 'bind_LocalConvexResult_get_m_hitFraction_0', 'bind_LocalConvexResult_set_m_hitFraction_1', 'bind_LocalConvexResult___destroy___0', 'bind_ClosestConvexResultCallback_ClosestConvexResultCallback_2', 'bind_ClosestConvexResultCallback_hasHit_0', 'bind_ClosestConvexResultCallback_get_m_hitCollisionObject_0', 'bind_ClosestConvexResultCallback_set_m_hitCollisionObject_1', 'bind_ClosestConvexResultCallback_get_m_convexFromWorld_0', 'bind_ClosestConvexResultCallback_set_m_convexFromWorld_1', 'bind_ClosestConvexResultCallback_get_m_convexToWorld_0', 'bind_ClosestConvexResultCallback_set_m_convexToWorld_1', 'bind_ClosestConvexResultCallback_get_m_hitNormalWorld_0', 'bind_ClosestConvexResultCallback_set_m_hitNormalWorld_1', 'bind_ClosestConvexResultCallback_get_m_hitPointWorld_0', 'bind_ClosestConvexResultCallback_set_m_hitPointWorld_1', 'bind_ClosestConvexResultCallback_get_m_collisionFilterGroup_0', 'bind_ClosestConvexResultCallback_set_m_collisionFilterGroup_1', 'bind_ClosestConvexResultCallback_get_m_collisionFilterMask_0', 'bind_ClosestConvexResultCallback_set_m_collisionFilterMask_1', 'bind_ClosestConvexResultCallback_get_m_closestHitFraction_0', 'bind_ClosestConvexResultCallback_set_m_closestHitFraction_1', 'bind_ClosestConvexResultCallback___destroy___0', 'bind_btConvexTriangleMeshShape_btConvexTriangleMeshShape_1', 'bind_btConvexTriangleMeshShape_btConvexTriangleMeshShape_2', 'bind_btConvexTriangleMeshShape_setLocalScaling_1', 'bind_btConvexTriangleMeshShape_getLocalScaling_0', 'bind_btConvexTriangleMeshShape_calculateLocalInertia_2', 'bind_btConvexTriangleMeshShape_setMargin_1', 'bind_btConvexTriangleMeshShape_getMargin_0', 'bind_btConvexTriangleMeshShape___destroy___0', 'bind_btBoxShape_btBoxShape_1', 'bind_btBoxShape_setMargin_1', 'bind_btBoxShape_getMargin_0', 'bind_btBoxShape_setLocalScaling_1', 'bind_btBoxShape_getLocalScaling_0', 'bind_btBoxShape_calculateLocalInertia_2', 'bind_btBoxShape___destroy___0', 'bind_btCapsuleShapeX_btCapsuleShapeX_2', 'bind_btCapsuleShapeX_setMargin_1', 'bind_btCapsuleShapeX_getMargin_0', 'bind_btCapsuleShapeX_getUpAxis_0', 'bind_btCapsuleShapeX_getRadius_0', 'bind_btCapsuleShapeX_getHalfHeight_0', 'bind_btCapsuleShapeX_setLocalScaling_1', 'bind_btCapsuleShapeX_getLocalScaling_0', 'bind_btCapsuleShapeX_calculateLocalInertia_2', 'bind_btCapsuleShapeX___destroy___0', 'bind_btCapsuleShapeZ_btCapsuleShapeZ_2', 'bind_btCapsuleShapeZ_setMargin_1', 'bind_btCapsuleShapeZ_getMargin_0', 'bind_btCapsuleShapeZ_getUpAxis_0', 'bind_btCapsuleShapeZ_getRadius_0', 'bind_btCapsuleShapeZ_getHalfHeight_0', 'bind_btCapsuleShapeZ_setLocalScaling_1', 'bind_btCapsuleShapeZ_getLocalScaling_0', 'bind_btCapsuleShapeZ_calculateLocalInertia_2', 'bind_btCapsuleShapeZ___destroy___0', 'bind_btCylinderShapeX_btCylinderShapeX_1', 'bind_btCylinderShapeX_setMargin_1', 'bind_btCylinderShapeX_getMargin_0', 'bind_btCylinderShapeX_setLocalScaling_1', 'bind_btCylinderShapeX_getLocalScaling_0', 'bind_btCylinderShapeX_calculateLocalInertia_2', 'bind_btCylinderShapeX___destroy___0', 'bind_btCylinderShapeZ_btCylinderShapeZ_1', 'bind_btCylinderShapeZ_setMargin_1', 'bind_btCylinderShapeZ_getMargin_0', 'bind_btCylinderShapeZ_setLocalScaling_1', 'bind_btCylinderShapeZ_getLocalScaling_0', 'bind_btCylinderShapeZ_calculateLocalInertia_2', 'bind_btCylinderShapeZ___destroy___0', 'bind_btSphereShape_btSphereShape_1', 'bind_btSphereShape_setMargin_1', 'bind_btSphereShape_getMargin_0', 'bind_btSphereShape_setLocalScaling_1', 'bind_btSphereShape_getLocalScaling_0', 'bind_btSphereShape_calculateLocalInertia_2', 'bind_btSphereShape___destroy___0', 'bind_btMultiSphereShape_btMultiSphereShape_3', 'bind_btMultiSphereShape_setLocalScaling_1', 'bind_btMultiSphereShape_getLocalScaling_0', 'bind_btMultiSphereShape_calculateLocalInertia_2', 'bind_btMultiSphereShape___destroy___0', 'bind_btConeShapeX_btConeShapeX_2', 'bind_btConeShapeX_setLocalScaling_1', 'bind_btConeShapeX_getLocalScaling_0', 'bind_btConeShapeX_calculateLocalInertia_2', 'bind_btConeShapeX___destroy___0', 'bind_btConeShapeZ_btConeShapeZ_2', 'bind_btConeShapeZ_setLocalScaling_1', 'bind_btConeShapeZ_getLocalScaling_0', 'bind_btConeShapeZ_calculateLocalInertia_2', 'bind_btConeShapeZ___destroy___0', 'bind_btIntArray_size_0', 'bind_btIntArray_at_1', 'bind_btIntArray___destroy___0', 'bind_btFace_get_m_indices_0', 'bind_btFace_set_m_indices_1', 'bind_btFace_get_m_plane_1', 'bind_btFace_set_m_plane_2', 'bind_btFace___destroy___0', 'bind_btVector3Array_size_0', 'bind_btVector3Array_at_1', 'bind_btVector3Array___destroy___0', 'bind_btFaceArray_size_0', 'bind_btFaceArray_at_1', 'bind_btFaceArray___destroy___0', 'bind_btConvexPolyhedron_get_m_vertices_0', 'bind_btConvexPolyhedron_set_m_vertices_1', 'bind_btConvexPolyhedron_get_m_faces_0', 'bind_btConvexPolyhedron_set_m_faces_1', 'bind_btConvexPolyhedron___destroy___0', 'bind_btConvexHullShape_btConvexHullShape_0', 'bind_btConvexHullShape_btConvexHullShape_1', 'bind_btConvexHullShape_btConvexHullShape_2', 'bind_btConvexHullShape_addPoint_1', 'bind_btConvexHullShape_addPoint_2', 'bind_btConvexHullShape_setMargin_1', 'bind_btConvexHullShape_getMargin_0', 'bind_btConvexHullShape_getNumVertices_0', 'bind_btConvexHullShape_initializePolyhedralFeatures_1', 'bind_btConvexHullShape_recalcLocalAabb_0', 'bind_btConvexHullShape_getConvexPolyhedron_0', 'bind_btConvexHullShape_setLocalScaling_1', 'bind_btConvexHullShape_getLocalScaling_0', 'bind_btConvexHullShape_calculateLocalInertia_2', 'bind_btConvexHullShape___destroy___0', 'bind_btShapeHull_btShapeHull_1', 'bind_btShapeHull_buildHull_1', 'bind_btShapeHull_numVertices_0', 'bind_btShapeHull_getVertexPointer_0', 'bind_btShapeHull___destroy___0', 'bind_btCompoundShape_btCompoundShape_0', 'bind_btCompoundShape_btCompoundShape_1', 'bind_btCompoundShape_addChildShape_2', 'bind_btCompoundShape_removeChildShape_1', 'bind_btCompoundShape_removeChildShapeByIndex_1', 'bind_btCompoundShape_getNumChildShapes_0', 'bind_btCompoundShape_getChildShape_1', 'bind_btCompoundShape_updateChildTransform_2', 'bind_btCompoundShape_updateChildTransform_3', 'bind_btCompoundShape_setMargin_1', 'bind_btCompoundShape_getMargin_0', 'bind_btCompoundShape_setLocalScaling_1', 'bind_btCompoundShape_getLocalScaling_0', 'bind_btCompoundShape_calculateLocalInertia_2', 'bind_btCompoundShape___destroy___0', 'bind_btIndexedMesh_get_m_numTriangles_0', 'bind_btIndexedMesh_set_m_numTriangles_1', 'bind_btIndexedMesh___destroy___0', 'bind_btIndexedMeshArray_size_0', 'bind_btIndexedMeshArray_at_1', 'bind_btIndexedMeshArray___destroy___0', 'bind_btTriangleMesh_btTriangleMesh_0', 'bind_btTriangleMesh_btTriangleMesh_1', 'bind_btTriangleMesh_btTriangleMesh_2', 'bind_btTriangleMesh_addTriangle_3', 'bind_btTriangleMesh_addTriangle_4', 'bind_btTriangleMesh_findOrAddVertex_2', 'bind_btTriangleMesh_addIndex_1', 'bind_btTriangleMesh_getIndexedMeshArray_0', 'bind_btTriangleMesh_setScaling_1', 'bind_btTriangleMesh___destroy___0', 'bind_btEmptyShape_btEmptyShape_0', 'bind_btEmptyShape_setLocalScaling_1', 'bind_btEmptyShape_getLocalScaling_0', 'bind_btEmptyShape_calculateLocalInertia_2', 'bind_btEmptyShape___destroy___0', 'bind_btStaticPlaneShape_btStaticPlaneShape_2', 'bind_btStaticPlaneShape_setLocalScaling_1', 'bind_btStaticPlaneShape_getLocalScaling_0', 'bind_btStaticPlaneShape_calculateLocalInertia_2', 'bind_btStaticPlaneShape___destroy___0', 'bind_btBvhTriangleMeshShape_btBvhTriangleMeshShape_2', 'bind_btBvhTriangleMeshShape_btBvhTriangleMeshShape_3', 'bind_btBvhTriangleMeshShape_setLocalScaling_1', 'bind_btBvhTriangleMeshShape_getLocalScaling_0', 'bind_btBvhTriangleMeshShape_calculateLocalInertia_2', 'bind_btBvhTriangleMeshShape___destroy___0', 'bind_btHeightfieldTerrainShape_btHeightfieldTerrainShape_9', 'bind_btHeightfieldTerrainShape_setMargin_1', 'bind_btHeightfieldTerrainShape_getMargin_0', 'bind_btHeightfieldTerrainShape_setLocalScaling_1', 'bind_btHeightfieldTerrainShape_getLocalScaling_0', 'bind_btHeightfieldTerrainShape_calculateLocalInertia_2', 'bind_btHeightfieldTerrainShape___destroy___0', 'bind_btAABB_btAABB_4', 'bind_btAABB_invalidate_0', 'bind_btAABB_increment_margin_1', 'bind_btAABB_copy_with_margin_2', 'bind_btAABB___destroy___0', 'bind_btPrimitiveTriangle_btPrimitiveTriangle_0', 'bind_btPrimitiveTriangle___destroy___0', 'bind_btTriangleShapeEx_btTriangleShapeEx_3', 'bind_btTriangleShapeEx_getAabb_3', 'bind_btTriangleShapeEx_applyTransform_1', 'bind_btTriangleShapeEx_buildTriPlane_1', 'bind_btTriangleShapeEx___destroy___0', 'bind_btTetrahedronShapeEx_btTetrahedronShapeEx_0', 'bind_btTetrahedronShapeEx_setVertices_4', 'bind_btTetrahedronShapeEx___destroy___0', 'bind_CompoundPrimitiveManager_get_primitive_count_0', 'bind_CompoundPrimitiveManager_get_primitive_box_2', 'bind_CompoundPrimitiveManager_get_primitive_triangle_2', 'bind_CompoundPrimitiveManager_is_trimesh_0', 'bind_CompoundPrimitiveManager_get_m_compoundShape_0', 'bind_CompoundPrimitiveManager_set_m_compoundShape_1', 'bind_CompoundPrimitiveManager___destroy___0', 'bind_btGImpactCompoundShape_btGImpactCompoundShape_0', 'bind_btGImpactCompoundShape_btGImpactCompoundShape_1', 'bind_btGImpactCompoundShape_childrenHasTransform_0', 'bind_btGImpactCompoundShape_getPrimitiveManager_0', 'bind_btGImpactCompoundShape_getCompoundPrimitiveManager_0', 'bind_btGImpactCompoundShape_getNumChildShapes_0', 'bind_btGImpactCompoundShape_addChildShape_2', 'bind_btGImpactCompoundShape_getChildShape_1', 'bind_btGImpactCompoundShape_getChildAabb_4', 'bind_btGImpactCompoundShape_getChildTransform_1', 'bind_btGImpactCompoundShape_setChildTransform_2', 'bind_btGImpactCompoundShape_calculateLocalInertia_2', 'bind_btGImpactCompoundShape_getName_0', 'bind_btGImpactCompoundShape_getGImpactShapeType_0', 'bind_btGImpactCompoundShape_setLocalScaling_1', 'bind_btGImpactCompoundShape_getLocalScaling_0', 'bind_btGImpactCompoundShape_updateBound_0', 'bind_btGImpactCompoundShape_postUpdate_0', 'bind_btGImpactCompoundShape_getShapeType_0', 'bind_btGImpactCompoundShape_needsRetrieveTriangles_0', 'bind_btGImpactCompoundShape_needsRetrieveTetrahedrons_0', 'bind_btGImpactCompoundShape_getBulletTriangle_2', 'bind_btGImpactCompoundShape_getBulletTetrahedron_2', 'bind_btGImpactCompoundShape___destroy___0', 'bind_TrimeshPrimitiveManager_TrimeshPrimitiveManager_0', 'bind_TrimeshPrimitiveManager_TrimeshPrimitiveManager_1', 'bind_TrimeshPrimitiveManager_lock_0', 'bind_TrimeshPrimitiveManager_unlock_0', 'bind_TrimeshPrimitiveManager_is_trimesh_0', 'bind_TrimeshPrimitiveManager_get_vertex_count_0', 'bind_TrimeshPrimitiveManager_get_indices_4', 'bind_TrimeshPrimitiveManager_get_vertex_2', 'bind_TrimeshPrimitiveManager_get_bullet_triangle_2', 'bind_TrimeshPrimitiveManager_get_m_margin_0', 'bind_TrimeshPrimitiveManager_set_m_margin_1', 'bind_TrimeshPrimitiveManager_get_m_meshInterface_0', 'bind_TrimeshPrimitiveManager_set_m_meshInterface_1', 'bind_TrimeshPrimitiveManager_get_m_part_0', 'bind_TrimeshPrimitiveManager_set_m_part_1', 'bind_TrimeshPrimitiveManager_get_m_lock_count_0', 'bind_TrimeshPrimitiveManager_set_m_lock_count_1', 'bind_TrimeshPrimitiveManager_get_numverts_0', 'bind_TrimeshPrimitiveManager_set_numverts_1', 'bind_TrimeshPrimitiveManager_get_type_0', 'bind_TrimeshPrimitiveManager_set_type_1', 'bind_TrimeshPrimitiveManager_get_stride_0', 'bind_TrimeshPrimitiveManager_set_stride_1', 'bind_TrimeshPrimitiveManager_get_indexstride_0', 'bind_TrimeshPrimitiveManager_set_indexstride_1', 'bind_TrimeshPrimitiveManager_get_numfaces_0', 'bind_TrimeshPrimitiveManager_set_numfaces_1', 'bind_TrimeshPrimitiveManager_get_indicestype_0', 'bind_TrimeshPrimitiveManager_set_indicestype_1', 'bind_TrimeshPrimitiveManager___destroy___0', 'bind_btGImpactMeshShapePart_btGImpactMeshShapePart_2', 'bind_btGImpactMeshShapePart_getTrimeshPrimitiveManager_0', 'bind_btGImpactMeshShapePart_getVertexCount_0', 'bind_btGImpactMeshShapePart_getVertex_2', 'bind_btGImpactMeshShapePart_getPart_0', 'bind_btGImpactMeshShapePart_setLocalScaling_1', 'bind_btGImpactMeshShapePart_getLocalScaling_0', 'bind_btGImpactMeshShapePart_updateBound_0', 'bind_btGImpactMeshShapePart_postUpdate_0', 'bind_btGImpactMeshShapePart_getShapeType_0', 'bind_btGImpactMeshShapePart_needsRetrieveTriangles_0', 'bind_btGImpactMeshShapePart_needsRetrieveTetrahedrons_0', 'bind_btGImpactMeshShapePart_getBulletTriangle_2', 'bind_btGImpactMeshShapePart_getBulletTetrahedron_2', 'bind_btGImpactMeshShapePart___destroy___0', 'bind_btGImpactMeshShape_btGImpactMeshShape_1', 'bind_btGImpactMeshShape_getMeshInterface_0', 'bind_btGImpactMeshShape_getMeshPartCount_0', 'bind_btGImpactMeshShape_getMeshPart_1', 'bind_btGImpactMeshShape_calculateSerializeBufferSize_0', 'bind_btGImpactMeshShape_setLocalScaling_1', 'bind_btGImpactMeshShape_getLocalScaling_0', 'bind_btGImpactMeshShape_updateBound_0', 'bind_btGImpactMeshShape_postUpdate_0', 'bind_btGImpactMeshShape_getShapeType_0', 'bind_btGImpactMeshShape_needsRetrieveTriangles_0', 'bind_btGImpactMeshShape_needsRetrieveTetrahedrons_0', 'bind_btGImpactMeshShape_getBulletTriangle_2', 'bind_btGImpactMeshShape_getBulletTetrahedron_2', 'bind_btGImpactMeshShape___destroy___0', 'bind_btCollisionAlgorithmConstructionInfo_btCollisionAlgorithmConstructionInfo_0', 'bind_btCollisionAlgorithmConstructionInfo_btCollisionAlgorithmConstructionInfo_2', 'bind_btCollisionAlgorithmConstructionInfo_get_m_dispatcher1_0', 'bind_btCollisionAlgorithmConstructionInfo_set_m_dispatcher1_1', 'bind_btCollisionAlgorithmConstructionInfo_get_m_manifold_0', 'bind_btCollisionAlgorithmConstructionInfo_set_m_manifold_1', 'bind_btCollisionAlgorithmConstructionInfo___destroy___0', 'bind_btGImpactCollisionAlgorithm_btGImpactCollisionAlgorithm_3', 'bind_btGImpactCollisionAlgorithm_registerAlgorithm_1', 'bind_btGImpactCollisionAlgorithm___destroy___0', 'bind_btDefaultCollisionConstructionInfo_btDefaultCollisionConstructionInfo_0', 'bind_btDefaultCollisionConstructionInfo___destroy___0', 'bind_btPersistentManifold_btPersistentManifold_0', 'bind_btPersistentManifold_getBody0_0', 'bind_btPersistentManifold_getBody1_0', 'bind_btPersistentManifold_getNumContacts_0', 'bind_btPersistentManifold_getContactPoint_1', 'bind_btPersistentManifold___destroy___0', 'bind_btCollisionDispatcher_btCollisionDispatcher_1', 'bind_btCollisionDispatcher_getNumManifolds_0', 'bind_btCollisionDispatcher_getManifoldByIndexInternal_1', 'bind_btCollisionDispatcher___destroy___0', 'bind_btOverlappingPairCallback___destroy___0', 'bind_btOverlappingPairCache_setInternalGhostPairCallback_1', 'bind_btOverlappingPairCache_getNumOverlappingPairs_0', 'bind_btOverlappingPairCache___destroy___0', 'bind_btAxisSweep3_btAxisSweep3_2', 'bind_btAxisSweep3_btAxisSweep3_3', 'bind_btAxisSweep3_btAxisSweep3_4', 'bind_btAxisSweep3_btAxisSweep3_5', 'bind_btAxisSweep3___destroy___0', 'bind_btBroadphaseInterface_getOverlappingPairCache_0', 'bind_btBroadphaseInterface___destroy___0', 'bind_btCollisionConfiguration___destroy___0', 'bind_btDbvtBroadphase_btDbvtBroadphase_0', 'bind_btDbvtBroadphase___destroy___0', 'bind_btBroadphaseProxy_get_m_collisionFilterGroup_0', 'bind_btBroadphaseProxy_set_m_collisionFilterGroup_1', 'bind_btBroadphaseProxy_get_m_collisionFilterMask_0', 'bind_btBroadphaseProxy_set_m_collisionFilterMask_1', 'bind_btBroadphaseProxy___destroy___0', 'bind_btRigidBodyConstructionInfo_btRigidBodyConstructionInfo_3', 'bind_btRigidBodyConstructionInfo_btRigidBodyConstructionInfo_4', 'bind_btRigidBodyConstructionInfo_get_m_linearDamping_0', 'bind_btRigidBodyConstructionInfo_set_m_linearDamping_1', 'bind_btRigidBodyConstructionInfo_get_m_angularDamping_0', 'bind_btRigidBodyConstructionInfo_set_m_angularDamping_1', 'bind_btRigidBodyConstructionInfo_get_m_friction_0', 'bind_btRigidBodyConstructionInfo_set_m_friction_1', 'bind_btRigidBodyConstructionInfo_get_m_rollingFriction_0', 'bind_btRigidBodyConstructionInfo_set_m_rollingFriction_1', 'bind_btRigidBodyConstructionInfo_get_m_restitution_0', 'bind_btRigidBodyConstructionInfo_set_m_restitution_1', 'bind_btRigidBodyConstructionInfo_get_m_linearSleepingThreshold_0', 'bind_btRigidBodyConstructionInfo_set_m_linearSleepingThreshold_1', 'bind_btRigidBodyConstructionInfo_get_m_angularSleepingThreshold_0', 'bind_btRigidBodyConstructionInfo_set_m_angularSleepingThreshold_1', 'bind_btRigidBodyConstructionInfo_get_m_additionalDamping_0', 'bind_btRigidBodyConstructionInfo_set_m_additionalDamping_1', 'bind_btRigidBodyConstructionInfo_get_m_additionalDampingFactor_0', 'bind_btRigidBodyConstructionInfo_set_m_additionalDampingFactor_1', 'bind_btRigidBodyConstructionInfo_get_m_additionalLinearDampingThresholdSqr_0', 'bind_btRigidBodyConstructionInfo_set_m_additionalLinearDampingThresholdSqr_1', 'bind_btRigidBodyConstructionInfo_get_m_additionalAngularDampingThresholdSqr_0', 'bind_btRigidBodyConstructionInfo_set_m_additionalAngularDampingThresholdSqr_1', 'bind_btRigidBodyConstructionInfo_get_m_additionalAngularDampingFactor_0', 'bind_btRigidBodyConstructionInfo_set_m_additionalAngularDampingFactor_1', 'bind_btRigidBodyConstructionInfo___destroy___0', 'bind_btRigidBody_btRigidBody_1', 'bind_btRigidBody_getCenterOfMassTransform_0', 'bind_btRigidBody_setCenterOfMassTransform_1', 'bind_btRigidBody_setSleepingThresholds_2', 'bind_btRigidBody_getLinearDamping_0', 'bind_btRigidBody_getAngularDamping_0', 'bind_btRigidBody_setDamping_2', 'bind_btRigidBody_setMassProps_2', 'bind_btRigidBody_getLinearFactor_0', 'bind_btRigidBody_setLinearFactor_1', 'bind_btRigidBody_applyTorque_1', 'bind_btRigidBody_applyLocalTorque_1', 'bind_btRigidBody_applyForce_2', 'bind_btRigidBody_applyCentralForce_1', 'bind_btRigidBody_applyCentralLocalForce_1', 'bind_btRigidBody_applyTorqueImpulse_1', 'bind_btRigidBody_applyImpulse_2', 'bind_btRigidBody_applyCentralImpulse_1', 'bind_btRigidBody_updateInertiaTensor_0', 'bind_btRigidBody_getLinearVelocity_0', 'bind_btRigidBody_getAngularVelocity_0', 'bind_btRigidBody_setLinearVelocity_1', 'bind_btRigidBody_setAngularVelocity_1', 'bind_btRigidBody_getMotionState_0', 'bind_btRigidBody_setMotionState_1', 'bind_btRigidBody_getAngularFactor_0', 'bind_btRigidBody_setAngularFactor_1', 'bind_btRigidBody_upcast_1', 'bind_btRigidBody_getAabb_2', 'bind_btRigidBody_applyGravity_0', 'bind_btRigidBody_getGravity_0', 'bind_btRigidBody_setGravity_1', 'bind_btRigidBody_getBroadphaseProxy_0', 'bind_btRigidBody_clearForces_0', 'bind_btRigidBody_setFlags_1', 'bind_btRigidBody_getFlags_0', 'bind_btRigidBody_setAnisotropicFriction_2', 'bind_btRigidBody_getCollisionShape_0', 'bind_btRigidBody_setContactProcessingThreshold_1', 'bind_btRigidBody_setActivationState_1', 'bind_btRigidBody_forceActivationState_1', 'bind_btRigidBody_activate_0', 'bind_btRigidBody_activate_1', 'bind_btRigidBody_isActive_0', 'bind_btRigidBody_isKinematicObject_0', 'bind_btRigidBody_isStaticObject_0', 'bind_btRigidBody_isStaticOrKinematicObject_0', 'bind_btRigidBody_getRestitution_0', 'bind_btRigidBody_getFriction_0', 'bind_btRigidBody_getRollingFriction_0', 'bind_btRigidBody_setRestitution_1', 'bind_btRigidBody_setFriction_1', 'bind_btRigidBody_setRollingFriction_1', 'bind_btRigidBody_getWorldTransform_0', 'bind_btRigidBody_getCollisionFlags_0', 'bind_btRigidBody_setCollisionFlags_1', 'bind_btRigidBody_setWorldTransform_1', 'bind_btRigidBody_setCollisionShape_1', 'bind_btRigidBody_setCcdMotionThreshold_1', 'bind_btRigidBody_setCcdSweptSphereRadius_1', 'bind_btRigidBody_getUserIndex_0', 'bind_btRigidBody_setUserIndex_1', 'bind_btRigidBody_getUserPointer_0', 'bind_btRigidBody_setUserPointer_1', 'bind_btRigidBody_getBroadphaseHandle_0', 'bind_btRigidBody___destroy___0', 'bind_btConstraintSetting_btConstraintSetting_0', 'bind_btConstraintSetting_get_m_tau_0', 'bind_btConstraintSetting_set_m_tau_1', 'bind_btConstraintSetting_get_m_damping_0', 'bind_btConstraintSetting_set_m_damping_1', 'bind_btConstraintSetting_get_m_impulseClamp_0', 'bind_btConstraintSetting_set_m_impulseClamp_1', 'bind_btConstraintSetting___destroy___0', 'bind_btPoint2PointConstraint_btPoint2PointConstraint_2', 'bind_btPoint2PointConstraint_btPoint2PointConstraint_4', 'bind_btPoint2PointConstraint_setPivotA_1', 'bind_btPoint2PointConstraint_setPivotB_1', 'bind_btPoint2PointConstraint_getPivotInA_0', 'bind_btPoint2PointConstraint_getPivotInB_0', 'bind_btPoint2PointConstraint_enableFeedback_1', 'bind_btPoint2PointConstraint_getBreakingImpulseThreshold_0', 'bind_btPoint2PointConstraint_setBreakingImpulseThreshold_1', 'bind_btPoint2PointConstraint_getParam_2', 'bind_btPoint2PointConstraint_setParam_3', 'bind_btPoint2PointConstraint_get_m_setting_0', 'bind_btPoint2PointConstraint_set_m_setting_1', 'bind_btPoint2PointConstraint___destroy___0', 'bind_btGeneric6DofSpringConstraint_btGeneric6DofSpringConstraint_3', 'bind_btGeneric6DofSpringConstraint_btGeneric6DofSpringConstraint_5', 'bind_btGeneric6DofSpringConstraint_enableSpring_2', 'bind_btGeneric6DofSpringConstraint_setStiffness_2', 'bind_btGeneric6DofSpringConstraint_setDamping_2', 'bind_btGeneric6DofSpringConstraint_setEquilibriumPoint_0', 'bind_btGeneric6DofSpringConstraint_setEquilibriumPoint_1', 'bind_btGeneric6DofSpringConstraint_setEquilibriumPoint_2', 'bind_btGeneric6DofSpringConstraint_setLinearLowerLimit_1', 'bind_btGeneric6DofSpringConstraint_setLinearUpperLimit_1', 'bind_btGeneric6DofSpringConstraint_setAngularLowerLimit_1', 'bind_btGeneric6DofSpringConstraint_setAngularUpperLimit_1', 'bind_btGeneric6DofSpringConstraint_getFrameOffsetA_0', 'bind_btGeneric6DofSpringConstraint_enableFeedback_1', 'bind_btGeneric6DofSpringConstraint_getBreakingImpulseThreshold_0', 'bind_btGeneric6DofSpringConstraint_setBreakingImpulseThreshold_1', 'bind_btGeneric6DofSpringConstraint_getParam_2', 'bind_btGeneric6DofSpringConstraint_setParam_3', 'bind_btGeneric6DofSpringConstraint___destroy___0', 'bind_btSequentialImpulseConstraintSolver_btSequentialImpulseConstraintSolver_0', 'bind_btSequentialImpulseConstraintSolver___destroy___0', 'bind_btConeTwistConstraint_btConeTwistConstraint_2', 'bind_btConeTwistConstraint_btConeTwistConstraint_4', 'bind_btConeTwistConstraint_setLimit_2', 'bind_btConeTwistConstraint_setAngularOnly_1', 'bind_btConeTwistConstraint_setDamping_1', 'bind_btConeTwistConstraint_enableMotor_1', 'bind_btConeTwistConstraint_setMaxMotorImpulse_1', 'bind_btConeTwistConstraint_setMaxMotorImpulseNormalized_1', 'bind_btConeTwistConstraint_setMotorTarget_1', 'bind_btConeTwistConstraint_setMotorTargetInConstraintSpace_1', 'bind_btConeTwistConstraint_enableFeedback_1', 'bind_btConeTwistConstraint_getBreakingImpulseThreshold_0', 'bind_btConeTwistConstraint_setBreakingImpulseThreshold_1', 'bind_btConeTwistConstraint_getParam_2', 'bind_btConeTwistConstraint_setParam_3', 'bind_btConeTwistConstraint___destroy___0', 'bind_btHingeConstraint_btHingeConstraint_2', 'bind_btHingeConstraint_btHingeConstraint_3', 'bind_btHingeConstraint_btHingeConstraint_4', 'bind_btHingeConstraint_btHingeConstraint_5', 'bind_btHingeConstraint_btHingeConstraint_6', 'bind_btHingeConstraint_btHingeConstraint_7', 'bind_btHingeConstraint_getHingeAngle_0', 'bind_btHingeConstraint_setLimit_4', 'bind_btHingeConstraint_setLimit_5', 'bind_btHingeConstraint_enableAngularMotor_3', 'bind_btHingeConstraint_setAngularOnly_1', 'bind_btHingeConstraint_enableMotor_1', 'bind_btHingeConstraint_setMaxMotorImpulse_1', 'bind_btHingeConstraint_setMotorTarget_2', 'bind_btHingeConstraint_enableFeedback_1', 'bind_btHingeConstraint_getBreakingImpulseThreshold_0', 'bind_btHingeConstraint_setBreakingImpulseThreshold_1', 'bind_btHingeConstraint_getParam_2', 'bind_btHingeConstraint_setParam_3', 'bind_btHingeConstraint___destroy___0', 'bind_btSliderConstraint_btSliderConstraint_3', 'bind_btSliderConstraint_btSliderConstraint_5', 'bind_btSliderConstraint_getLinearPos_0', 'bind_btSliderConstraint_getAngularPos_0', 'bind_btSliderConstraint_setLowerLinLimit_1', 'bind_btSliderConstraint_setUpperLinLimit_1', 'bind_btSliderConstraint_setLowerAngLimit_1', 'bind_btSliderConstraint_setUpperAngLimit_1', 'bind_btSliderConstraint_setPoweredLinMotor_1', 'bind_btSliderConstraint_setMaxLinMotorForce_1', 'bind_btSliderConstraint_setTargetLinMotorVelocity_1', 'bind_btSliderConstraint_enableFeedback_1', 'bind_btSliderConstraint_getBreakingImpulseThreshold_0', 'bind_btSliderConstraint_setBreakingImpulseThreshold_1', 'bind_btSliderConstraint_getParam_2', 'bind_btSliderConstraint_setParam_3', 'bind_btSliderConstraint___destroy___0', 'bind_btFixedConstraint_btFixedConstraint_4', 'bind_btFixedConstraint_enableFeedback_1', 'bind_btFixedConstraint_getBreakingImpulseThreshold_0', 'bind_btFixedConstraint_setBreakingImpulseThreshold_1', 'bind_btFixedConstraint_getParam_2', 'bind_btFixedConstraint_setParam_3', 'bind_btFixedConstraint___destroy___0', 'bind_btConstraintSolver___destroy___0', 'bind_btDispatcherInfo_get_m_timeStep_0', 'bind_btDispatcherInfo_set_m_timeStep_1', 'bind_btDispatcherInfo_get_m_stepCount_0', 'bind_btDispatcherInfo_set_m_stepCount_1', 'bind_btDispatcherInfo_get_m_dispatchFunc_0', 'bind_btDispatcherInfo_set_m_dispatchFunc_1', 'bind_btDispatcherInfo_get_m_timeOfImpact_0', 'bind_btDispatcherInfo_set_m_timeOfImpact_1', 'bind_btDispatcherInfo_get_m_useContinuous_0', 'bind_btDispatcherInfo_set_m_useContinuous_1', 'bind_btDispatcherInfo_get_m_enableSatConvex_0', 'bind_btDispatcherInfo_set_m_enableSatConvex_1', 'bind_btDispatcherInfo_get_m_enableSPU_0', 'bind_btDispatcherInfo_set_m_enableSPU_1', 'bind_btDispatcherInfo_get_m_useEpa_0', 'bind_btDispatcherInfo_set_m_useEpa_1', 'bind_btDispatcherInfo_get_m_allowedCcdPenetration_0', 'bind_btDispatcherInfo_set_m_allowedCcdPenetration_1', 'bind_btDispatcherInfo_get_m_useConvexConservativeDistanceUtil_0', 'bind_btDispatcherInfo_set_m_useConvexConservativeDistanceUtil_1', 'bind_btDispatcherInfo_get_m_convexConservativeDistanceThreshold_0', 'bind_btDispatcherInfo_set_m_convexConservativeDistanceThreshold_1', 'bind_btDispatcherInfo___destroy___0', 'bind_btContactSolverInfo_get_m_splitImpulse_0', 'bind_btContactSolverInfo_set_m_splitImpulse_1', 'bind_btContactSolverInfo_get_m_splitImpulsePenetrationThreshold_0', 'bind_btContactSolverInfo_set_m_splitImpulsePenetrationThreshold_1', 'bind_btContactSolverInfo_get_m_numIterations_0', 'bind_btContactSolverInfo_set_m_numIterations_1', 'bind_btContactSolverInfo___destroy___0', 'bind_btVehicleTuning_btVehicleTuning_0', 'bind_btVehicleTuning_get_m_suspensionStiffness_0', 'bind_btVehicleTuning_set_m_suspensionStiffness_1', 'bind_btVehicleTuning_get_m_suspensionCompression_0', 'bind_btVehicleTuning_set_m_suspensionCompression_1', 'bind_btVehicleTuning_get_m_suspensionDamping_0', 'bind_btVehicleTuning_set_m_suspensionDamping_1', 'bind_btVehicleTuning_get_m_maxSuspensionTravelCm_0', 'bind_btVehicleTuning_set_m_maxSuspensionTravelCm_1', 'bind_btVehicleTuning_get_m_frictionSlip_0', 'bind_btVehicleTuning_set_m_frictionSlip_1', 'bind_btVehicleTuning_get_m_maxSuspensionForce_0', 'bind_btVehicleTuning_set_m_maxSuspensionForce_1', 'bind_btVehicleRaycasterResult_get_m_hitPointInWorld_0', 'bind_btVehicleRaycasterResult_set_m_hitPointInWorld_1', 'bind_btVehicleRaycasterResult_get_m_hitNormalInWorld_0', 'bind_btVehicleRaycasterResult_set_m_hitNormalInWorld_1', 'bind_btVehicleRaycasterResult_get_m_distFraction_0', 'bind_btVehicleRaycasterResult_set_m_distFraction_1', 'bind_btVehicleRaycasterResult___destroy___0', 'bind_btDefaultVehicleRaycaster_btDefaultVehicleRaycaster_1', 'bind_btDefaultVehicleRaycaster_castRay_3', 'bind_btDefaultVehicleRaycaster___destroy___0', 'bind_RaycastInfo_get_m_contactNormalWS_0', 'bind_RaycastInfo_set_m_contactNormalWS_1', 'bind_RaycastInfo_get_m_contactPointWS_0', 'bind_RaycastInfo_set_m_contactPointWS_1', 'bind_RaycastInfo_get_m_suspensionLength_0', 'bind_RaycastInfo_set_m_suspensionLength_1', 'bind_RaycastInfo_get_m_hardPointWS_0', 'bind_RaycastInfo_set_m_hardPointWS_1', 'bind_RaycastInfo_get_m_wheelDirectionWS_0', 'bind_RaycastInfo_set_m_wheelDirectionWS_1', 'bind_RaycastInfo_get_m_wheelAxleWS_0', 'bind_RaycastInfo_set_m_wheelAxleWS_1', 'bind_RaycastInfo_get_m_isInContact_0', 'bind_RaycastInfo_set_m_isInContact_1', 'bind_RaycastInfo_get_m_groundObject_0', 'bind_RaycastInfo_set_m_groundObject_1', 'bind_RaycastInfo___destroy___0', 'bind_btWheelInfoConstructionInfo_get_m_chassisConnectionCS_0', 'bind_btWheelInfoConstructionInfo_set_m_chassisConnectionCS_1', 'bind_btWheelInfoConstructionInfo_get_m_wheelDirectionCS_0', 'bind_btWheelInfoConstructionInfo_set_m_wheelDirectionCS_1', 'bind_btWheelInfoConstructionInfo_get_m_wheelAxleCS_0', 'bind_btWheelInfoConstructionInfo_set_m_wheelAxleCS_1', 'bind_btWheelInfoConstructionInfo_get_m_suspensionRestLength_0', 'bind_btWheelInfoConstructionInfo_set_m_suspensionRestLength_1', 'bind_btWheelInfoConstructionInfo_get_m_maxSuspensionTravelCm_0', 'bind_btWheelInfoConstructionInfo_set_m_maxSuspensionTravelCm_1', 'bind_btWheelInfoConstructionInfo_get_m_wheelRadius_0', 'bind_btWheelInfoConstructionInfo_set_m_wheelRadius_1', 'bind_btWheelInfoConstructionInfo_get_m_suspensionStiffness_0', 'bind_btWheelInfoConstructionInfo_set_m_suspensionStiffness_1', 'bind_btWheelInfoConstructionInfo_get_m_wheelsDampingCompression_0', 'bind_btWheelInfoConstructionInfo_set_m_wheelsDampingCompression_1', 'bind_btWheelInfoConstructionInfo_get_m_wheelsDampingRelaxation_0', 'bind_btWheelInfoConstructionInfo_set_m_wheelsDampingRelaxation_1', 'bind_btWheelInfoConstructionInfo_get_m_frictionSlip_0', 'bind_btWheelInfoConstructionInfo_set_m_frictionSlip_1', 'bind_btWheelInfoConstructionInfo_get_m_maxSuspensionForce_0', 'bind_btWheelInfoConstructionInfo_set_m_maxSuspensionForce_1', 'bind_btWheelInfoConstructionInfo_get_m_bIsFrontWheel_0', 'bind_btWheelInfoConstructionInfo_set_m_bIsFrontWheel_1', 'bind_btWheelInfoConstructionInfo___destroy___0', 'bind_btWheelInfo_btWheelInfo_1', 'bind_btWheelInfo_getSuspensionRestLength_0', 'bind_btWheelInfo_updateWheel_2', 'bind_btWheelInfo_get_m_suspensionStiffness_0', 'bind_btWheelInfo_set_m_suspensionStiffness_1', 'bind_btWheelInfo_get_m_frictionSlip_0', 'bind_btWheelInfo_set_m_frictionSlip_1', 'bind_btWheelInfo_get_m_engineForce_0', 'bind_btWheelInfo_set_m_engineForce_1', 'bind_btWheelInfo_get_m_rollInfluence_0', 'bind_btWheelInfo_set_m_rollInfluence_1', 'bind_btWheelInfo_get_m_suspensionRestLength1_0', 'bind_btWheelInfo_set_m_suspensionRestLength1_1', 'bind_btWheelInfo_get_m_wheelsRadius_0', 'bind_btWheelInfo_set_m_wheelsRadius_1', 'bind_btWheelInfo_get_m_wheelsDampingCompression_0', 'bind_btWheelInfo_set_m_wheelsDampingCompression_1', 'bind_btWheelInfo_get_m_wheelsDampingRelaxation_0', 'bind_btWheelInfo_set_m_wheelsDampingRelaxation_1', 'bind_btWheelInfo_get_m_steering_0', 'bind_btWheelInfo_set_m_steering_1', 'bind_btWheelInfo_get_m_maxSuspensionForce_0', 'bind_btWheelInfo_set_m_maxSuspensionForce_1', 'bind_btWheelInfo_get_m_maxSuspensionTravelCm_0', 'bind_btWheelInfo_set_m_maxSuspensionTravelCm_1', 'bind_btWheelInfo_get_m_wheelsSuspensionForce_0', 'bind_btWheelInfo_set_m_wheelsSuspensionForce_1', 'bind_btWheelInfo_get_m_bIsFrontWheel_0', 'bind_btWheelInfo_set_m_bIsFrontWheel_1', 'bind_btWheelInfo_get_m_raycastInfo_0', 'bind_btWheelInfo_set_m_raycastInfo_1', 'bind_btWheelInfo_get_m_chassisConnectionPointCS_0', 'bind_btWheelInfo_set_m_chassisConnectionPointCS_1', 'bind_btWheelInfo_get_m_worldTransform_0', 'bind_btWheelInfo_set_m_worldTransform_1', 'bind_btWheelInfo_get_m_wheelDirectionCS_0', 'bind_btWheelInfo_set_m_wheelDirectionCS_1', 'bind_btWheelInfo_get_m_wheelAxleCS_0', 'bind_btWheelInfo_set_m_wheelAxleCS_1', 'bind_btWheelInfo_get_m_rotation_0', 'bind_btWheelInfo_set_m_rotation_1', 'bind_btWheelInfo_get_m_deltaRotation_0', 'bind_btWheelInfo_set_m_deltaRotation_1', 'bind_btWheelInfo_get_m_brake_0', 'bind_btWheelInfo_set_m_brake_1', 'bind_btWheelInfo_get_m_clippedInvContactDotSuspension_0', 'bind_btWheelInfo_set_m_clippedInvContactDotSuspension_1', 'bind_btWheelInfo_get_m_suspensionRelativeVelocity_0', 'bind_btWheelInfo_set_m_suspensionRelativeVelocity_1', 'bind_btWheelInfo_get_m_skidInfo_0', 'bind_btWheelInfo_set_m_skidInfo_1', 'bind_btWheelInfo___destroy___0', 'bind_btKinematicCharacterController_btKinematicCharacterController_3', 'bind_btKinematicCharacterController_btKinematicCharacterController_4', 'bind_btKinematicCharacterController_setUpAxis_1', 'bind_btKinematicCharacterController_setWalkDirection_1', 'bind_btKinematicCharacterController_setVelocityForTimeInterval_2', 'bind_btKinematicCharacterController_warp_1', 'bind_btKinematicCharacterController_preStep_1', 'bind_btKinematicCharacterController_playerStep_2', 'bind_btKinematicCharacterController_setFallSpeed_1', 'bind_btKinematicCharacterController_setJumpSpeed_1', 'bind_btKinematicCharacterController_setMaxJumpHeight_1', 'bind_btKinematicCharacterController_canJump_0', 'bind_btKinematicCharacterController_jump_0', 'bind_btKinematicCharacterController_setGravity_1', 'bind_btKinematicCharacterController_getGravity_0', 'bind_btKinematicCharacterController_setMaxSlope_1', 'bind_btKinematicCharacterController_getMaxSlope_0', 'bind_btKinematicCharacterController_getGhostObject_0', 'bind_btKinematicCharacterController_setUseGhostSweepTest_1', 'bind_btKinematicCharacterController_onGround_0', 'bind_btKinematicCharacterController_setUpInterpolate_1', 'bind_btKinematicCharacterController_updateAction_2', 'bind_btKinematicCharacterController___destroy___0', 'bind_btRaycastVehicle_btRaycastVehicle_3', 'bind_btRaycastVehicle_applyEngineForce_2', 'bind_btRaycastVehicle_setSteeringValue_2', 'bind_btRaycastVehicle_getWheelTransformWS_1', 'bind_btRaycastVehicle_updateWheelTransform_2', 'bind_btRaycastVehicle_addWheel_7', 'bind_btRaycastVehicle_getNumWheels_0', 'bind_btRaycastVehicle_getRigidBody_0', 'bind_btRaycastVehicle_getWheelInfo_1', 'bind_btRaycastVehicle_setBrake_2', 'bind_btRaycastVehicle_setCoordinateSystem_3', 'bind_btRaycastVehicle_getCurrentSpeedKmHour_0', 'bind_btRaycastVehicle_getChassisWorldTransform_0', 'bind_btRaycastVehicle_rayCast_1', 'bind_btRaycastVehicle_updateVehicle_1', 'bind_btRaycastVehicle_resetSuspension_0', 'bind_btRaycastVehicle_getSteeringValue_1', 'bind_btRaycastVehicle_updateWheelTransformsWS_1', 'bind_btRaycastVehicle_updateWheelTransformsWS_2', 'bind_btRaycastVehicle_setPitchControl_1', 'bind_btRaycastVehicle_updateSuspension_1', 'bind_btRaycastVehicle_updateFriction_1', 'bind_btRaycastVehicle_getRightAxis_0', 'bind_btRaycastVehicle_getUpAxis_0', 'bind_btRaycastVehicle_getForwardAxis_0', 'bind_btRaycastVehicle_getForwardVector_0', 'bind_btRaycastVehicle_getUserConstraintType_0', 'bind_btRaycastVehicle_setUserConstraintType_1', 'bind_btRaycastVehicle_setUserConstraintId_1', 'bind_btRaycastVehicle_getUserConstraintId_0', 'bind_btRaycastVehicle_updateAction_2', 'bind_btRaycastVehicle___destroy___0', 'bind_btPairCachingGhostObject_btPairCachingGhostObject_0', 'bind_btPairCachingGhostObject_setAnisotropicFriction_2', 'bind_btPairCachingGhostObject_getCollisionShape_0', 'bind_btPairCachingGhostObject_setContactProcessingThreshold_1', 'bind_btPairCachingGhostObject_setActivationState_1', 'bind_btPairCachingGhostObject_forceActivationState_1', 'bind_btPairCachingGhostObject_activate_0', 'bind_btPairCachingGhostObject_activate_1', 'bind_btPairCachingGhostObject_isActive_0', 'bind_btPairCachingGhostObject_isKinematicObject_0', 'bind_btPairCachingGhostObject_isStaticObject_0', 'bind_btPairCachingGhostObject_isStaticOrKinematicObject_0', 'bind_btPairCachingGhostObject_getRestitution_0', 'bind_btPairCachingGhostObject_getFriction_0', 'bind_btPairCachingGhostObject_getRollingFriction_0', 'bind_btPairCachingGhostObject_setRestitution_1', 'bind_btPairCachingGhostObject_setFriction_1', 'bind_btPairCachingGhostObject_setRollingFriction_1', 'bind_btPairCachingGhostObject_getWorldTransform_0', 'bind_btPairCachingGhostObject_getCollisionFlags_0', 'bind_btPairCachingGhostObject_setCollisionFlags_1', 'bind_btPairCachingGhostObject_setWorldTransform_1', 'bind_btPairCachingGhostObject_setCollisionShape_1', 'bind_btPairCachingGhostObject_setCcdMotionThreshold_1', 'bind_btPairCachingGhostObject_setCcdSweptSphereRadius_1', 'bind_btPairCachingGhostObject_getUserIndex_0', 'bind_btPairCachingGhostObject_setUserIndex_1', 'bind_btPairCachingGhostObject_getUserPointer_0', 'bind_btPairCachingGhostObject_setUserPointer_1', 'bind_btPairCachingGhostObject_getBroadphaseHandle_0', 'bind_btPairCachingGhostObject_getNumOverlappingObjects_0', 'bind_btPairCachingGhostObject_getOverlappingObject_1', 'bind_btPairCachingGhostObject___destroy___0', 'bind_btGhostPairCallback_btGhostPairCallback_0', 'bind_btGhostPairCallback___destroy___0', 'bind_btSoftBodyWorldInfo_btSoftBodyWorldInfo_0', 'bind_btSoftBodyWorldInfo_get_air_density_0', 'bind_btSoftBodyWorldInfo_set_air_density_1', 'bind_btSoftBodyWorldInfo_get_water_density_0', 'bind_btSoftBodyWorldInfo_set_water_density_1', 'bind_btSoftBodyWorldInfo_get_water_offset_0', 'bind_btSoftBodyWorldInfo_set_water_offset_1', 'bind_btSoftBodyWorldInfo_get_m_maxDisplacement_0', 'bind_btSoftBodyWorldInfo_set_m_maxDisplacement_1', 'bind_btSoftBodyWorldInfo_get_water_normal_0', 'bind_btSoftBodyWorldInfo_set_water_normal_1', 'bind_btSoftBodyWorldInfo_get_m_broadphase_0', 'bind_btSoftBodyWorldInfo_set_m_broadphase_1', 'bind_btSoftBodyWorldInfo_get_m_dispatcher_0', 'bind_btSoftBodyWorldInfo_set_m_dispatcher_1', 'bind_btSoftBodyWorldInfo_get_m_gravity_0', 'bind_btSoftBodyWorldInfo_set_m_gravity_1', 'bind_btSoftBodyWorldInfo___destroy___0', 'bind_Face_get_m_n_1', 'bind_Face_set_m_n_2', 'bind_Face_get_m_normal_0', 'bind_Face_set_m_normal_1', 'bind_Face_get_m_ra_0', 'bind_Face_set_m_ra_1', 'bind_Face___destroy___0', 'bind_tFaceArray_size_0', 'bind_tFaceArray_at_1', 'bind_tFaceArray___destroy___0', 'bind_Node_get_m_x_0', 'bind_Node_set_m_x_1', 'bind_Node_get_m_q_0', 'bind_Node_set_m_q_1', 'bind_Node_get_m_v_0', 'bind_Node_set_m_v_1', 'bind_Node_get_m_f_0', 'bind_Node_set_m_f_1', 'bind_Node_get_m_n_0', 'bind_Node_set_m_n_1', 'bind_Node_get_m_im_0', 'bind_Node_set_m_im_1', 'bind_Node_get_m_area_0', 'bind_Node_set_m_area_1', 'bind_Node___destroy___0', 'bind_tNodeArray_size_0', 'bind_tNodeArray_at_1', 'bind_tNodeArray___destroy___0', 'bind_Material_get_m_kLST_0', 'bind_Material_set_m_kLST_1', 'bind_Material_get_m_kAST_0', 'bind_Material_set_m_kAST_1', 'bind_Material_get_m_kVST_0', 'bind_Material_set_m_kVST_1', 'bind_Material_get_m_flags_0', 'bind_Material_set_m_flags_1', 'bind_Material___destroy___0', 'bind_tMaterialArray_size_0', 'bind_tMaterialArray_at_1', 'bind_tMaterialArray___destroy___0', 'bind_Anchor_get_m_node_0', 'bind_Anchor_set_m_node_1', 'bind_Anchor_get_m_local_0', 'bind_Anchor_set_m_local_1', 'bind_Anchor_get_m_body_0', 'bind_Anchor_set_m_body_1', 'bind_Anchor_get_m_influence_0', 'bind_Anchor_set_m_influence_1', 'bind_Anchor_get_m_c0_0', 'bind_Anchor_set_m_c0_1', 'bind_Anchor_get_m_c1_0', 'bind_Anchor_set_m_c1_1', 'bind_Anchor_get_m_c2_0', 'bind_Anchor_set_m_c2_1', 'bind_Anchor___destroy___0', 'bind_tAnchorArray_size_0', 'bind_tAnchorArray_at_1', 'bind_tAnchorArray_clear_0', 'bind_tAnchorArray_push_back_1', 'bind_tAnchorArray_pop_back_0', 'bind_tAnchorArray___destroy___0', 'bind_Config_get_kVCF_0', 'bind_Config_set_kVCF_1', 'bind_Config_get_kDP_0', 'bind_Config_set_kDP_1', 'bind_Config_get_kDG_0', 'bind_Config_set_kDG_1', 'bind_Config_get_kLF_0', 'bind_Config_set_kLF_1', 'bind_Config_get_kPR_0', 'bind_Config_set_kPR_1', 'bind_Config_get_kVC_0', 'bind_Config_set_kVC_1', 'bind_Config_get_kDF_0', 'bind_Config_set_kDF_1', 'bind_Config_get_kMT_0', 'bind_Config_set_kMT_1', 'bind_Config_get_kCHR_0', 'bind_Config_set_kCHR_1', 'bind_Config_get_kKHR_0', 'bind_Config_set_kKHR_1', 'bind_Config_get_kSHR_0', 'bind_Config_set_kSHR_1', 'bind_Config_get_kAHR_0', 'bind_Config_set_kAHR_1', 'bind_Config_get_kSRHR_CL_0', 'bind_Config_set_kSRHR_CL_1', 'bind_Config_get_kSKHR_CL_0', 'bind_Config_set_kSKHR_CL_1', 'bind_Config_get_kSSHR_CL_0', 'bind_Config_set_kSSHR_CL_1', 'bind_Config_get_kSR_SPLT_CL_0', 'bind_Config_set_kSR_SPLT_CL_1', 'bind_Config_get_kSK_SPLT_CL_0', 'bind_Config_set_kSK_SPLT_CL_1', 'bind_Config_get_kSS_SPLT_CL_0', 'bind_Config_set_kSS_SPLT_CL_1', 'bind_Config_get_maxvolume_0', 'bind_Config_set_maxvolume_1', 'bind_Config_get_timescale_0', 'bind_Config_set_timescale_1', 'bind_Config_get_viterations_0', 'bind_Config_set_viterations_1', 'bind_Config_get_piterations_0', 'bind_Config_set_piterations_1', 'bind_Config_get_diterations_0', 'bind_Config_set_diterations_1', 'bind_Config_get_citerations_0', 'bind_Config_set_citerations_1', 'bind_Config_get_collisions_0', 'bind_Config_set_collisions_1', 'bind_Config___destroy___0', 'bind_btSoftBody_btSoftBody_4', 'bind_btSoftBody_checkLink_2', 'bind_btSoftBody_checkFace_3', 'bind_btSoftBody_appendMaterial_0', 'bind_btSoftBody_appendNode_2', 'bind_btSoftBody_appendLink_4', 'bind_btSoftBody_appendFace_4', 'bind_btSoftBody_appendTetra_5', 'bind_btSoftBody_appendAnchor_4', 'bind_btSoftBody_addForce_1', 'bind_btSoftBody_addForce_2', 'bind_btSoftBody_addAeroForceToNode_2', 'bind_btSoftBody_getTotalMass_0', 'bind_btSoftBody_setTotalMass_2', 'bind_btSoftBody_setMass_2', 'bind_btSoftBody_transform_1', 'bind_btSoftBody_translate_1', 'bind_btSoftBody_rotate_1', 'bind_btSoftBody_scale_1', 'bind_btSoftBody_generateClusters_1', 'bind_btSoftBody_generateClusters_2', 'bind_btSoftBody_generateBendingConstraints_2', 'bind_btSoftBody_upcast_1', 'bind_btSoftBody_getRestLengthScale_0', 'bind_btSoftBody_setRestLengthScale_1', 'bind_btSoftBody_setAnisotropicFriction_2', 'bind_btSoftBody_getCollisionShape_0', 'bind_btSoftBody_setContactProcessingThreshold_1', 'bind_btSoftBody_setActivationState_1', 'bind_btSoftBody_forceActivationState_1', 'bind_btSoftBody_activate_0', 'bind_btSoftBody_activate_1', 'bind_btSoftBody_isActive_0', 'bind_btSoftBody_isKinematicObject_0', 'bind_btSoftBody_isStaticObject_0', 'bind_btSoftBody_isStaticOrKinematicObject_0', 'bind_btSoftBody_getRestitution_0', 'bind_btSoftBody_getFriction_0', 'bind_btSoftBody_getRollingFriction_0', 'bind_btSoftBody_setRestitution_1', 'bind_btSoftBody_setFriction_1', 'bind_btSoftBody_setRollingFriction_1', 'bind_btSoftBody_getWorldTransform_0', 'bind_btSoftBody_getCollisionFlags_0', 'bind_btSoftBody_setCollisionFlags_1', 'bind_btSoftBody_setWorldTransform_1', 'bind_btSoftBody_setCollisionShape_1', 'bind_btSoftBody_setCcdMotionThreshold_1', 'bind_btSoftBody_setCcdSweptSphereRadius_1', 'bind_btSoftBody_getUserIndex_0', 'bind_btSoftBody_setUserIndex_1', 'bind_btSoftBody_getUserPointer_0', 'bind_btSoftBody_setUserPointer_1', 'bind_btSoftBody_getBroadphaseHandle_0', 'bind_btSoftBody_get_m_cfg_0', 'bind_btSoftBody_set_m_cfg_1', 'bind_btSoftBody_get_m_nodes_0', 'bind_btSoftBody_set_m_nodes_1', 'bind_btSoftBody_get_m_faces_0', 'bind_btSoftBody_set_m_faces_1', 'bind_btSoftBody_get_m_materials_0', 'bind_btSoftBody_set_m_materials_1', 'bind_btSoftBody_get_m_anchors_0', 'bind_btSoftBody_set_m_anchors_1', 'bind_btSoftBody___destroy___0', 'bind_btSoftBodyRigidBodyCollisionConfiguration_btSoftBodyRigidBodyCollisionConfiguration_0', 'bind_btSoftBodyRigidBodyCollisionConfiguration_btSoftBodyRigidBodyCollisionConfiguration_1', 'bind_btSoftBodyRigidBodyCollisionConfiguration___destroy___0', 'bind_btDefaultSoftBodySolver_btDefaultSoftBodySolver_0', 'bind_btDefaultSoftBodySolver___destroy___0', 'bind_btSoftBodyArray_size_0', 'bind_btSoftBodyArray_at_1', 'bind_btSoftBodyArray___destroy___0', 'bind_btSoftRigidDynamicsWorld_btSoftRigidDynamicsWorld_5', 'bind_btSoftRigidDynamicsWorld_addSoftBody_3', 'bind_btSoftRigidDynamicsWorld_removeSoftBody_1', 'bind_btSoftRigidDynamicsWorld_removeCollisionObject_1', 'bind_btSoftRigidDynamicsWorld_getWorldInfo_0', 'bind_btSoftRigidDynamicsWorld_getSoftBodyArray_0', 'bind_btSoftRigidDynamicsWorld_getDispatcher_0', 'bind_btSoftRigidDynamicsWorld_rayTest_3', 'bind_btSoftRigidDynamicsWorld_getPairCache_0', 'bind_btSoftRigidDynamicsWorld_getDispatchInfo_0', 'bind_btSoftRigidDynamicsWorld_addCollisionObject_1', 'bind_btSoftRigidDynamicsWorld_addCollisionObject_2', 'bind_btSoftRigidDynamicsWorld_addCollisionObject_3', 'bind_btSoftRigidDynamicsWorld_getBroadphase_0', 'bind_btSoftRigidDynamicsWorld_convexSweepTest_5', 'bind_btSoftRigidDynamicsWorld_contactPairTest_3', 'bind_btSoftRigidDynamicsWorld_contactTest_2', 'bind_btSoftRigidDynamicsWorld_updateSingleAabb_1', 'bind_btSoftRigidDynamicsWorld_setGravity_1', 'bind_btSoftRigidDynamicsWorld_getGravity_0', 'bind_btSoftRigidDynamicsWorld_addRigidBody_1', 'bind_btSoftRigidDynamicsWorld_addRigidBody_3', 'bind_btSoftRigidDynamicsWorld_removeRigidBody_1', 'bind_btSoftRigidDynamicsWorld_addConstraint_1', 'bind_btSoftRigidDynamicsWorld_addConstraint_2', 'bind_btSoftRigidDynamicsWorld_removeConstraint_1', 'bind_btSoftRigidDynamicsWorld_stepSimulation_1', 'bind_btSoftRigidDynamicsWorld_stepSimulation_2', 'bind_btSoftRigidDynamicsWorld_stepSimulation_3', 'bind_btSoftRigidDynamicsWorld_setContactAddedCallback_1', 'bind_btSoftRigidDynamicsWorld_setContactProcessedCallback_1', 'bind_btSoftRigidDynamicsWorld_setContactDestroyedCallback_1', 'bind_btSoftRigidDynamicsWorld_addAction_1', 'bind_btSoftRigidDynamicsWorld_removeAction_1', 'bind_btSoftRigidDynamicsWorld_getSolverInfo_0', 'bind_btSoftRigidDynamicsWorld_setInternalTickCallback_1', 'bind_btSoftRigidDynamicsWorld_setInternalTickCallback_2', 'bind_btSoftRigidDynamicsWorld_setInternalTickCallback_3', 'bind_btSoftRigidDynamicsWorld___destroy___0', 'bind_btSoftBodyHelpers_btSoftBodyHelpers_0', 'bind_btSoftBodyHelpers_CreateRope_5', 'bind_btSoftBodyHelpers_CreatePatch_9', 'bind_btSoftBodyHelpers_CreatePatchUV_10', 'bind_btSoftBodyHelpers_CreateEllipsoid_4', 'bind_btSoftBodyHelpers_CreateFromTriMesh_5', 'bind_btSoftBodyHelpers_CreateFromConvexHull_4', 'bind_btSoftBodyHelpers___destroy___0', 'enum_PHY_ScalarType_PHY_FLOAT', 'enum_PHY_ScalarType_PHY_DOUBLE', 'enum_PHY_ScalarType_PHY_INTEGER', 'enum_PHY_ScalarType_PHY_SHORT', 'enum_PHY_ScalarType_PHY_FIXEDPOINT88', 'enum_PHY_ScalarType_PHY_UCHAR', 'enum_eGIMPACT_SHAPE_TYPE_CONST_GIMPACT_COMPOUND_SHAPE', 'enum_eGIMPACT_SHAPE_TYPE_CONST_GIMPACT_TRIMESH_SHAPE_PART', 'enum_eGIMPACT_SHAPE_TYPE_CONST_GIMPACT_TRIMESH_SHAPE', 'enum_btConstraintParams_BT_CONSTRAINT_ERP', 'enum_btConstraintParams_BT_CONSTRAINT_STOP_ERP', 'enum_btConstraintParams_BT_CONSTRAINT_CFM', 'enum_btConstraintParams_BT_CONSTRAINT_STOP_CFM', 'init', 'stack_restore', 'stack_get_current', 'cxa_increment_exception_refcount'
+];
+export interface AmmoWasmModule extends Record<AmmoExports[number], (...args: (number | boolean)[]) => number> {
+    memory: WebAssembly.Memory;
+}
+interface AmmoCallbacks {
+    [key: string]: {
+        internalTickCallback?: (timeStep: number) => void;
+        internalPreTickCallback?: (timeStep: number) => void;
+    } | undefined;
+}
+
+export class EventEmitter {
+    static readonly listeners: WeakMap<EventEmitter, {[type: string | symbol]: ((...args: any[]) => any)[] | undefined;}> = new WeakMap<EventEmitter, {[type: string | symbol]: ((...args: any[]) => any)[] | undefined;}>();
+    on(type: string | symbol, callback: (...args: any[]) => any): void {
+        if (!EventEmitter.listeners.has(this)) EventEmitter.listeners.set(this, {});
+        (EventEmitter.listeners.get(this)![type] ??= []).push(callback);
+    }
+    once(type: string | symbol, callback: (...args: any[]) => any): void {
+        const wrapper = (...args: any[]) => {
+            this.off(type, wrapper); // 先移除 wrapper
+            callback(...args); // 再呼叫原本 callback
+        };
+        this.on(type, wrapper); // 註冊 wrapper
+    }
+    off(type: string | symbol, callback: (...args: any[]) => any): void {
+        const arr = (EventEmitter.listeners.get(this)?.[type] ?? []);
+        let write = 0;
+        for (let read = 0; read < arr.length; read++) {
+            if (arr[read] !== callback) {
+                arr[write++] = arr[read];
+            }
+        }
+        arr.length = write; // 切掉尾部多餘元素
+    }
+    emit(type: string | symbol, args: any[] = []): void {
+        EventEmitter.listeners.get(this)?.[type]?.forEach(cb => cb.apply(null, args));
+    }
+}
+
+let HEAPU8: Uint8Array;
+let HEAP32: Int32Array;
+let HEAPF32: Float32Array;
+
+const DESTROY_FUNC = Symbol('DestroyFunctionSymbol');
+const INIT_MEMBERS = Symbol('InitMember');
+const decoder = new TextDecoder('utf8');
+const temp = {} as {
+    vector3: btVector3;
+    vector4: btVector4;
+    quaternion: btQuaternion;
+    transform: btTransform;
+};
+
+export const asm: AmmoWasmModule = {} as AmmoWasmModule;
+export const callback = {} as AmmoCallbacks;
+
+export const CONTACT_ADDED_CALLBACK_SIGNATURE = 'iiiiiiii';
+export const CONTACT_DESTROYED_CALLBACK_SIGNATURE = 'ii';
+export const CONTACT_PROCESSED_CALLBACK_SIGNATURE = 'iiii';
+export const INTERNAL_TICK_CALLBACK_SIGNATURE = 'vif';
+
+const useAfterFreeError = (): never => {throw new Error('This bullet object has been destroyed and can no longer be accessed.');};
+const useAfterFreePropAttributes = {
+    get: useAfterFreeError,
+    set: useAfterFreeError,
+    configurable: true,
+    enumerable: true
+};
+
+let bufferPtr = 0, bufferTopPtr = 0;
+function resetTempBuffer(): void {
+    if (!bufferPtr) bufferPtr = asm.malloc(128);
+    bufferTopPtr = 0;
+}
+function allocArray(arr: readonly number[], target: AnyTypedArray): number {
+    if (!bufferPtr) throw new Error('尚未malloc');
+    const e = arr.length * target.BYTES_PER_ELEMENT;
+    const f = e + 7 & -8;
+    const d = bufferPtr + bufferTopPtr;
+    bufferTopPtr += f;
+    return d;
+}
+function copyTo(source: readonly number[], target: AnyTypedArray, ptr: number): void {
+    ptr >>>= 0;
+    switch (target.BYTES_PER_ELEMENT) {
+        case 2: ptr >>>= 1; break;
+        case 4: ptr >>>= 2; break;
+        case 8: ptr >>>= 3; break;
+    }
+    for (let i = 0; i < source.length; i++) target[ptr + i] = source[i];
+}
+function loadArray(arr: readonly number[]): number {
+    const ptr = allocArray(arr, HEAPF32);
+    copyTo(arr, HEAPF32, ptr);
+    return ptr;
+}
+function UTF8ToString(pointer: number): string {
+    if (!pointer) return '';
+    let end = pointer;
+    while (HEAPU8[end]) end++; // 找到 null 結束位置
+    return decoder.decode(HEAPU8.subarray(pointer, end));
+}
+
+export interface AmmoInitConfig {
+    memory?: WebAssembly.Memory;
+}
+export function init(config: AmmoInitConfig = {}): void {
+    Object.assign(
+        asm,
+        new WebAssembly.Instance(
+            new WebAssembly.Module((
+                (Uint8Array as {fromBase64?: (base64: string) => Uint8Array<ArrayBuffer>; [key: string | symbol]: any;}).fromBase64 ??
+                ((base64: string) => {const strarr = atob(base64); const u8arr = new Uint8Array(strarr.length); for (let i = 0; i < strarr.length; i++) u8arr[i] = strarr.charCodeAt(i); return u8arr;})
+            )(base64).buffer),
+            {
+                env: {
+                    memory: config.memory ?? new WebAssembly.Memory({initial: 1024, maximum: 1024, shared: false}),
+                    clock: Date.now,
+                    notifyMemoryGrowth: (): void => {
+                        HEAPU8 = new Uint8Array(asm.memory.buffer);
+                        HEAP32 = new Int32Array(asm.memory.buffer);
+                        HEAPF32 = new Float32Array(asm.memory.buffer);
+                    }
+                },
+                callback: {
+                    internalTickCallback: (worldPointer: number, timeStep: number): void => callback[worldPointer]?.internalTickCallback?.(timeStep),
+                    internalPreTickCallback: (worldPointer: number, timeStep: number): void => callback[worldPointer]?.internalPreTickCallback?.(timeStep)
+                }
+            }
+        ).exports
+    );
+
+    HEAPU8 = new Uint8Array(asm.memory.buffer);
+    HEAP32 = new Int32Array(asm.memory.buffer);
+    HEAPF32 = new Float32Array(asm.memory.buffer);
+
+    asm.init();
+
+    temp.vector3 = new btVector3(0, 0, 0);
+    temp.vector4 = new btVector4(0, 0, 0, 0);
+    temp.quaternion = new btQuaternion(0, 0, 0, 1);
+    temp.transform = new btTransform(temp.quaternion, temp.vector3);
+}
+export function destroy(...objs: any[]): void {
+    for (const obj of objs) {
+        if (!(obj instanceof btObject)) continue;
+        obj[DESTROY_FUNC]();
+        obj.destroyed = true;
+        delete callback[obj.pointer]; // 將有callback的刪除
+        delete btObject.cache[obj.pointer];
+        Object.defineProperty(obj, 'pointer', useAfterFreePropAttributes);
+        for (const member of obj.members) {
+            destroy(member);
+        }
+        obj.emit('destroy');
+    }
+}
+export abstract class btObject extends EventEmitter {
+    static from<T extends typeof btObject>(this: T, pointer: number, parent?: btObject): InstanceType<T> {
+        const cache = this.cache[pointer];
+        if (cache) return cache as InstanceType<T>;
+        // 建立一個物件，原型為當前呼叫的類別 prototype
+        const obj = Object.create(this.prototype, {
+            pointer: {value: pointer, writable: true, configurable: true, enumerable: true},
+            [DESTROY_FUNC]: {value: (): void => {}, writable: true, configurable: true, enumerable: false}
+        });
+        obj[INIT_MEMBERS]();
+        // 只有當提供parent以作為子成員追蹤生命週期時才進入緩存
+        if (parent) {
+            this.cache[pointer] = obj;
+            parent.members.push(parent);
+        }
+        return obj as InstanceType<T>;
+    }
+    static stackAlloc<T extends typeof btObject>(this: T, ...args: ConstructorParameters<T>): InstanceType<T>;
+    static stackAlloc<T extends typeof btObject>(this: T, ...args: any[]): InstanceType<T>;
+    static stackAlloc<T extends typeof btObject>(this: T, ...args: any[]): InstanceType<T> {
+        const obj = new (this as any)(...args);
+        setTimeout(destroy.bind(null, obj));
+        return obj;
+    }
+    static cache: {[key: string]: btObject | undefined;} = {};
+    pointer: number = 0; // abstract
+    destroyed: boolean;
+    members: btObject[];
+    constructor(...args: any[]);
+    constructor() {
+        super();
+        this[INIT_MEMBERS]();
+    }
+    [DESTROY_FUNC](): void {}
+    [INIT_MEMBERS](): void {
+        this.destroyed = false;
+        this.members = [];
+    }
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtCollisionShape)*/
+export abstract class btCollisionShape extends btObject {
+    setLocalScaling(scaling: Vector3): void {
+        asm.bind_btCollisionShape_setLocalScaling_1(this.pointer, temp.vector3.set(scaling).pointer);
+    }
+    getLocalScaling(): btVector3 {
+        return btVector3.from(asm.bind_btCollisionShape_getLocalScaling_0(this.pointer), this);
+    }
+    calculateLocalInertia(mass: number, inertia: btVector3): void {
+        asm.bind_btCollisionShape_calculateLocalInertia_2(this.pointer, mass, inertia.pointer);
+    }
+    setMargin(margin: number): void {
+        asm.bind_btCollisionShape_setMargin_1(this.pointer, margin);
+    }
+    getMargin(): number {
+        return asm.bind_btCollisionShape_getMargin_0(this.pointer);
+    }
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtCollisionWorld)*/
+export abstract class btCollisionWorld extends btObject {
+    getDispatcher(): btDispatcher {
+        return btDispatcher.from(asm.bind_btCollisionWorld_getDispatcher_0(this.pointer), this);
+    }
+    rayTest(rayFromWorld: btVector3, rayToWorld: btVector3, resultCallback: btCollisionWorld.RayResultCallback): void {
+        asm.bind_btCollisionWorld_rayTest_3(this.pointer, rayFromWorld.pointer, rayToWorld.pointer, resultCallback.pointer);
+    }
+    getPairCache(): btOverlappingPairCache {
+        return btOverlappingPairCache.from(asm.bind_btCollisionWorld_getPairCache_0(this.pointer), this);
+    }
+    getDispatchInfo(): btDispatcherInfo {
+        return btDispatcherInfo.from(asm.bind_btCollisionWorld_getDispatchInfo_0(this.pointer), this);
+    }
+    addCollisionObject(collisionObject: btCollisionObject, collisionFilterGroup: CollisionFilterGroups = CollisionFilterGroups.DefaultFilter, collisionFilterMask: CollisionFilterGroups = CollisionFilterGroups.AllFilter): void {
+        asm.bind_btCollisionWorld_addCollisionObject_3(this.pointer, collisionObject.pointer, collisionFilterGroup, collisionFilterMask);
+    }
+    removeCollisionObject(collisionObject: btCollisionObject): void {
+        asm.bind_btCollisionWorld_removeCollisionObject_1(this.pointer, collisionObject.pointer);
+    }
+    getBroadphase(): btBroadphaseInterface {
+        return btBroadphaseInterface.from(asm.bind_btCollisionWorld_getBroadphase_0(this.pointer), this);
+    }
+    convexSweepTest(castShape: btConvexShape, from: btTransform, to: btTransform, resultCallback: btCollisionWorld.ConvexResultCallback, allowedCcdPenetration: number): void {
+        asm.bind_btCollisionWorld_convexSweepTest_5(this.pointer, castShape.pointer, from.pointer, to.pointer, resultCallback.pointer, allowedCcdPenetration);
+    }
+    contactPairTest(colObjA: btCollisionObject, colObjB: btCollisionObject, resultCallback: btCollisionWorld.ContactResultCallback): void {
+        asm.bind_btCollisionWorld_contactPairTest_3(this.pointer, colObjA.pointer, colObjB.pointer, resultCallback.pointer);
+    }
+    contactTest(colObj: btCollisionObject, resultCallback: btCollisionWorld.ContactResultCallback): void {
+        asm.bind_btCollisionWorld_contactTest_2(this.pointer, colObj.pointer, resultCallback.pointer);
+    }
+    updateSingleAabb(colObj: btCollisionObject): void {
+        asm.bind_btCollisionWorld_updateSingleAabb_1(this.pointer, colObj.pointer);
+    }
+}
+export namespace btCollisionWorld {
+    /**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/structbtCollisionWorld_1_1RayResultCallback)*/
+    export abstract class RayResultCallback extends btObject {
+        hasHit(): boolean {
+            return Boolean(asm.bind_RayResultCallback_hasHit_0(this.pointer));
+        }
+        get collisionFilterGroup(): number {
+            return asm.bind_RayResultCallback_get_m_collisionFilterGroup_0(this.pointer);
+        }
+        set collisionFilterGroup(v: number) {
+            asm.bind_RayResultCallback_set_m_collisionFilterGroup_1(this.pointer, v);
+        }
+        get collisionFilterMask(): number {
+            return asm.bind_RayResultCallback_get_m_collisionFilterMask_0(this.pointer);
+        }
+        set collisionFilterMask(v: number) {
+            asm.bind_RayResultCallback_set_m_collisionFilterMask_1(this.pointer, v);
+        }
+        get closestHitFraction(): number {
+            return asm.bind_RayResultCallback_get_m_closestHitFraction_0(this.pointer);
+        }
+        set closestHitFraction(v: number) {
+            asm.bind_RayResultCallback_set_m_closestHitFraction_1(this.pointer, v);
+        }
+        get collisionObject(): btCollisionObject {
+            return btCollisionObject.from(asm.bind_RayResultCallback_get_m_collisionObject_0(this.pointer), this);
+        }
+        set collisionObject(obj: btCollisionObject) {
+            asm.bind_RayResultCallback_set_m_collisionObject_1(this.pointer, obj.pointer);
+        }
+        get flags(): number {
+            return asm.bind_RayResultCallback_get_m_flags_0(this.pointer);
+        }
+        set flags(v: number) {
+            asm.bind_RayResultCallback_set_m_flags_1(this.pointer, v);
+        }
+    }
+    /**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/structbtCollisionWorld_1_1ContactResultCallback)*/
+    export abstract class ContactResultCallback extends btObject {
+        addSingleResult(cp: btManifoldPoint, colObj0Wrap: btCollisionObjectWrapper, partId0: number, index0: number, colObj1Wrap: btCollisionObjectWrapper, partId1: number, index1: number): number {
+            return asm.bind_ContactResultCallback_addSingleResult_7(this.pointer, cp.pointer, colObj0Wrap.pointer, partId0, index0, colObj1Wrap.pointer, partId1, index1);
+        }
+    }
+    /**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/structbtCollisionWorld_1_1ConvexResultCallback)*/
+    export abstract class ConvexResultCallback extends btObject {
+        hasHit(): boolean {
+            return Boolean(asm.bind_ConvexResultCallback_hasHit_0(this.pointer));
+        }
+        get collisionFilterGroup(): number {
+            return asm.bind_ConvexResultCallback_get_m_collisionFilterGroup_0(this.pointer);
+        }
+        set collisionFilterGroup(v: number) {
+            asm.bind_ConvexResultCallback_set_m_collisionFilterGroup_1(this.pointer, v);
+        }
+        get collisionFilterMask(): number {
+            return asm.bind_ConvexResultCallback_get_m_collisionFilterMask_0(this.pointer);
+        }
+        set collisionFilterMask(v: number) {
+            asm.bind_ConvexResultCallback_set_m_collisionFilterMask_1(this.pointer, v);
+        }
+        get closestHitFraction(): number {
+            return asm.bind_ConvexResultCallback_get_m_closestHitFraction_0(this.pointer);
+        }
+        set closestHitFraction(v: number) {
+            asm.bind_ConvexResultCallback_set_m_closestHitFraction_1(this.pointer, v);
+        }
+    }
+    /**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/structbtCollisionWorld_1_1ClosestRayResultCallback)*/
+    export class ClosestRayResultCallback extends btCollisionWorld.RayResultCallback {
+        constructor(from: btVector3, to: btVector3) {
+            super();
+            this.pointer = asm.bind_ClosestRayResultCallback_ClosestRayResultCallback_2(from.pointer, to.pointer);
+            btObject.cache[this.pointer] = this;
+        }
+        get rayFromWorld(): btVector3 {
+            return btVector3.from(asm.bind_ClosestRayResultCallback_get_m_rayFromWorld_0(this.pointer), this);
+        }
+        set rayFromWorld(v: btVector3) {
+            asm.bind_ClosestRayResultCallback_set_m_rayFromWorld_1(this.pointer, v.pointer);
+        }
+        get rayToWorld(): btVector3 {
+            return btVector3.from(asm.bind_ClosestRayResultCallback_get_m_rayToWorld_0(this.pointer), this);
+        }
+        set rayToWorld(v: btVector3) {
+            asm.bind_ClosestRayResultCallback_set_m_rayToWorld_1(this.pointer, v.pointer);
+        }
+        get hitNormalWorld(): btVector3 {
+            return btVector3.from(asm.bind_ClosestRayResultCallback_get_m_hitNormalWorld_0(this.pointer), this);
+        }
+        set hitNormalWorld(v: btVector3) {
+            asm.bind_ClosestRayResultCallback_set_m_hitNormalWorld_1(this.pointer, v.pointer);
+        }
+        get hitPointWorld(): btVector3 {
+            return btVector3.from(asm.bind_ClosestRayResultCallback_get_m_hitPointWorld_0(this.pointer), this);
+        }
+        set hitPointWorld(v: btVector3) {
+            asm.bind_ClosestRayResultCallback_set_m_hitPointWorld_1(this.pointer, v.pointer);
+        }
+        override[DESTROY_FUNC](): void {asm.bind_ClosestRayResultCallback___destroy___0(this.pointer);}
+    }
+    /**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/structbtCollisionWorld_1_1AllHitsRayResultCallback)*/
+    export class AllHitsRayResultCallback extends btCollisionWorld.RayResultCallback {
+        constructor(from: btVector3, to: btVector3) {
+            super();
+            this.pointer = asm.bind_AllHitsRayResultCallback_AllHitsRayResultCallback_2(from.pointer, to.pointer);
+            btObject.cache[this.pointer] = this;
+        }
+        get collisionObjects(): btConstCollisionObjectArray {
+            return btConstCollisionObjectArray.from(asm.bind_AllHitsRayResultCallback_get_m_collisionObjects_0(this.pointer), this);
+        }
+        set collisionObjects(cco: btConstCollisionObjectArray) {
+            asm.bind_AllHitsRayResultCallback_set_m_collisionObjects_1(this.pointer, cco.pointer);
+        }
+        get rayFromWorld(): btVector3 {
+            return btVector3.from(asm.bind_AllHitsRayResultCallback_get_m_rayFromWorld_0(this.pointer), this);
+        }
+        set rayFromWorld(v: btVector3) {
+            asm.bind_AllHitsRayResultCallback_set_m_rayFromWorld_1(this.pointer, v.pointer);
+        }
+        get rayToWorld(): btVector3 {
+            return btVector3.from(asm.bind_AllHitsRayResultCallback_get_m_rayToWorld_0(this.pointer), this);
+        }
+        set rayToWorld(v: btVector3) {
+            asm.bind_AllHitsRayResultCallback_set_m_rayToWorld_1(this.pointer, v.pointer);
+        }
+        get hitNormalWorld(): btVector3Array {
+            return btVector3Array.from(asm.bind_AllHitsRayResultCallback_get_m_hitNormalWorld_0(this.pointer), this);
+        }
+        set hitNormalWorld(va: btVector3Array) {
+            asm.bind_AllHitsRayResultCallback_set_m_hitNormalWorld_1(this.pointer, va.pointer);
+        }
+        get hitPointWorld(): btVector3Array {
+            return btVector3Array.from(asm.bind_AllHitsRayResultCallback_get_m_hitPointWorld_0(this.pointer), this);
+        }
+        set hitPointWorld(va: btVector3Array) {
+            asm.bind_AllHitsRayResultCallback_set_m_hitPointWorld_1(this.pointer, va.pointer);
+        }
+        get hitFractions(): btScalarArray {
+            return btScalarArray.from(asm.bind_AllHitsRayResultCallback_get_m_hitFractions_0(this.pointer), this);
+        }
+        set hitFractions(sa: btScalarArray) {
+            asm.bind_AllHitsRayResultCallback_set_m_hitFractions_1(this.pointer, sa.pointer);
+        }
+        override[DESTROY_FUNC](): void {asm.bind_AllHitsRayResultCallback___destroy___0(this.pointer);}
+    }
+    /**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/structbtCollisionWorld_1_1LocalShapeInfo)*/
+    export abstract class LocalShapeInfo extends btObject {
+        get shapePart(): number {
+            return asm.bind_LocalShapeInfo_get_m_shapePart_0(this.pointer);
+        }
+        set shapePart(n: number) {
+            asm.bind_LocalShapeInfo_set_m_shapePart_1(this.pointer, n);
+        }
+        get triangleIndex(): number {
+            return asm.bind_LocalShapeInfo_get_m_triangleIndex_0(this.pointer);
+        }
+        set triangleIndex(n: number) {
+            asm.bind_LocalShapeInfo_set_m_triangleIndex_1(this.pointer, n);
+        }
+    }
+    /**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/structbtCollisionWorld_1_1LocalConvexResult)*/
+    export class LocalConvexResult extends btObject {
+        constructor(hitCollisionObject: btCollisionObject, localShapeInfo: btCollisionWorld.LocalShapeInfo, hitNormalLocal: btVector3, hitPointLocal: btVector3, hitFraction: number) {
+            super();
+            this.pointer = asm.bind_LocalConvexResult_LocalConvexResult_5(hitCollisionObject.pointer, localShapeInfo.pointer, hitNormalLocal.pointer, hitPointLocal.pointer, hitFraction);
+            btObject.cache[this.pointer] = this;
+        }
+        get hitCollisionObject(): btCollisionObject {
+            return btCollisionObject.from(asm.bind_LocalConvexResult_get_m_hitCollisionObject_0(this.pointer), this);
+        }
+        set hitCollisionObject(co: btCollisionObject) {
+            asm.bind_LocalConvexResult_set_m_hitCollisionObject_1(this.pointer, co.pointer);
+        }
+        get localShapeInfo(): btCollisionWorld.LocalShapeInfo {
+            return btCollisionWorld.LocalShapeInfo.from(asm.bind_LocalConvexResult_get_m_localShapeInfo_0(this.pointer), this);
+        }
+        set localShapeInfo(lsi: btCollisionWorld.LocalShapeInfo) {
+            asm.bind_LocalConvexResult_set_m_localShapeInfo_1(this.pointer, lsi.pointer);
+        }
+        get hitNormalLocal(): btVector3 {
+            return btVector3.from(asm.bind_LocalConvexResult_get_m_hitNormalLocal_0(this.pointer), this);
+        }
+        set hitNormalLocal(v: btVector3) {
+            asm.bind_LocalConvexResult_set_m_hitNormalLocal_1(this.pointer, v.pointer);
+        }
+        get hitPointLocal(): btVector3 {
+            return btVector3.from(asm.bind_LocalConvexResult_get_m_hitPointLocal_0(this.pointer), this);
+        }
+        set hitPointLocal(v: btVector3) {
+            asm.bind_LocalConvexResult_set_m_hitPointLocal_1(this.pointer, v.pointer);
+        }
+        get hitFraction(): number {
+            return asm.bind_LocalConvexResult_get_m_hitFraction_0(this.pointer);
+        }
+        set hitFraction(n: number) {
+            asm.bind_LocalConvexResult_set_m_hitFraction_1(this.pointer, n);
+        }
+        override[DESTROY_FUNC](): void {asm.bind_LocalConvexResult___destroy___0(this.pointer);}
+    }
+    /**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/structbtCollisionWorld_1_1ClosestConvexResultCallback)*/
+    export class ClosestConvexResultCallback extends btCollisionWorld.ConvexResultCallback {
+        constructor(convexFromWorld: btVector3, convexToWorld: btVector3) {
+            super();
+            this.pointer = asm.bind_ClosestConvexResultCallback_ClosestConvexResultCallback_2(convexFromWorld.pointer, convexToWorld.pointer);
+            btObject.cache[this.pointer] = this;
+        }
+        get hitCollisionObject(): btCollisionObject {
+            return btCollisionObject.from(asm.bind_ClosestConvexResultCallback_get_m_hitCollisionObject_0(this.pointer), this);
+        }
+        set hitCollisionObject(co: btCollisionObject) {
+            asm.bind_ClosestConvexResultCallback_set_m_hitCollisionObject_1(this.pointer, co.pointer);
+        }
+        get convexFromWorld(): btVector3 {
+            return btVector3.from(asm.bind_ClosestConvexResultCallback_get_m_convexFromWorld_0(this.pointer), this);
+        }
+        set convexFromWorld(v: btVector3) {
+            asm.bind_ClosestConvexResultCallback_set_m_convexFromWorld_1(this.pointer, v.pointer);
+        }
+        get convexToWorld(): btVector3 {
+            return btVector3.from(asm.bind_ClosestConvexResultCallback_get_m_convexToWorld_0(this.pointer), this);
+        }
+        set convexToWorld(v: btVector3) {
+            asm.bind_ClosestConvexResultCallback_set_m_convexToWorld_1(this.pointer, v.pointer);
+        }
+        get hitNormalWorld(): btVector3 {
+            return btVector3.from(asm.bind_ClosestConvexResultCallback_get_m_hitNormalWorld_0(this.pointer), this);
+        }
+        set hitNormalWorld(v: btVector3) {
+            asm.bind_ClosestConvexResultCallback_set_m_hitNormalWorld_1(this.pointer, v.pointer);
+        }
+        get hitPointWorld(): btVector3 {
+            return btVector3.from(asm.bind_ClosestConvexResultCallback_get_m_hitPointWorld_0(this.pointer), this);
+        }
+        set hitPointWorld(v: btVector3) {
+            asm.bind_ClosestConvexResultCallback_set_m_hitPointWorld_1(this.pointer, v.pointer);
+        }
+        override[DESTROY_FUNC](): void {asm.bind_ClosestConvexResultCallback___destroy___0(this.pointer);}
+    }
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtCollisionObject)*/
+export abstract class btCollisionObject extends btObject {
+    setAnisotropicFriction(anisotropicFriction: btVector3, frictionMode: number): void {
+        asm.bind_btCollisionObject_setAnisotropicFriction_2(this.pointer, anisotropicFriction.pointer, frictionMode);
+    }
+    getCollisionShape(): btCollisionShape {
+        return btCollisionShape.from(asm.bind_btCollisionObject_getCollisionShape_0(this.pointer), this);
+    }
+    setContactProcessingThreshold(contactProcessingThreshold: number): void {
+        asm.bind_btCollisionObject_setContactProcessingThreshold_1(this.pointer, contactProcessingThreshold);
+    }
+    setActivationState(newState: ActivationState): void {
+        asm.bind_btCollisionObject_setActivationState_1(this.pointer, newState);
+    }
+    forceActivationState(newState: ActivationState): void {
+        asm.bind_btCollisionObject_forceActivationState_1(this.pointer, newState);
+    }
+    activate(forceActivation: boolean = false): void {
+        asm.bind_btCollisionObject_activate_1(this.pointer, forceActivation);
+    }
+    isActive(): boolean {
+        return Boolean(asm.bind_btCollisionObject_isActive_0(this.pointer));
+    }
+    isKinematicObject(): boolean {
+        return Boolean(asm.bind_btCollisionObject_isKinematicObject_0(this.pointer));
+    }
+    isStaticObject(): boolean {
+        return Boolean(asm.bind_btCollisionObject_isStaticObject_0(this.pointer));
+    }
+    isStaticOrKinematicObject(): boolean {
+        return Boolean(asm.bind_btCollisionObject_isStaticOrKinematicObject_0(this.pointer));
+    }
+    getRestitution(): number {
+        return asm.bind_btCollisionObject_getRestitution_0(this.pointer);
+    }
+    getFriction(): number {
+        return asm.bind_btCollisionObject_getFriction_0(this.pointer);
+    }
+    getRollingFriction(): number {
+        return asm.bind_btCollisionObject_getRollingFriction_0(this.pointer);
+    }
+    setRestitution(rest: number): void {
+        asm.bind_btCollisionObject_setRestitution_1(this.pointer, rest);
+    }
+    setFriction(frict: number): void {
+        asm.bind_btCollisionObject_setFriction_1(this.pointer, frict);
+    }
+    setRollingFriction(frict: number): void {
+        asm.bind_btCollisionObject_setRollingFriction_1(this.pointer, frict);
+    }
+    getWorldTransform(): btTransform {
+        return btTransform.from(asm.bind_btCollisionObject_getWorldTransform_0(this.pointer), this);
+    }
+    /**return: @see {@link CollisionFlags}*/
+    getCollisionFlags(): number {
+        return asm.bind_btCollisionObject_getCollisionFlags_0(this.pointer);
+    }
+    /**flags: @see {@link CollisionFlags}*/
+    setCollisionFlags(flags: number): void {
+        asm.bind_btCollisionObject_setCollisionFlags_1(this.pointer, flags);
+    }
+    setWorldTransform(worldTrans: btTransform): void {
+        asm.bind_btCollisionObject_setWorldTransform_1(this.pointer, worldTrans.pointer);
+    }
+    setCollisionShape(collisionShape: btCollisionShape): void {
+        asm.bind_btCollisionObject_setCollisionShape_1(this.pointer, collisionShape.pointer);
+    }
+    setCcdMotionThreshold(ccdMotionThreshold: number): void {
+        asm.bind_btCollisionObject_setCcdMotionThreshold_1(this.pointer, ccdMotionThreshold);
+    }
+    setCcdSweptSphereRadius(radius: number): void {
+        asm.bind_btCollisionObject_setCcdSweptSphereRadius_1(this.pointer, radius);
+    }
+    getUserIndex(): number {
+        return asm.bind_btCollisionObject_getUserIndex_0(this.pointer);
+    }
+    setUserIndex(index: number): void {
+        asm.bind_btCollisionObject_setUserIndex_1(this.pointer, index);
+    }
+    getUserPointer(): VoidPtr {
+        return VoidPtr.from(asm.bind_btCollisionObject_getUserPointer_0(this.pointer), this);
+    }
+    setUserPointer(userPointer: VoidPtr): void {
+        asm.bind_btCollisionObject_setUserPointer_1(this.pointer, userPointer.pointer);
+    }
+    getBroadphaseHandle(): btBroadphaseProxy {
+        return btBroadphaseProxy.from(asm.bind_btCollisionObject_getBroadphaseHandle_0(this.pointer), this);
+    }
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtConcaveShape)*/
+export abstract class btConcaveShape extends btCollisionShape {}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtCollisionAlgorithm)*/
+export abstract class btCollisionAlgorithm extends btObject {}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtTypedConstraint)*/
+export abstract class btTypedConstraint extends btObject {
+    enableFeedback(needsFeedback: boolean): void {
+        asm.bind_btTypedConstraint_enableFeedback_1(this.pointer, needsFeedback);
+    }
+    getBreakingImpulseThreshold(): number {
+        return asm.bind_btTypedConstraint_getBreakingImpulseThreshold_0(this.pointer);
+    }
+    setBreakingImpulseThreshold(threshold: number): void {
+        asm.bind_btTypedConstraint_setBreakingImpulseThreshold_1(this.pointer, threshold);
+    }
+    getParam(num: number, axis: number): number {
+        return asm.bind_btTypedConstraint_getParam_2(this.pointer, num, axis);
+    }
+    setParam(num: number, value: number, axis: number): void {
+        asm.bind_btTypedConstraint_setParam_3(this.pointer, num, value, axis);
+    }
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtDynamicsWorld)*/
+export abstract class btDynamicsWorld extends btCollisionWorld {
+    addAction(action: btActionInterface): this {
+        asm.bind_btDynamicsWorld_addAction_1(this.pointer, action.pointer);
+        return this;
+    }
+    removeAction(action: btActionInterface): this {
+        asm.bind_btDynamicsWorld_removeAction_1(this.pointer, action.pointer);
+        return this;
+    }
+    getSolverInfo(): btContactSolverInfo {
+        return btContactSolverInfo.from(asm.bind_btDynamicsWorld_getSolverInfo_0(this.pointer), this);
+    }
+    setInternalTickCallback(cb?: (timeStep: number) => void, isPreTick: boolean = false): this {
+        // worldUserInfo: VoidPtr = new VoidPtr(0)
+        if (isPreTick) {
+            (callback[this.pointer] ??= {}).internalPreTickCallback = cb;
+        } else {
+            (callback[this.pointer] ??= {}).internalTickCallback = cb;
+        }
+        return this;
+    }
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtVector3)*/
+export class btVector3 extends btObject {
+    static override stackAlloc<T extends typeof btObject>(this: T, x?: number, y?: number, z?: number): InstanceType<T>;
+    static override stackAlloc<T extends typeof btObject>(this: T, v: Vector3): InstanceType<T>;
+    static override stackAlloc<T extends typeof btObject>(this: T, ...args: any[]): InstanceType<T> {
+        return btObject.stackAlloc.call(this, ...args) as InstanceType<T>;
+    }
+    view: Float32Array;
+    constructor(x?: number, y?: number, z?: number);
+    constructor(v: Vector3);
+    constructor(x: number | Vector3 = 0, y: number = 0, z: number = 0) {
+        super();
+        if (new.target !== this.constructor && moduleList.has(new.target)) return;
+        this.pointer = typeof x === 'object' ? asm.bind_btVector3_btVector3_3(x.x, x.y, x.z) : asm.bind_btVector3_btVector3_3(x, y, z);
+        this[INIT_MEMBERS]();
+        btObject.cache[this.pointer] = this;
+    }
+    override[INIT_MEMBERS](): void {
+        btObject.prototype[INIT_MEMBERS].call(this);
+        this.view = new Float32Array(asm.memory.buffer, this.pointer, 3);
+    }
+    get x(): number {
+        return this.view[0];
+    }
+    set x(x: number) {
+        this.view[0] = x;
+    }
+    get y(): number {
+        return this.view[1];
+    }
+    set y(y: number) {
+        this.view[1] = y;
+    }
+    get z(): number {
+        return this.view[2];
+    }
+    set z(z: number) {
+        this.view[2] = z;
+    }
+    set(x?: number, y?: number, z?: number): this;
+    set(v: Vector3): this;
+    set(x: number | Vector3 = this.view[0], y: number = this.view[1], z: number = this.view[2]): this {
+        if (typeof x === 'object') {
+            this.view[0] = x.x;
+            this.view[1] = x.y;
+            this.view[2] = x.z;
+        } else {
+            this.view[0] = x;
+            this.view[1] = y;
+            this.view[2] = z;
+        }
+        return this;
+    }
+    length(): number {
+        return asm.bind_btVector3_length_0(this.pointer);
+    }
+    normalize(): this {
+        asm.bind_btVector3_normalize_0(this.pointer);
+        return this;
+    }
+    rotate(wAxis: Vector3, angle: number): btVector3 {
+        return btVector3.from(asm.bind_btVector3_rotate_2(this.pointer, temp.vector3.set(wAxis).pointer, angle), this);
+    }
+    dot(v: Vector3): number {
+        return asm.bind_btVector3_dot_1(this.pointer, temp.vector3.set(v).pointer);
+    }
+    mul(x: number): this {
+        asm.bind_btVector3_op_mul_1(this.pointer, x);
+        return this;
+    }
+    add(v: Vector3): this {
+        asm.bind_btVector3_op_add_1(this.pointer, temp.vector3.set(v).pointer);
+        return this;
+    }
+    sub(v: Vector3): this {
+        asm.bind_btVector3_op_sub_1(this.pointer, temp.vector3.set(v).pointer);
+        return this;
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btVector3___destroy___0(this.pointer);Object.defineProperty(this, 'view', useAfterFreePropAttributes);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtMotionState)*/
+export abstract class btMotionState extends btObject {
+    getWorldTransform(worldTrans: btTransform): void {
+        asm.bind_btMotionState_getWorldTransform_1(this.pointer, worldTrans.pointer);
+    }
+    setWorldTransform(worldTrans: btTransform): void {
+        asm.bind_btMotionState_setWorldTransform_1(this.pointer, worldTrans.pointer);
+    }
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtConvexShape)*/
+export abstract class btConvexShape extends btCollisionShape {}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtCapsuleShape)*/
+export class btCapsuleShape extends btCollisionShape {
+    constructor(radius: number, height?: number) {
+        super();
+        if (new.target !== this.constructor && moduleList.has(new.target)) return;
+        this.pointer = asm.bind_btCapsuleShape_btCapsuleShape_2(radius, height!);
+        btObject.cache[this.pointer] = this;
+    }
+    getUpAxis(): number {
+        return asm.bind_btCapsuleShape_getUpAxis_0(this.pointer);
+    }
+    getRadius(): number {
+        return asm.bind_btCapsuleShape_getRadius_0(this.pointer);
+    }
+    getHalfHeight(): number {
+        return asm.bind_btCapsuleShape_getHalfHeight_0(this.pointer);
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btCapsuleShape___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtCylinderShape)*/
+export class btCylinderShape extends btCollisionShape {
+    constructor(halfExtents: Vector3) {
+        super();
+        if (new.target !== this.constructor && moduleList.has(new.target)) return;
+        this.pointer = asm.bind_btCylinderShape_btCylinderShape_1(temp.vector3.set(halfExtents).pointer);
+        btObject.cache[this.pointer] = this;
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btCylinderShape___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtConeShape)*/
+export class btConeShape extends btCollisionShape {
+    constructor(radius: number, height?: number) {
+        super();
+        if (new.target !== this.constructor && moduleList.has(new.target)) return;
+        this.pointer = asm.bind_btConeShape_btConeShape_2(radius, height!);
+        btObject.cache[this.pointer] = this;
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btConeShape___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtStridingMeshInterface)*/
+export abstract class btStridingMeshInterface extends btObject {
+    setScaling(scaling: Vector3): void {
+        asm.bind_btStridingMeshInterface_setScaling_1(this.pointer, temp.vector3.set(scaling).pointer);
+    }
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtTriangleMeshShape)*/
+export abstract class btTriangleMeshShape extends btConcaveShape {}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtPrimitiveManagerBase)*/
+export abstract class btPrimitiveManagerBase extends btObject {
+    isTrimesh(): boolean {
+        return Boolean(asm.bind_btPrimitiveManagerBase_is_trimesh_0(this.pointer));
+    }
+    getPrimitiveCount(): number {
+        return asm.bind_btPrimitiveManagerBase_get_primitive_count_0(this.pointer);
+    }
+    getPrimitiveBox(index: number, primbox: btAABB): void {
+        asm.bind_btPrimitiveManagerBase_get_primitive_box_2(this.pointer, index, primbox.pointer);
+    }
+    getPrimitiveTriangle(index: number, triangle: btPrimitiveTriangle): void {
+        asm.bind_btPrimitiveManagerBase_get_primitive_triangle_2(this.pointer, index, triangle.pointer);
+    }
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtGImpactShapeInterface)*/
+export abstract class btGImpactShapeInterface extends btConcaveShape {
+    updateBound(): void {
+        asm.bind_btGImpactShapeInterface_updateBound_0(this.pointer);
+    }
+    postUpdate(): void {
+        asm.bind_btGImpactShapeInterface_postUpdate_0(this.pointer);
+    }
+    getShapeType(): number {
+        return asm.bind_btGImpactShapeInterface_getShapeType_0(this.pointer);
+    }
+    getName(): string {
+        return UTF8ToString(asm.bind_btGImpactShapeInterface_getName_0(this.pointer));
+    }
+    getGImpactShapeType(): number {
+        return asm.bind_btGImpactShapeInterface_getGImpactShapeType_0(this.pointer);
+    }
+    getPrimitiveManager(): btPrimitiveManagerBase {
+        return btPrimitiveManagerBase.from(asm.bind_btGImpactShapeInterface_getPrimitiveManager_0(this.pointer), this);
+    }
+    getNumChildShapes(): number {
+        return asm.bind_btGImpactShapeInterface_getNumChildShapes_0(this.pointer);
+    }
+    childrenHasTransform(): boolean {
+        return Boolean(asm.bind_btGImpactShapeInterface_childrenHasTransform_0(this.pointer));
+    }
+    needsRetrieveTriangles(): boolean {
+        return Boolean(asm.bind_btGImpactShapeInterface_needsRetrieveTriangles_0(this.pointer));
+    }
+    needsRetrieveTetrahedrons(): boolean {
+        return Boolean(asm.bind_btGImpactShapeInterface_needsRetrieveTetrahedrons_0(this.pointer));
+    }
+    getBulletTriangle(index: number, triangle: btTriangleShapeEx): void {
+        asm.bind_btGImpactShapeInterface_getBulletTriangle_2(this.pointer, index, triangle.pointer);
+    }
+    getBulletTetrahedron(index: number, tetrahedron: btTetrahedronShapeEx): void {
+        asm.bind_btGImpactShapeInterface_getBulletTetrahedron_2(this.pointer, index, tetrahedron.pointer);
+    }
+    getChildShape(index: number): btCollisionShape {
+        return btCollisionShape.from(asm.bind_btGImpactShapeInterface_getChildShape_1(this.pointer, index), this);
+    }
+    getChildTransform(index: number): btTransform {
+        return btTransform.from(asm.bind_btGImpactShapeInterface_getChildTransform_1(this.pointer, index), this);
+    }
+    setChildTransform(index: number, transform: btTransform): void {
+        asm.bind_btGImpactShapeInterface_setChildTransform_2(this.pointer, index, transform.pointer);
+    }
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtActivatingCollisionAlgorithm)*/
+export abstract class btActivatingCollisionAlgorithm extends btCollisionAlgorithm {}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtDefaultCollisionConfiguration)*/
+export class btDefaultCollisionConfiguration extends btObject {
+    constructor(info?: btDefaultCollisionConstructionInfo) {
+        super();
+        if (new.target !== this.constructor && moduleList.has(new.target)) return;
+        this.pointer =
+            info === undefined
+                ? asm.bind_btDefaultCollisionConfiguration_btDefaultCollisionConfiguration_0()
+                : asm.bind_btDefaultCollisionConfiguration_btDefaultCollisionConfiguration_1(info.pointer);
+        btObject.cache[this.pointer] = this;
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btDefaultCollisionConfiguration___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtDispatcher)*/
+export abstract class btDispatcher extends btObject {
+    getNumManifolds(): number {
+        return asm.bind_btDispatcher_getNumManifolds_0(this.pointer);
+    }
+    getManifoldByIndexInternal(index: number): btPersistentManifold {
+        return btPersistentManifold.from(asm.bind_btDispatcher_getManifoldByIndexInternal_1(this.pointer, index), this);
+    }
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtGeneric6DofConstraint)*/
+export class btGeneric6DofConstraint extends btTypedConstraint {
+    static override stackAlloc<T extends typeof btObject>(this: T, rbA: btRigidBody, rbB: btRigidBody, frameInA: btTransform, frameInB: btTransform, useLinearFrameReferenceFrameA: boolean): InstanceType<T>;
+    static override stackAlloc<T extends typeof btObject>(this: T, rbB: btRigidBody, frameInB: btTransform, useLinearFrameReferenceFrameB: boolean): InstanceType<T>;
+    static override stackAlloc<T extends typeof btObject>(this: T, ...args: any[]): InstanceType<T> {
+        return btObject.stackAlloc.call(this, ...args) as InstanceType<T>;
+    }
+    constructor(rbA: btRigidBody, rbB: btRigidBody, frameInA: btTransform, frameInB: btTransform, useLinearFrameReferenceFrameA: boolean);
+    constructor(rbB: btRigidBody, frameInB: btTransform, useLinearFrameReferenceFrameB: boolean);
+    constructor(a: btRigidBody, b?: btRigidBody | btTransform, c?: btTransform | boolean, d?: btTransform, e?: boolean) {
+        super();
+        if (new.target !== this.constructor && moduleList.has(new.target)) return;
+        this.pointer =
+            e === undefined
+                ? asm.bind_btGeneric6DofConstraint_btGeneric6DofConstraint_3(a.pointer, b!.pointer, c as boolean)
+                : asm.bind_btGeneric6DofConstraint_btGeneric6DofConstraint_5(a.pointer, b!.pointer, (c as btTransform).pointer, d!.pointer, e);
+        btObject.cache[this.pointer] = this;
+    }
+    setLinearLowerLimit(linearLower: Vector3): void {
+        asm.bind_btGeneric6DofConstraint_setLinearLowerLimit_1(this.pointer, temp.vector3.set(linearLower).pointer);
+    }
+    setLinearUpperLimit(linearUpper: Vector3): void {
+        asm.bind_btGeneric6DofConstraint_setLinearUpperLimit_1(this.pointer, temp.vector3.set(linearUpper).pointer);
+    }
+    setAngularLowerLimit(angularLower: Vector3): void {
+        asm.bind_btGeneric6DofConstraint_setAngularLowerLimit_1(this.pointer, temp.vector3.set(angularLower).pointer);
+    }
+    setAngularUpperLimit(angularUpper: Vector3): void {
+        asm.bind_btGeneric6DofConstraint_setAngularUpperLimit_1(this.pointer, temp.vector3.set(angularUpper).pointer);
+    }
+    getFrameOffsetA(): btTransform {
+        return btTransform.from(asm.bind_btGeneric6DofConstraint_getFrameOffsetA_0(this.pointer), this);
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btGeneric6DofConstraint___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtDiscreteDynamicsWorld)*/
+export class btDiscreteDynamicsWorld extends btDynamicsWorld {
+    constructor(dispatcher: btDispatcher, pairCache?: btBroadphaseInterface, constraintSolver?: btConstraintSolver, collisionConfiguration?: btCollisionConfiguration) {
+        super();
+        if (new.target !== this.constructor && moduleList.has(new.target)) return;
+        this.pointer = asm.bind_btDiscreteDynamicsWorld_btDiscreteDynamicsWorld_4(dispatcher.pointer, pairCache!.pointer, constraintSolver!.pointer, collisionConfiguration!.pointer);
+        btObject.cache[this.pointer] = this;
+    }
+    getGravity(): btVector3 {
+        return btVector3.from(asm.bind_btDiscreteDynamicsWorld_getGravity_0(), this);
+    }
+    setGravity(x: number, y: number, z: number): this;
+    setGravity(gravity: Vector3): this;
+    setGravity(x: number | Vector3, y?: number, z?: number): this {
+        const gravity: btVector3 = typeof x === 'object' ? temp.vector3.set(x) : temp.vector3.set(x, y, z);
+        asm.bind_btDiscreteDynamicsWorld_setGravity_1(this.pointer, gravity.pointer);
+        return this;
+    }
+    addRigidBody(body: btRigidBody): this;
+    addRigidBody(body: btRigidBody, group: number, mask: number): this;
+    addRigidBody(body: btRigidBody, group?: number, mask?: number): this {
+        group === undefined
+            ? asm.bind_btDiscreteDynamicsWorld_addRigidBody_1(this.pointer, body.pointer)
+            : asm.bind_btDiscreteDynamicsWorld_addRigidBody_3(this.pointer, body.pointer, group, mask!);
+        return this;
+    }
+    removeRigidBody(body: btRigidBody): this {
+        asm.bind_btDiscreteDynamicsWorld_removeRigidBody_1(this.pointer, body.pointer);
+        return this;
+    }
+    addConstraint(constraint: btTypedConstraint, disableCollisionsBetweenLinkedBodies: boolean = false): this {
+        asm.bind_btDiscreteDynamicsWorld_addConstraint_2(this.pointer, constraint.pointer, disableCollisionsBetweenLinkedBodies);
+        return this;
+    }
+    removeConstraint(constraint: btTypedConstraint): this {
+        asm.bind_btDiscreteDynamicsWorld_removeConstraint_1(this.pointer, constraint.pointer);
+        return this;
+    }
+    stepSimulation(timeStep: number, maxSubSteps: number = 1, fixedTimeStep: number = 0.016666666666666666): number {
+        return asm.bind_btDiscreteDynamicsWorld_stepSimulation_3(this.pointer, timeStep, maxSubSteps, fixedTimeStep);
+    }
+    setContactAddedCallback(funcpointer: number): this {
+        asm.bind_btDiscreteDynamicsWorld_setContactAddedCallback_1(this.pointer, funcpointer);
+        return this;
+    }
+    setContactProcessedCallback(funcpointer: number): this {
+        asm.bind_btDiscreteDynamicsWorld_setContactProcessedCallback_1(this.pointer, funcpointer);
+        return this;
+    }
+    setContactDestroyedCallback(funcpointer: number): this {
+        asm.bind_btDiscreteDynamicsWorld_setContactDestroyedCallback_1(this.pointer, funcpointer);
+        return this;
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btDiscreteDynamicsWorld___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/structbtVehicleRaycaster)*/
+export abstract class btVehicleRaycaster extends btObject {
+    castRay(from: btVector3, to: btVector3, result: btVehicleRaycaster.btVehicleRaycasterResult): void {
+        asm.bind_btVehicleRaycaster_castRay_3(this.pointer, from.pointer, to.pointer, result.pointer);
+    }
+}
+export namespace btVehicleRaycaster {
+    /**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/structbtVehicleRaycaster_1_1btVehicleRaycasterResult)*/
+    export abstract class btVehicleRaycasterResult extends btObject {
+        get hitPointInWorld(): btVector3 {
+            return btVector3.from(asm.bind_btVehicleRaycasterResult_get_m_hitPointInWorld_0(this.pointer), this);
+        }
+        set hitPointInWorld(v: btVector3) {
+            asm.bind_btVehicleRaycasterResult_set_m_hitPointInWorld_1(this.pointer, v.pointer);
+        }
+        get hitNormalInWorld(): btVector3 {
+            return btVector3.from(asm.bind_btVehicleRaycasterResult_get_m_hitNormalInWorld_0(this.pointer), this);
+        }
+        set hitNormalInWorld(v: btVector3) {
+            asm.bind_btVehicleRaycasterResult_set_m_hitNormalInWorld_1(this.pointer, v.pointer);
+        }
+        get distFraction(): number {
+            return asm.bind_btVehicleRaycasterResult_get_m_distFraction_0(this.pointer);
+        }
+        set distFraction(n: number) {
+            asm.bind_btVehicleRaycasterResult_set_m_distFraction_1(this.pointer, n);
+        }
+    }
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtActionInterface)*/
+export abstract class btActionInterface extends btObject {
+    updateAction(collisionWorld: btCollisionWorld, deltaTimeStep: number): void {
+        asm.bind_btActionInterface_updateAction_2(this.pointer, collisionWorld.pointer, deltaTimeStep);
+    }
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtGhostObject)*/
+export class btGhostObject extends btCollisionObject {
+    constructor() {
+        super();
+        if (new.target !== this.constructor && moduleList.has(new.target)) return;
+        this.pointer = asm.bind_btGhostObject_btGhostObject_0();
+        btObject.cache[this.pointer] = this;
+    }
+    getNumOverlappingObjects(): number {
+        return asm.bind_btGhostObject_getNumOverlappingObjects_0(this.pointer);
+    }
+    getOverlappingObject(index: number): btCollisionObject {
+        return btCollisionObject.from(asm.bind_btGhostObject_getOverlappingObject_1(this.pointer, index), this);
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btGhostObject___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtSoftBodySolver)*/
+export abstract class btSoftBodySolver extends btObject {}
+/***/
+export class VoidPtr extends btObject {
+    constructor(ptr: number = 0) {
+        super();
+        this.pointer = ptr;
+    }
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtVector4)*/
+export class btVector4 extends btVector3 {
+    static override stackAlloc<T extends typeof btObject>(this: T, x?: number, y?: number, z?: number, w?: number): InstanceType<T>;
+    static override stackAlloc<T extends typeof btObject>(this: T, v: Vector4): InstanceType<T>;
+    static override stackAlloc<T extends typeof btObject>(this: T, ...args: any[]): InstanceType<T> {
+        return btObject.stackAlloc.call(this, ...args) as InstanceType<T>;
+    }
+    constructor(x?: number, y?: number, z?: number, w?: number);
+    constructor(v: Vector4);
+    constructor(x: number | Vector4 = 0, y: number = 0, z: number = 0, w: number = 0) {
+        super();
+        if (new.target !== this.constructor && moduleList.has(new.target)) return;
+        this.pointer = typeof x === 'object' ? asm.bind_btVector4_btVector4_4(x.x, x.y, x.z, x.w) : asm.bind_btVector4_btVector4_4(x, y, z, w);
+        this[INIT_MEMBERS]();
+        btObject.cache[this.pointer] = this;
+    }
+    override[INIT_MEMBERS](): void {
+        btObject.prototype[INIT_MEMBERS].call(this);
+        this.view = new Float32Array(asm.memory.buffer, this.pointer, 4);
+    }
+    get w(): number {
+        return this.view[3];
+    }
+    set w(w: number) {
+        this.view[3] = w;
+    }
+    override set(x?: number, y?: number, z?: number, w?: number): this;
+    override set(v: Vector4): this;
+    override set(x: number | Vector4 = this.view[0], y: number = this.view[1], z: number = this.view[2], w: number = this.view[3]): this {
+        if (typeof x === 'object') {
+            this.view[0] = x.x;
+            this.view[1] = x.y;
+            this.view[2] = x.z;
+            this.view[3] = x.w;
+        } else {
+            this.view[0] = x;
+            this.view[1] = y;
+            this.view[2] = z;
+            this.view[3] = w;
+        }
+        return this;
+    }
+    override normalize(): this {
+        asm.bind_btVector4_normalize_0(this.pointer);
+        return this;
+    }
+    override length(): number {
+        return asm.bind_btVector4_length_0(this.pointer);
+    }
+    override dot(v: Vector4): number {
+        return asm.bind_btVector4_dot_1(this.pointer, temp.vector4.set(v).pointer);
+    }
+    override add(v: Vector4): this {
+        asm.bind_btVector4_op_add_1(this.pointer, temp.vector4.set(v).pointer);
+        return this;
+    }
+    override sub(v: Vector4): this {
+        asm.bind_btVector4_op_sub_1(this.pointer, temp.vector4.set(v).pointer);
+        return this;
+    }
+    override mul(s: number): this {
+        asm.bind_btVector4_op_mul_1(this.pointer, s);
+        return this;
+    }
+    override rotate(wAxis: Vector3, angle: number): btVector3 {
+        return btVector3.from(asm.bind_btVector4_rotate_2(this.pointer, temp.vector3.set(wAxis).pointer, angle), this);
+    }
+    mulq(v: Vector4): this {
+        asm.bind_btQuaternion_op_mulq_1(this.pointer, temp.vector4.set(v).pointer);
+        return this;
+    }
+    div(s: number): this {
+        asm.bind_btQuaternion_op_div_1(this.pointer, s);
+        return this;
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btVector4___destroy___0(this.pointer);Object.defineProperty(this, 'view', useAfterFreePropAttributes);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtQuaternion)*/
+export class btQuaternion extends btVector4 {
+    static override stackAlloc<T extends typeof btObject>(this: T, x?: number, y?: number, z?: number, w?: number): InstanceType<T>;
+    static override stackAlloc<T extends typeof btObject>(this: T, q: Quaternion): InstanceType<T>;
+    static override stackAlloc<T extends typeof btObject>(this: T, ...args: any[]): InstanceType<T> {
+        return btObject.stackAlloc.call(this, ...args) as InstanceType<T>;
+    }
+    constructor(x?: number, y?: number, z?: number, w?: number);
+    constructor(q: Quaternion);
+    constructor(x: number | Quaternion = 0, y: number = 0, z: number = 0, w: number = 1) {
+        super();
+        this.pointer = typeof x === 'object' ? asm.bind_btQuaternion_btQuaternion_4(x.x, x.y, x.z, x.w) : asm.bind_btQuaternion_btQuaternion_4(x, y, z, w);
+        this[INIT_MEMBERS]();
+        btObject.cache[this.pointer] = this;
+    }
+    override add(v: btQuaternion): this {
+        asm.bind_btVector4_op_add_1(this.pointer, v.pointer);
+        return this;
+    }
+    override sub(v: btQuaternion): this {
+        asm.bind_btVector4_op_sub_1(this.pointer, v.pointer);
+        return this;
+    }
+    override mul(s: number): this {
+        asm.bind_btVector4_op_mul_1(this.pointer, s);
+        return this;
+    }
+    override mulq(v: btQuaternion): this {
+        asm.bind_btQuaternion_op_mulq_1(this.pointer, v.pointer);
+        return this;
+    }
+    override div(s: number): this {
+        asm.bind_btQuaternion_op_div_1(this.pointer, s);
+        return this;
+    }
+    setEulerZYX(z: number, y: number, x: number): this {
+        asm.bind_btQuaternion_setEulerZYX_3(this.pointer, z, y, x);
+        return this;
+    }
+    setRotation(axis: Vector3, angle: number): this {
+        asm.bind_btQuaternion_setRotation_2(this.pointer, temp.vector3.set(axis).pointer, angle);
+        return this;
+    }
+    length2(): number {
+        return asm.bind_btQuaternion_length2_0(this.pointer);
+    }
+    normalized(): btQuaternion {
+        return btQuaternion.from(asm.bind_btQuaternion_normalized_0(this.pointer), this);
+    }
+    getAxis(): btVector3 {
+        return btVector3.from(asm.bind_btQuaternion_getAxis_0(this.pointer), this);
+    }
+    inverse(): btQuaternion {
+        return btQuaternion.from(asm.bind_btQuaternion_inverse_0(this.pointer), this);
+    }
+    getAngle(): number {
+        return asm.bind_btQuaternion_getAngle_0(this.pointer);
+    }
+    getAngleShortestPath(): number {
+        return asm.bind_btQuaternion_getAngleShortestPath_0(this.pointer);
+    }
+    angle(q: btQuaternion): number {
+        return asm.bind_btQuaternion_angle_1(this.pointer, q.pointer);
+    }
+    angleShortestPath(q: btQuaternion): number {
+        return asm.bind_btQuaternion_angleShortestPath_1(this.pointer, q.pointer);
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btQuaternion___destroy___0(this.pointer);Object.defineProperty(this, 'view', useAfterFreePropAttributes);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtMatrix3x3)*/
+export abstract class btMatrix3x3 extends btObject {
+    setEulerZYX(z: number = 0, y: number = 0, x: number = 0): this {
+        asm.bind_btMatrix3x3_setEulerZYX_3(this.pointer, z, y, x);
+        return this;
+    }
+    getRotation(q: btQuaternion): void {
+        asm.bind_btMatrix3x3_getRotation_1(this.pointer, q.pointer);
+    }
+    getRow(y: number): btVector3 {
+        return btVector3.from(asm.bind_btMatrix3x3_getRow_1(this.pointer, y), this);
+    }
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtTransform)*/
+export class btTransform extends btObject {
+    constructor(q: Quaternion = new Quaternion(0, 0, 0, 1), v: Vector3 = new Vector3(0, 0, 0)) {
+        super();
+        this.pointer = asm.bind_btTransform_btTransform_2(temp.quaternion.set(q).pointer, temp.vector3.set(v).pointer);
+        btObject.cache[this.pointer] = this;
+    }
+    set(q: Quaternion, v: Vector3): this {
+        asm.bind_btTransform_setRotation_1(this.pointer, temp.quaternion.set(q).pointer);
+        asm.bind_btTransform_setOrigin_1(this.pointer, temp.vector3.set(v).pointer);
+        return this;
+    }
+    getBasis(): btMatrix3x3 {
+        return btMatrix3x3.from(asm.bind_btTransform_getBasis_0(this.pointer), this);
+    }
+    getOrigin(): btVector3 {
+        return btVector3.from(asm.bind_btTransform_getOrigin_0(this.pointer), this);
+    }
+    setOrigin(x: number, y: number, z: number): this;
+    setOrigin(origin: Vector3): this;
+    setOrigin(x: number | Vector3, y?: number, z?: number): this {
+        const origin: btVector3 = typeof x === 'object' ? temp.vector3.set(x) : temp.vector3.set(x, y, z);
+        asm.bind_btTransform_setOrigin_1(this.pointer, origin.pointer);
+        return this;
+    }
+    getRotation(): btQuaternion {
+        return btQuaternion.from(asm.bind_btTransform_getRotation_0(this.pointer), this);
+    }
+    setRotation(x: number, y: number, z: number, w: number): this;
+    setRotation(rotation: Quaternion): this;
+    setRotation(x: number | Quaternion, y?: number, z?: number, w?: number): this {
+        const rotation: btQuaternion = typeof x === 'object' ? temp.quaternion.set(x) : temp.quaternion.set(x, y, z, w);
+        asm.bind_btTransform_setRotation_1(this.pointer, rotation.pointer);
+        return this;
+    }
+    setIdentity(): this {
+        asm.bind_btTransform_setIdentity_0(this.pointer);
+        return this;
+    }
+    setFromOpenGLMatrix(m: readonly number[]): void {
+        resetTempBuffer();
+        asm.bind_btTransform_setFromOpenGLMatrix_1(this.pointer, loadArray(m));
+    }
+    inverse(): btTransform {
+        return btTransform.from(asm.bind_btTransform_inverse_0(this.pointer), this);
+    }
+    mul(t: btTransform): btTransform {
+        return btTransform.from(asm.bind_btTransform_op_mul_1(this.pointer, t.pointer), this);
+    }
+    override[DESTROY_FUNC](): void {
+        asm.bind_btTransform___destroy___0(this.pointer);
+    }
+}
+/***/
+export class MotionState extends btMotionState {
+    constructor() {
+        super();
+        this.pointer = asm.bind_MotionState_MotionState_0();
+        btObject.cache[this.pointer] = this;
+    }
+    override[DESTROY_FUNC](): void {asm.bind_MotionState___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/structbtDefaultMotionState)*/
+export class btDefaultMotionState extends btMotionState {
+    constructor(startTrans: btTransform = btTransform.stackAlloc(), centerOfMassOffset: btTransform = btTransform.stackAlloc()) {
+        super();
+        this.pointer =
+            startTrans === undefined
+                ? asm.bind_btDefaultMotionState_btDefaultMotionState_0()
+                : centerOfMassOffset === undefined
+                    ? asm.bind_btDefaultMotionState_btDefaultMotionState_1(startTrans.pointer)
+                    : asm.bind_btDefaultMotionState_btDefaultMotionState_2(startTrans.pointer, centerOfMassOffset.pointer);
+        btObject.cache[this.pointer] = this;
+    }
+    get graphicsWorldTrans(): btTransform {
+        return btTransform.from(asm.bind_btDefaultMotionState_get_m_graphicsWorldTrans_0(this.pointer), this);
+    }
+    set graphicsWorldTrans(graphicsWorldTrans: btTransform) {
+        asm.bind_btDefaultMotionState_set_m_graphicsWorldTrans_1(this.pointer, graphicsWorldTrans.pointer);
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btDefaultMotionState___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/structbtCollisionObjectWrapper)*/
+export abstract class btCollisionObjectWrapper extends btObject {
+    getWorldTransform(): btTransform {
+        return btTransform.from(asm.bind_btCollisionObjectWrapper_getWorldTransform_0(this.pointer), this);
+    }
+    getCollisionObject(): btCollisionObject {
+        return btCollisionObject.from(asm.bind_btCollisionObjectWrapper_getCollisionObject_0(this.pointer), this);
+    }
+    getCollisionShape(): btCollisionShape {
+        return btCollisionShape.from(asm.bind_btCollisionObjectWrapper_getCollisionShape_0(this.pointer), this);
+    }
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtManifoldPoint)*/
+export abstract class btManifoldPoint extends btObject {
+    getPositionWorldOnA(): btVector3 {
+        return btVector3.from(asm.bind_btManifoldPoint_getPositionWorldOnA_0(this.pointer), this);
+    }
+    getPositionWorldOnB(): btVector3 {
+        return btVector3.from(asm.bind_btManifoldPoint_getPositionWorldOnB_0(this.pointer), this);
+    }
+    getAppliedImpulse(): number {
+        return asm.bind_btManifoldPoint_getAppliedImpulse_0(this.pointer);
+    }
+    getDistance(): number {
+        return asm.bind_btManifoldPoint_getDistance_0(this.pointer);
+    }
+    get localPointA(): btVector3 {
+        return btVector3.from(asm.bind_btManifoldPoint_get_m_localPointA_0(this.pointer), this);
+    }
+    set localPointA(v: btVector3) {
+        asm.bind_btManifoldPoint_set_m_localPointA_1(this.pointer, v.pointer);
+    }
+    get localPointB(): btVector3 {
+        return btVector3.from(asm.bind_btManifoldPoint_get_m_localPointB_0(this.pointer), this);
+    }
+    set localPointB(v: btVector3) {
+        asm.bind_btManifoldPoint_set_m_localPointB_1(this.pointer, v.pointer);
+    }
+    get positionWorldOnB(): btVector3 {
+        return btVector3.from(asm.bind_btManifoldPoint_get_m_positionWorldOnB_0(this.pointer), this);
+    }
+    set positionWorldOnB(v: btVector3) {
+        asm.bind_btManifoldPoint_set_m_positionWorldOnB_1(this.pointer, v.pointer);
+    }
+    get positionWorldOnA(): btVector3 {
+        return btVector3.from(asm.bind_btManifoldPoint_get_m_positionWorldOnA_0(this.pointer), this);
+    }
+    set positionWorldOnA(v: btVector3) {
+        asm.bind_btManifoldPoint_set_m_positionWorldOnA_1(this.pointer, v.pointer);
+    }
+    get normalWorldOnB(): btVector3 {
+        return btVector3.from(asm.bind_btManifoldPoint_get_m_normalWorldOnB_0(this.pointer), this);
+    }
+    set normalWorldOnB(v: btVector3) {
+        asm.bind_btManifoldPoint_set_m_normalWorldOnB_1(this.pointer, v.pointer);
+    }
+    get userPersistentData(): number {
+        return asm.bind_btManifoldPoint_get_m_userPersistentData_0(this.pointer);
+    }
+    set userPersistentData(n: number) {
+        asm.bind_btManifoldPoint_set_m_userPersistentData_1(this.pointer, n);
+    }
+}
+/***/
+export class ConcreteContactResultCallback extends btCollisionWorld.ContactResultCallback {
+    constructor() {
+        super();
+        this.pointer = asm.bind_ConcreteContactResultCallback_ConcreteContactResultCallback_0();
+        btObject.cache[this.pointer] = this;
+    }
+    override[DESTROY_FUNC](): void {asm.bind_ConcreteContactResultCallback___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtConvexTriangleMeshShape)*/
+export class btConvexTriangleMeshShape extends btConvexShape {
+    constructor(meshInterface: btStridingMeshInterface, calcAabb: boolean = true) {
+        super();
+        this.pointer = asm.bind_btConvexTriangleMeshShape_btConvexTriangleMeshShape_2(meshInterface.pointer, calcAabb);
+        btObject.cache[this.pointer] = this;
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btConvexTriangleMeshShape___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtBoxShape)*/
+export class btBoxShape extends btCollisionShape {
+    constructor(boxHalfExtents: Vector3) {
+        super();
+        this.pointer = asm.bind_btBoxShape_btBoxShape_1(temp.vector3.set(boxHalfExtents).pointer);
+        btObject.cache[this.pointer] = this;
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btBoxShape___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtCapsuleShapeX)*/
+export class btCapsuleShapeX extends btCapsuleShape {
+    constructor(radius: number, height: number) {
+        super(0/*佔位符*/);
+        this.pointer = asm.bind_btCapsuleShapeX_btCapsuleShapeX_2(radius, height);
+        btObject.cache[this.pointer] = this;
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btCapsuleShapeX___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtCapsuleShapeZ)*/
+export class btCapsuleShapeZ extends btCapsuleShape {
+    constructor(radius: number, height: number) {
+        super(0/*佔位符*/);
+        this.pointer = asm.bind_btCapsuleShapeZ_btCapsuleShapeZ_2(radius, height);
+        btObject.cache[this.pointer] = this;
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btCapsuleShapeZ___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtCylinderShapeX)*/
+export class btCylinderShapeX extends btCylinderShape {
+    constructor(halfExtents: btVector3) {
+        super({} as any/**佔位符*/);
+        this.pointer = asm.bind_btCylinderShapeX_btCylinderShapeX_1(halfExtents.pointer);
+        btObject.cache[this.pointer] = this;
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btCylinderShapeX___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtCylinderShapeZ)*/
+export class btCylinderShapeZ extends btCylinderShape {
+    constructor(halfExtents: btVector3) {
+        super({} as any/**佔位符*/);
+        this.pointer = asm.bind_btCylinderShapeZ_btCylinderShapeZ_1(halfExtents.pointer);
+        btObject.cache[this.pointer] = this;
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btCylinderShapeZ___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtSphereShape)*/
+export class btSphereShape extends btCollisionShape {
+    constructor(radius: number) {
+        super();
+        this.pointer = asm.bind_btSphereShape_btSphereShape_1(radius);
+        btObject.cache[this.pointer] = this;
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btSphereShape___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtMultiSphereShape)*/
+export class btMultiSphereShape extends btCollisionShape {
+    constructor(positions: btVector3, radii: readonly number[], numPoints: number) {
+        super();
+        resetTempBuffer();
+        this.pointer = asm.bind_btMultiSphereShape_btMultiSphereShape_3(positions.pointer, loadArray(radii), numPoints);
+        btObject.cache[this.pointer] = this;
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btMultiSphereShape___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtConeShapeX)*/
+export class btConeShapeX extends btConeShape {
+    constructor(radius: number, height: number) {
+        super(0/**佔位符*/);
+        this.pointer = asm.bind_btConeShapeX_btConeShapeX_2(radius, height);
+        btObject.cache[this.pointer] = this;
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btConeShapeX___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtConeShapeZ)*/
+export class btConeShapeZ extends btConeShape {
+    constructor(radius: number, height: number) {
+        super(0/**佔位符*/);
+        this.pointer = asm.bind_btConeShapeZ_btConeShapeZ_2(radius, height);
+        btObject.cache[this.pointer] = this;
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btConeShapeZ___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/structbtFace)*/
+export abstract class btFace extends btObject {
+    get indices(): btIntArray {
+        return btIntArray.from(asm.bind_btFace_get_m_indices_0(this.pointer), this);
+    }
+    set indices(ia: btIntArray) {
+        asm.bind_btFace_set_m_indices_1(this.pointer, ia.pointer);
+    }
+    // get plane(): btIntArray {
+    //     return btIntArray.from(asm.bind_btFace_get_m_plane_1(this.pointer, ID), this);
+    // }
+    // set plane(m_plane: readonly number[]): void {
+    //     ND();
+    //     asm.bind_btFace_set_m_plane_2(this.pointer, ID, loadArray(m_plane));
+    // }
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtConvexPolyhedron)*/
+export abstract class btConvexPolyhedron extends btObject {
+    get vertices(): btVector3Array {
+        return btVector3Array.from(asm.bind_btConvexPolyhedron_get_m_vertices_0(this.pointer), this);
+    }
+    set vertices(va: btVector3Array) {
+        asm.bind_btConvexPolyhedron_set_m_vertices_1(this.pointer, va.pointer);
+    }
+    get faces(): btFaceArray {
+        return btFaceArray.from(asm.bind_btConvexPolyhedron_get_m_faces_0(this.pointer), this);
+    }
+    set faces(fa: btFaceArray) {
+        asm.bind_btConvexPolyhedron_set_m_faces_1(this.pointer, fa.pointer);
+    }
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtConvexHullShape)*/
+export class btConvexHullShape extends btCollisionShape {
+    constructor(points?: readonly number[], numPoints: number = 0) {
+        super();
+        resetTempBuffer();
+        this.pointer =
+            points === undefined
+                ? asm.bind_btConvexHullShape_btConvexHullShape_0()
+                : numPoints === undefined
+                    ? asm.bind_btConvexHullShape_btConvexHullShape_1(loadArray(points))
+                    : asm.bind_btConvexHullShape_btConvexHullShape_2(loadArray(points), numPoints);
+        btObject.cache[this.pointer] = this;
+    }
+    addPoint(point: btVector3, recalculateLocalAABB: boolean = true): void {
+        asm.bind_btConvexHullShape_addPoint_2(this.pointer, point.pointer, recalculateLocalAABB);
+    }
+    getNumVertices(): number {
+        return asm.bind_btConvexHullShape_getNumVertices_0(this.pointer);
+    }
+    initializePolyhedralFeatures(shiftVerticesByMargin: number): boolean {
+        return Boolean(asm.bind_btConvexHullShape_initializePolyhedralFeatures_1(this.pointer, shiftVerticesByMargin));
+    }
+    recalcLocalAabb(): void {
+        asm.bind_btConvexHullShape_recalcLocalAabb_0(this.pointer);
+    }
+    getConvexPolyhedron(): btConvexPolyhedron {
+        return btConvexPolyhedron.from(asm.bind_btConvexHullShape_getConvexPolyhedron_0(this.pointer), this);
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btConvexHullShape___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtShapeHull)*/
+export class btShapeHull extends btObject {
+    constructor(shape: btConvexShape) {
+        super();
+        this.pointer = asm.bind_btShapeHull_btShapeHull_1(shape.pointer);
+        btObject.cache[this.pointer] = this;
+    }
+    buildHull(margin: number): boolean {
+        return Boolean(asm.bind_btShapeHull_buildHull_1(this.pointer, margin));
+    }
+    numVertices(): number {
+        return asm.bind_btShapeHull_numVertices_0(this.pointer);
+    }
+    getVertexPointer(): btVector3 {
+        return btVector3.from(asm.bind_btShapeHull_getVertexPointer_0(this.pointer), this);
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btShapeHull___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtCompoundShape)*/
+export class btCompoundShape extends btCollisionShape {
+    constructor(enableDynamicAabbTree: boolean = true) {
+        super();
+        this.pointer = asm.bind_btCompoundShape_btCompoundShape_1(enableDynamicAabbTree);
+        btObject.cache[this.pointer] = this;
+    }
+    addChildShape(localTransform: btTransform, shape: btCollisionShape): void {
+        asm.bind_btCompoundShape_addChildShape_2(this.pointer, localTransform.pointer, shape.pointer);
+    }
+    removeChildShape(shape: btCollisionShape): void {
+        asm.bind_btCompoundShape_removeChildShape_1(this.pointer, shape.pointer);
+    }
+    removeChildShapeByIndex(childShapeindex: number): void {
+        asm.bind_btCompoundShape_removeChildShapeByIndex_1(this.pointer, childShapeindex);
+    }
+    getNumChildShapes(): number {
+        return asm.bind_btCompoundShape_getNumChildShapes_0(this.pointer);
+    }
+    getChildShape(index: number): btCollisionShape {
+        return btCollisionShape.from(asm.bind_btCompoundShape_getChildShape_1(this.pointer, index), this);
+    }
+    updateChildTransform(childIndex: number, newChildTransform: btTransform, shouldRecalculateLocalAabb: boolean = true): void {
+        asm.bind_btCompoundShape_updateChildTransform_3(this.pointer, childIndex, newChildTransform.pointer, shouldRecalculateLocalAabb);
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btCompoundShape___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/structbtIndexedMesh)*/
+export abstract class btIndexedMesh extends btObject {
+    get numTriangles(): number {
+        return asm.bind_btIndexedMesh_get_m_numTriangles_0(this.pointer);
+    }
+    set numTriangles(n: number) {
+        asm.bind_btIndexedMesh_set_m_numTriangles_1(this.pointer, n);
+    }
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtTriangleMesh)*/
+export class btTriangleMesh extends btStridingMeshInterface {
+    constructor(use32bitIndices: boolean = true, use4componentVertices: boolean = true) {
+        super();
+        this.pointer = asm.bind_btTriangleMesh_btTriangleMesh_2(use32bitIndices, use4componentVertices);
+        btObject.cache[this.pointer] = this;
+    }
+    addTriangle(vertex0: btVector3, vertex1: btVector3, vertex2: btVector3, removeDuplicateVertices: boolean = false): void {
+        asm.bind_btTriangleMesh_addTriangle_4(this.pointer, vertex0.pointer, vertex1.pointer, vertex2.pointer, removeDuplicateVertices);
+    }
+    findOrAddVertex(vertex: btVector3, removeDuplicateVertices: boolean): number {
+        return asm.bind_btTriangleMesh_findOrAddVertex_2(this.pointer, vertex.pointer, removeDuplicateVertices);
+    }
+    addIndex(index: number): void {
+        asm.bind_btTriangleMesh_addIndex_1(this.pointer, index);
+    }
+    getIndexedMeshArray(): btIndexedMeshArray {
+        return btIndexedMeshArray.from(asm.bind_btTriangleMesh_getIndexedMeshArray_0(this.pointer), this);
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btTriangleMesh___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtEmptyShape)*/
+export class btEmptyShape extends btConcaveShape {
+    constructor() {
+        super();
+        this.pointer = asm.bind_btEmptyShape_btEmptyShape_0();
+        btObject.cache[this.pointer] = this;
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btEmptyShape___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtStaticPlaneShape)*/
+export class btStaticPlaneShape extends btConcaveShape {
+    constructor(planeNormal: btVector3, planeConstant: number) {
+        super();
+        this.pointer = asm.bind_btStaticPlaneShape_btStaticPlaneShape_2(planeNormal.pointer, planeConstant);
+        btObject.cache[this.pointer] = this;
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btStaticPlaneShape___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtBvhTriangleMeshShape)*/
+export class btBvhTriangleMeshShape extends btTriangleMeshShape {
+    constructor(meshInterface: btStridingMeshInterface, useQuantizedAabbCompression: boolean, buildBvh: boolean = true) {
+        super();
+        this.pointer = asm.bind_btBvhTriangleMeshShape_btBvhTriangleMeshShape_3(meshInterface.pointer, useQuantizedAabbCompression, buildBvh);
+        btObject.cache[this.pointer] = this;
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btBvhTriangleMeshShape___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtHeightfieldTerrainShape)*/
+export class btHeightfieldTerrainShape extends btConcaveShape {
+    constructor(heightStickWidth: number, heightStickLength: number, heightfieldData: VoidPtr, heightScale: number, minHeight: number, maxHeight: number, upAxis: number, hdt: PHY, flipQuadEdges: boolean) {
+        super();
+        this.pointer = asm.bind_btHeightfieldTerrainShape_btHeightfieldTerrainShape_9(heightStickWidth, heightStickLength, heightfieldData.pointer, heightScale, minHeight, maxHeight, upAxis, hdt, flipQuadEdges);
+        btObject.cache[this.pointer] = this;
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btHeightfieldTerrainShape___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtAABB)*/
+export class btAABB extends btObject {
+    constructor(v1: btVector3, v2: btVector3, v3: btVector3, margin: number) {
+        super();
+        this.pointer = asm.bind_btAABB_btAABB_4(v1.pointer, v2.pointer, v3.pointer, margin);
+        btObject.cache[this.pointer] = this;
+    }
+    invalidate(): void {
+        asm.bind_btAABB_invalidate_0(this.pointer);
+    }
+    incrementMargin(margin: number): void {
+        asm.bind_btAABB_increment_margin_1(this.pointer, margin);
+    }
+    copyWithMargin(other: btAABB, margin: number): void {
+        asm.bind_btAABB_copy_with_margin_2(this.pointer, other.pointer, margin);
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btAABB___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtPrimitiveTriangle)*/
+export class btPrimitiveTriangle extends btObject {
+    constructor() {
+        super();
+        this.pointer = asm.bind_btPrimitiveTriangle_btPrimitiveTriangle_0();
+        btObject.cache[this.pointer] = this;
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btPrimitiveTriangle___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtTriangleShapeEx)*/
+export class btTriangleShapeEx extends btObject {
+    constructor(p0: btVector3, p1: btVector3, p2: btVector3) {
+        super();
+        this.pointer = asm.bind_btTriangleShapeEx_btTriangleShapeEx_3(p0.pointer, p1.pointer, p2.pointer);
+        btObject.cache[this.pointer] = this;
+    }
+    getAabb(t: btTransform, aabbMin: btVector3, aabbMax: btVector3): void {
+        asm.bind_btTriangleShapeEx_getAabb_3(this.pointer, t.pointer, aabbMin.pointer, aabbMax.pointer);
+    }
+    applyTransform(t: btTransform): void {
+        asm.bind_btTriangleShapeEx_applyTransform_1(this.pointer, t.pointer);
+    }
+    buildTriPlane(plane: btVector4): void {
+        asm.bind_btTriangleShapeEx_buildTriPlane_1(this.pointer, plane.pointer);
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btTriangleShapeEx___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtTetrahedronShapeEx)*/
+export class btTetrahedronShapeEx extends btObject {
+    constructor() {
+        super();
+        this.pointer = asm.bind_btTetrahedronShapeEx_btTetrahedronShapeEx_0();
+        btObject.cache[this.pointer] = this;
+    }
+    setVertices(v0: btVector3, v1: btVector3, v2: btVector3, v3: btVector3): void {
+        asm.bind_btTetrahedronShapeEx_setVertices_4(this.pointer, v0.pointer, v1.pointer, v2.pointer, v3.pointer);
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btTetrahedronShapeEx___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtGImpactCompoundShape)*/
+export class btGImpactCompoundShape extends btGImpactShapeInterface {
+    constructor(childrenHasTransform: boolean = true) {
+        super();
+        this.pointer = asm.bind_btGImpactCompoundShape_btGImpactCompoundShape_1(childrenHasTransform);
+        btObject.cache[this.pointer] = this;
+    }
+    getCompoundPrimitiveManager(): btGImpactCompoundShape.CompoundPrimitiveManager {
+        return btGImpactCompoundShape.CompoundPrimitiveManager.from(asm.bind_btGImpactCompoundShape_getCompoundPrimitiveManager_0(this.pointer), this);
+    }
+    addChildShape(localTransform: btTransform, shape: btCollisionShape): void {
+        asm.bind_btGImpactCompoundShape_addChildShape_2(this.pointer, localTransform.pointer, shape.pointer);
+    }
+    getChildAabb(childIndex: number, t: btTransform, aabbMin: btVector3, aabbMax: btVector3): void {
+        asm.bind_btGImpactCompoundShape_getChildAabb_4(this.pointer, childIndex, t.pointer, aabbMin.pointer, aabbMax.pointer);
+    }
+    override getChildTransform(index: number): btTransform {
+        return btTransform.from(asm.bind_btGImpactCompoundShape_getChildTransform_1(this.pointer, index), this);
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btGImpactCompoundShape___destroy___0(this.pointer);}
+}
+export namespace btGImpactCompoundShape {
+    /**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtGImpactCompoundShape_1_1CompoundPrimitiveManager)*/
+    export abstract class CompoundPrimitiveManager extends btPrimitiveManagerBase {
+        get compoundShape(): btGImpactCompoundShape {
+            return btGImpactCompoundShape.from(asm.bind_CompoundPrimitiveManager_get_m_compoundShape_0(this.pointer), this);
+        }
+        set compoundShape(gics: btGImpactCompoundShape) {
+            asm.bind_CompoundPrimitiveManager_set_m_compoundShape_1(this.pointer, gics.pointer);
+        }
+    }
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtGImpactMeshShapePart)*/
+export class btGImpactMeshShapePart extends btGImpactShapeInterface {
+    constructor(meshInterface: btStridingMeshInterface, part: number) {
+        super();
+        this.pointer = asm.bind_btGImpactMeshShapePart_btGImpactMeshShapePart_2(meshInterface.pointer, part);
+        btObject.cache[this.pointer] = this;
+    }
+    getTrimeshPrimitiveManager(): btGImpactMeshShapePart.TrimeshPrimitiveManager {
+        return btGImpactMeshShapePart.TrimeshPrimitiveManager.from(asm.bind_btGImpactMeshShapePart_getTrimeshPrimitiveManager_0(this.pointer), this);
+    }
+    getVertexCount(): number {
+        return asm.bind_btGImpactMeshShapePart_getVertexCount_0(this.pointer);
+    }
+    getVertex(vertexIndex: number, vertex: btVector3): void {
+        asm.bind_btGImpactMeshShapePart_getVertex_2(this.pointer, vertexIndex, vertex.pointer);
+    }
+    getPart(): number {
+        return asm.bind_btGImpactMeshShapePart_getPart_0(this.pointer);
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btGImpactMeshShapePart___destroy___0(this.pointer);}
+}
+export namespace btGImpactMeshShapePart {
+    /**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtGImpactMeshShapePart_1_1TrimeshPrimitiveManager)*/
+    export class TrimeshPrimitiveManager extends btPrimitiveManagerBase {
+        constructor(manager?: TrimeshPrimitiveManager) {
+            super();
+            this.pointer =
+                manager === undefined
+                    ? asm.bind_TrimeshPrimitiveManager_TrimeshPrimitiveManager_0()
+                    : asm.bind_TrimeshPrimitiveManager_TrimeshPrimitiveManager_1(manager?.pointer);
+            btObject.cache[this.pointer] = this;
+        }
+        lock(): void {
+            asm.bind_TrimeshPrimitiveManager_lock_0(this.pointer);
+        }
+        unlock(): void {
+            asm.bind_TrimeshPrimitiveManager_unlock_0(this.pointer);
+        }
+        getVertexCount(): number {
+            return asm.bind_TrimeshPrimitiveManager_get_vertex_count_0(this.pointer);
+        }
+        getIndices(faceIndex: number, i0: number, i1: number, i2: number): void {
+            asm.bind_TrimeshPrimitiveManager_get_indices_4(this.pointer, faceIndex, i0, i1, i2);
+        }
+        getVertex(vertexIndex: number, vertex: btVector3): void {
+            asm.bind_TrimeshPrimitiveManager_get_vertex_2(this.pointer, vertexIndex, vertex.pointer);
+        }
+        getBulletTriangle(primIndex: number, triangle: btTriangleShapeEx): void {
+            asm.bind_TrimeshPrimitiveManager_get_bullet_triangle_2(this.pointer, primIndex, triangle.pointer);
+        }
+        get margin(): number {
+            return asm.bind_TrimeshPrimitiveManager_get_m_margin_0(this.pointer);
+        }
+        set margin(n: number) {
+            asm.bind_TrimeshPrimitiveManager_set_m_margin_1(this.pointer, n);
+        }
+        get meshInterface(): btStridingMeshInterface {
+            return btStridingMeshInterface.from(asm.bind_TrimeshPrimitiveManager_get_m_meshInterface_0(this.pointer), this);
+        }
+        set meshInterface(n: btStridingMeshInterface) {
+            asm.bind_TrimeshPrimitiveManager_set_m_meshInterface_1(this.pointer, n.pointer);
+        }
+        get part(): number {
+            return asm.bind_TrimeshPrimitiveManager_get_m_part_0(this.pointer);
+        }
+        set part(n: number) {
+            asm.bind_TrimeshPrimitiveManager_set_m_part_1(this.pointer, n);
+        }
+        get lock_count(): number {
+            return asm.bind_TrimeshPrimitiveManager_get_m_lock_count_0(this.pointer);
+        }
+        set lock_count(n: number) {
+            asm.bind_TrimeshPrimitiveManager_set_m_lock_count_1(this.pointer, n);
+        }
+        get numverts(): number {
+            return asm.bind_TrimeshPrimitiveManager_get_numverts_0(this.pointer);
+        }
+        set numverts(n: number) {
+            asm.bind_TrimeshPrimitiveManager_set_numverts_1(this.pointer, n);
+        }
+        get type(): number {
+            return asm.bind_TrimeshPrimitiveManager_get_type_0(this.pointer);
+        }
+        set type(n: number) {
+            asm.bind_TrimeshPrimitiveManager_set_type_1(this.pointer, n);
+        }
+        get stride(): number {
+            return asm.bind_TrimeshPrimitiveManager_get_stride_0(this.pointer);
+        }
+        set stride(n: number) {
+            asm.bind_TrimeshPrimitiveManager_set_stride_1(this.pointer, n);
+        }
+        get indexstride(): number {
+            return asm.bind_TrimeshPrimitiveManager_get_indexstride_0(this.pointer);
+        }
+        set indexstride(n: number) {
+            asm.bind_TrimeshPrimitiveManager_set_indexstride_1(this.pointer, n);
+        }
+        get numfaces(): number {
+            return asm.bind_TrimeshPrimitiveManager_get_numfaces_0(this.pointer);
+        }
+        set numfaces(n: number) {
+            asm.bind_TrimeshPrimitiveManager_set_numfaces_1(this.pointer, n);
+        }
+        get indicestype(): number {
+            return asm.bind_TrimeshPrimitiveManager_get_indicestype_0(this.pointer);
+        }
+        set indicestype(n: number) {
+            asm.bind_TrimeshPrimitiveManager_set_indicestype_1(this.pointer, n);
+        }
+        override[DESTROY_FUNC](): void {asm.bind_TrimeshPrimitiveManager___destroy___0(this.pointer);}
+    }
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtGImpactMeshShape)*/
+export class btGImpactMeshShape extends btGImpactShapeInterface {
+    constructor(meshInterface: btStridingMeshInterface) {
+        super();
+        this.pointer = asm.bind_btGImpactMeshShape_btGImpactMeshShape_1(meshInterface.pointer);
+        btObject.cache[this.pointer] = this;
+    }
+    getMeshInterface(): btStridingMeshInterface {
+        return btStridingMeshInterface.from(asm.bind_btGImpactMeshShape_getMeshInterface_0(this.pointer), this);
+    }
+    getMeshPartCount(): number {
+        return asm.bind_btGImpactMeshShape_getMeshPartCount_0(this.pointer);
+    }
+    getMeshPart(index: number): btGImpactMeshShapePart {
+        return btGImpactMeshShapePart.from(asm.bind_btGImpactMeshShape_getMeshPart_1(this.pointer, index), this);
+    }
+    calculateSerializeBufferSize(): number {
+        return asm.bind_btGImpactMeshShape_calculateSerializeBufferSize_0(this.pointer);
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btGImpactMeshShape___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/structbtCollisionAlgorithmConstructionInfo)*/
+export class btCollisionAlgorithmConstructionInfo extends btObject {
+    constructor(dispatcher: btDispatcher, temp: number) {
+        super();
+        this.pointer =
+            dispatcher === undefined
+                ? asm.bind_btCollisionAlgorithmConstructionInfo_btCollisionAlgorithmConstructionInfo_0()
+                : asm.bind_btCollisionAlgorithmConstructionInfo_btCollisionAlgorithmConstructionInfo_2(dispatcher.pointer, temp);
+        btObject.cache[this.pointer] = this;
+    }
+    get dispatcher1(): btDispatcher {
+        return btDispatcher.from(asm.bind_btCollisionAlgorithmConstructionInfo_get_m_dispatcher1_0(this.pointer), this);
+    }
+    set dispatcher1(d: btDispatcher) {
+        asm.bind_btCollisionAlgorithmConstructionInfo_set_m_dispatcher1_1(this.pointer, d.pointer);
+    }
+    get manifold(): btPersistentManifold {
+        return btPersistentManifold.from(asm.bind_btCollisionAlgorithmConstructionInfo_get_m_manifold_0(this.pointer), this);
+    }
+    set manifold(pm: btPersistentManifold) {
+        asm.bind_btCollisionAlgorithmConstructionInfo_set_m_manifold_1(this.pointer, pm.pointer);
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btCollisionAlgorithmConstructionInfo___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtGImpactCollisionAlgorithm)*/
+export class btGImpactCollisionAlgorithm extends btActivatingCollisionAlgorithm {
+    constructor(ci: btCollisionAlgorithmConstructionInfo, body0Wrap: btCollisionObjectWrapper, body1Wrap: btCollisionObjectWrapper) {
+        super();
+        this.pointer = asm.bind_btGImpactCollisionAlgorithm_btGImpactCollisionAlgorithm_3(ci.pointer, body0Wrap.pointer, body1Wrap.pointer);
+        btObject.cache[this.pointer] = this;
+    }
+    registerAlgorithm(dispatcher: btCollisionDispatcher): void {
+        asm.bind_btGImpactCollisionAlgorithm_registerAlgorithm_1(this.pointer, dispatcher.pointer);
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btGImpactCollisionAlgorithm___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/structbtDefaultCollisionConstructionInfo)*/
+export class btDefaultCollisionConstructionInfo extends btObject {
+    constructor() {
+        super();
+        this.pointer = asm.bind_btDefaultCollisionConstructionInfo_btDefaultCollisionConstructionInfo_0();
+        btObject.cache[this.pointer] = this;
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btDefaultCollisionConstructionInfo___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtPersistentManifold)*/
+export class btPersistentManifold extends btObject {
+    constructor() {
+        super();
+        this.pointer = asm.bind_btPersistentManifold_btPersistentManifold_0();
+        btObject.cache[this.pointer] = this;
+    }
+    getBody0(): btCollisionObject {
+        return btCollisionObject.from(asm.bind_btPersistentManifold_getBody0_0(this.pointer), this);
+    }
+    getBody1(): btCollisionObject {
+        return btCollisionObject.from(asm.bind_btPersistentManifold_getBody1_0(this.pointer), this);
+    }
+    getNumContacts(): number {
+        return asm.bind_btPersistentManifold_getNumContacts_0(this.pointer);
+    }
+    getContactPoint(index: number): btManifoldPoint {
+        return btManifoldPoint.from(asm.bind_btPersistentManifold_getContactPoint_1(this.pointer, index), this);
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btPersistentManifold___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtCollisionDispatcher)*/
+export class btCollisionDispatcher extends btDispatcher {
+    constructor(conf: btDefaultCollisionConfiguration) {
+        super();
+        this.pointer = asm.bind_btCollisionDispatcher_btCollisionDispatcher_1(conf.pointer);
+        btObject.cache[this.pointer] = this;
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btCollisionDispatcher___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtOverlappingPairCallback)*/
+export abstract class btOverlappingPairCallback extends btObject {}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtOverlappingPairCache)*/
+export abstract class btOverlappingPairCache extends btObject {
+    setInternalGhostPairCallback(ghostPairCallback: btOverlappingPairCallback): void {
+        asm.bind_btOverlappingPairCache_setInternalGhostPairCallback_1(this.pointer, ghostPairCallback.pointer);
+    }
+    getNumOverlappingPairs(): number {
+        return asm.bind_btOverlappingPairCache_getNumOverlappingPairs_0(this.pointer);
+    }
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtAxisSweep3)*/
+export class btAxisSweep3 extends btObject {
+    constructor(worldAabbMin: btVector3, worldAabbMax: btVector3, maxHandles: number = 16384, pairCache?: btOverlappingPairCache, disableRaycastAccelerator: boolean = false) {
+        super();
+        asm.bind_btAxisSweep3_btAxisSweep3_5(worldAabbMin.pointer, worldAabbMax.pointer, maxHandles, pairCache?.pointer ?? 0, disableRaycastAccelerator);
+        btObject.cache[this.pointer] = this;
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btAxisSweep3___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtBroadphaseInterface)*/
+export abstract class btBroadphaseInterface extends btObject {
+    getOverlappingPairCache(): btOverlappingPairCache {
+        return btOverlappingPairCache.from(asm.bind_btBroadphaseInterface_getOverlappingPairCache_0(this.pointer), this);
+    }
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtCollisionConfiguration)*/
+export abstract class btCollisionConfiguration extends btObject {}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/structbtDbvtBroadphase)*/
+export class btDbvtBroadphase extends btBroadphaseInterface {
+    constructor() {
+        super();
+        this.pointer = asm.bind_btDbvtBroadphase_btDbvtBroadphase_0();
+        btObject.cache[this.pointer] = this;
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btDbvtBroadphase___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/structbtBroadphaseProxy)*/
+export abstract class btBroadphaseProxy extends btObject {
+    get collisionFilterGroup(): number {
+        return asm.bind_btBroadphaseProxy_get_m_collisionFilterGroup_0(this.pointer);
+    }
+    set collisionFilterGroup(n: number) {
+        asm.bind_btBroadphaseProxy_set_m_collisionFilterGroup_1(this.pointer, n);
+    }
+    get collisionFilterMask(): number {
+        return asm.bind_btBroadphaseProxy_get_m_collisionFilterMask_0(this.pointer);
+    }
+    set collisionFilterMask(n: number) {
+        asm.bind_btBroadphaseProxy_set_m_collisionFilterMask_1(this.pointer, n);
+    }
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtRigidBody)*/
+export class btRigidBody extends btCollisionObject {
+    constructor(constructionInfo: btRigidBody.ConstructionInfo) {
+        super();
+        this.pointer = asm.bind_btRigidBody_btRigidBody_1(constructionInfo.pointer);
+        btObject.cache[this.pointer] = this;
+    }
+    getGravity(): btVector3 {
+        return btVector3.from(asm.bind_btRigidBody_getGravity_0(this.pointer), this);
+    }
+    setGravity(x: number, y: number, z: number): void;
+    setGravity(acceleration: Vector3): void;
+    setGravity(x: number | Vector3, y?: number, z?: number): void {
+        const acceleration: btVector3 = typeof x === 'object' ? temp.vector3.set(x) : temp.vector3.set(x, y, z);
+        asm.bind_btRigidBody_setGravity_1(this.pointer, acceleration.pointer);
+    }
+    getMotionState(): btMotionState {
+        return btMotionState.from(asm.bind_btRigidBody_getMotionState_0(this.pointer), this);
+    }
+    setMotionState(motionState: btMotionState): void {
+        asm.bind_btRigidBody_setMotionState_1(this.pointer, motionState.pointer);
+    }
+    getCenterOfMassTransform(): btTransform {
+        return btTransform.from(asm.bind_btRigidBody_getCenterOfMassTransform_0(this.pointer), this);
+    }
+    setCenterOfMassTransform(a: btTransform): void {
+        asm.bind_btRigidBody_setCenterOfMassTransform_1(this.pointer, a.pointer);
+    }
+    getLinearFactor(): btVector3 {
+        return btVector3.from(asm.bind_btRigidBody_getLinearFactor_0(this.pointer), this);
+    }
+    setLinearFactor(x: number, y: number, z: number): void;
+    setLinearFactor(linearFactor: Vector3): void;
+    setLinearFactor(x: number | Vector3, y?: number, z?: number): void {
+        const linearFactor: btVector3 = typeof x === 'object' ? temp.vector3.set(x) : temp.vector3.set(x, y, z);
+        asm.bind_btRigidBody_setLinearFactor_1(this.pointer, linearFactor.pointer);
+    }
+    getLinearVelocity(): btVector3 {
+        return btVector3.from(asm.bind_btRigidBody_getLinearVelocity_0(this.pointer), this);
+    }
+    setLinearVelocity(linVel: Vector3): void {
+        asm.bind_btRigidBody_setLinearVelocity_1(this.pointer, temp.vector3.set(linVel).pointer);
+    }
+    getAngularVelocity(): btVector3 {
+        return btVector3.from(asm.bind_btRigidBody_getAngularVelocity_0(this.pointer), this);
+    }
+    setAngularVelocity(x: number, y: number, z: number): void;
+    setAngularVelocity(angVel: Vector3): void;
+    setAngularVelocity(x: number | Vector3, y?: number, z?: number): void {
+        const angVel: btVector3 = typeof x === 'object' ? temp.vector3.set(x) : temp.vector3.set(x, y, z);
+        asm.bind_btRigidBody_setAngularVelocity_1(this.pointer, angVel.pointer);
+    }
+    getAngularFactor(): btVector3 {
+        return btVector3.from(asm.bind_btRigidBody_getAngularFactor_0(this.pointer), this);
+    }
+    setAngularFactor(x: number, y: number, z: number): void;
+    setAngularFactor(angularFactor: Vector3): void;
+    setAngularFactor(x: number | Vector3, y?: number, z?: number): void {
+        const angularFactor: btVector3 = typeof x === 'object' ? temp.vector3.set(x) : temp.vector3.set(x, y, z);
+        asm.bind_btRigidBody_setAngularFactor_1(this.pointer, angularFactor.pointer);
+    }
+    getFlags(): number {
+        return asm.bind_btRigidBody_getFlags_0(this.pointer);
+    }
+    setFlags(flags: number): void {
+        asm.bind_btRigidBody_setFlags_1(this.pointer, flags);
+    }
+    getLinearDamping(): number {
+        return asm.bind_btRigidBody_getLinearDamping_0(this.pointer);
+    }
+    getAngularDamping(): number {
+        return asm.bind_btRigidBody_getAngularDamping_0(this.pointer);
+    }
+    setDamping(linDamping: number, angDamping: number): void {
+        asm.bind_btRigidBody_setDamping_2(this.pointer, linDamping, angDamping);
+    }
+    setSleepingThresholds(linear: number, angular: number): void {
+        asm.bind_btRigidBody_setSleepingThresholds_2(this.pointer, linear, angular);
+    }
+    setMassProps(mass: number, inertia: btVector3): void {
+        asm.bind_btRigidBody_setMassProps_2(this.pointer, mass, inertia.pointer);
+    }
+    applyTorque(torque: Vector3): void {
+        asm.bind_btRigidBody_applyTorque_1(this.pointer, temp.vector3.set(torque).pointer);
+    }
+    applyLocalTorque(torque: Vector3): void {
+        asm.bind_btRigidBody_applyLocalTorque_1(this.pointer, temp.vector3.set(torque).pointer);
+    }
+    applyForce(force: Vector3, relPos: Vector3): void {
+        asm.bind_btRigidBody_applyForce_2(
+            this.pointer,
+            btVector3.stackAlloc(force).pointer,
+            btVector3.stackAlloc(relPos).pointer
+        );
+    }
+    applyCentralForce(force: Vector3): void {
+        asm.bind_btRigidBody_applyCentralForce_1(this.pointer, temp.vector3.set(force).pointer);
+    }
+    applyCentralLocalForce(force: Vector3): void {
+        asm.bind_btRigidBody_applyCentralLocalForce_1(this.pointer, temp.vector3.set(force).pointer);
+    }
+    applyTorqueImpulse(torque: Vector3): void {
+        asm.bind_btRigidBody_applyTorqueImpulse_1(this.pointer, temp.vector3.set(torque).pointer);
+    }
+    applyImpulse(impulse: Vector3, relPos: Vector3): void {
+        asm.bind_btRigidBody_applyImpulse_2(
+            this.pointer,
+            btVector3.stackAlloc(impulse).pointer,
+            btVector3.stackAlloc(relPos).pointer
+        );
+    }
+    applyCentralImpulse(impulse: Vector3): void {
+        asm.bind_btRigidBody_applyCentralImpulse_1(this.pointer, temp.vector3.set(impulse).pointer);
+    }
+    applyGravity(): void {
+        asm.bind_btRigidBody_applyGravity_0(this.pointer);
+    }
+    updateInertiaTensor(): void {
+        asm.bind_btRigidBody_updateInertiaTensor_0(this.pointer);
+    }
+    upcast(colObj: btCollisionObject): btRigidBody {
+        return btRigidBody.from(asm.bind_btRigidBody_upcast_1(this.pointer, colObj.pointer), this);
+    }
+    getAabb(aabbMin: btVector3, aabbMax: btVector3): void {
+        asm.bind_btRigidBody_getAabb_2(this.pointer, aabbMin.pointer, aabbMax.pointer);
+    }
+    getBroadphaseProxy(): btBroadphaseProxy {
+        return btBroadphaseProxy.from(asm.bind_btRigidBody_getBroadphaseProxy_0(this.pointer), this);
+    }
+    clearForces(): void {
+        asm.bind_btRigidBody_clearForces_0(this.pointer);
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btRigidBody___destroy___0(this.pointer);}
+}
+export namespace btRigidBody {
+    /**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/structbtRigidBody_1_1btRigidBodyConstructionInfo)*/
+    export class ConstructionInfo extends btObject {
+        constructor(mass: number, motionState: btMotionState, collisionShape: btCollisionShape, localInertia: Vector3 = new Vector3(0, 0, 0)) {
+            super();
+            this.pointer = asm.bind_btRigidBodyConstructionInfo_btRigidBodyConstructionInfo_4(mass, motionState.pointer, collisionShape.pointer, temp.vector3.set(localInertia).pointer);
+            btObject.cache[this.pointer] = this;
+        }
+        get linearDamping(): number {
+            return asm.bind_btRigidBodyConstructionInfo_get_m_linearDamping_0(this.pointer);
+        }
+        set linearDamping(n: number) {
+            asm.bind_btRigidBodyConstructionInfo_set_m_linearDamping_1(this.pointer, n);
+        }
+        get angularDamping(): number {
+            return asm.bind_btRigidBodyConstructionInfo_get_m_angularDamping_0(this.pointer);
+        }
+        set angularDamping(n: number) {
+            asm.bind_btRigidBodyConstructionInfo_set_m_angularDamping_1(this.pointer, n);
+        }
+        get friction(): number {
+            return asm.bind_btRigidBodyConstructionInfo_get_m_friction_0(this.pointer);
+        }
+        set friction(n: number) {
+            asm.bind_btRigidBodyConstructionInfo_set_m_friction_1(this.pointer, n);
+        }
+        get rollingFriction(): number {
+            return asm.bind_btRigidBodyConstructionInfo_get_m_rollingFriction_0(this.pointer);
+        }
+        set rollingFriction(n: number) {
+            asm.bind_btRigidBodyConstructionInfo_set_m_rollingFriction_1(this.pointer, n);
+        }
+        get restitution(): number {
+            return asm.bind_btRigidBodyConstructionInfo_get_m_restitution_0(this.pointer);
+        }
+        set restitution(n: number) {
+            asm.bind_btRigidBodyConstructionInfo_set_m_restitution_1(this.pointer, n);
+        }
+        get linearSleepingThreshold(): number {
+            return asm.bind_btRigidBodyConstructionInfo_get_m_linearSleepingThreshold_0(this.pointer);
+        }
+        set linearSleepingThreshold(n: number) {
+            asm.bind_btRigidBodyConstructionInfo_set_m_linearSleepingThreshold_1(this.pointer, n);
+        }
+        get angularSleepingThreshold(): number {
+            return asm.bind_btRigidBodyConstructionInfo_get_m_angularSleepingThreshold_0(this.pointer);
+        }
+        set angularSleepingThreshold(n: number) {
+            asm.bind_btRigidBodyConstructionInfo_set_m_angularSleepingThreshold_1(this.pointer, n);
+        }
+        get additionalDamping(): boolean {
+            return Boolean(asm.bind_btRigidBodyConstructionInfo_get_m_additionalDamping_0(this.pointer));
+        }
+        set additionalDamping(b: boolean) {
+            asm.bind_btRigidBodyConstructionInfo_set_m_additionalDamping_1(this.pointer, b);
+        }
+        get additionalDampingFactor(): number {
+            return asm.bind_btRigidBodyConstructionInfo_get_m_additionalDampingFactor_0(this.pointer);
+        }
+        set additionalDampingFactor(n: number) {
+            asm.bind_btRigidBodyConstructionInfo_set_m_additionalDampingFactor_1(this.pointer, n);
+        }
+        get additionalLinearDampingThresholdSqr(): number {
+            return asm.bind_btRigidBodyConstructionInfo_get_m_additionalLinearDampingThresholdSqr_0(this.pointer);
+        }
+        set additionalLinearDampingThresholdSqr(n: number) {
+            asm.bind_btRigidBodyConstructionInfo_set_m_additionalLinearDampingThresholdSqr_1(this.pointer, n);
+        }
+        get additionalAngularDampingThresholdSqr(): number {
+            return asm.bind_btRigidBodyConstructionInfo_get_m_additionalAngularDampingThresholdSqr_0(this.pointer);
+        }
+        set additionalAngularDampingThresholdSqr(n: number) {
+            asm.bind_btRigidBodyConstructionInfo_set_m_additionalAngularDampingThresholdSqr_1(this.pointer, n);
+        }
+        get additionalAngularDampingFactor(): number {
+            return asm.bind_btRigidBodyConstructionInfo_get_m_additionalAngularDampingFactor_0(this.pointer);
+        }
+        set additionalAngularDampingFactor(n: number) {
+            asm.bind_btRigidBodyConstructionInfo_set_m_additionalAngularDampingFactor_1(this.pointer, n);
+        }
+        override[DESTROY_FUNC](): void {asm.bind_btRigidBodyConstructionInfo___destroy___0(this.pointer);}
+    }
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/structbtConstraintSetting)*/
+export class btConstraintSetting extends btObject {
+    constructor() {
+        super();
+        this.pointer = asm.bind_btConstraintSetting_btConstraintSetting_0();
+        btObject.cache[this.pointer] = this;
+    }
+    get tau(): number {
+        return asm.bind_btConstraintSetting_get_m_tau_0(this.pointer);
+    }
+    set tau(n: number) {
+        asm.bind_btConstraintSetting_set_m_tau_1(this.pointer, n);
+    }
+    get damping(): number {
+        return asm.bind_btConstraintSetting_get_m_damping_0(this.pointer);
+    }
+    set damping(n: number) {
+        asm.bind_btConstraintSetting_set_m_damping_1(this.pointer, n);
+    }
+    get impulseClamp(): number {
+        return asm.bind_btConstraintSetting_get_m_impulseClamp_0(this.pointer);
+    }
+    set impulseClamp(n: number) {
+        asm.bind_btConstraintSetting_set_m_impulseClamp_1(this.pointer, n);
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btConstraintSetting___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtPoint2PointConstraint)*/
+export class btPoint2PointConstraint extends btTypedConstraint {
+    static override stackAlloc<T extends typeof btObject>(this: T, rbA: btRigidBody, rbB: btRigidBody, pivotInA: btVector3, pivotInB: btVector3): InstanceType<T>;
+    static override stackAlloc<T extends typeof btObject>(this: T, rbA: btRigidBody, pivotInA: btVector3): InstanceType<T>;
+    static override stackAlloc<T extends typeof btObject>(this: T, ...args: any[]): InstanceType<T> {
+        return btObject.stackAlloc.call(this, ...args) as InstanceType<T>;
+    }
+    constructor(rbA: btRigidBody, rbB: btRigidBody, pivotInA: btVector3, pivotInB: btVector3);
+    constructor(rbA: btRigidBody, pivotInA: btVector3);
+    constructor(rbA: btRigidBody, rbB_pivotInA: btRigidBody | btVector3, pivotInA?: btVector3, pivotInB?: btVector3) {
+        super();
+        this.pointer =
+            pivotInA === undefined
+                ? asm.bind_btPoint2PointConstraint_btPoint2PointConstraint_2(rbA.pointer, rbB_pivotInA.pointer)
+                : asm.bind_btPoint2PointConstraint_btPoint2PointConstraint_4(rbA.pointer, rbB_pivotInA.pointer, pivotInA.pointer, pivotInB!.pointer);
+        btObject.cache[this.pointer] = this;
+    }
+    setPivotA(pivotA: Vector3): void {
+        asm.bind_btPoint2PointConstraint_setPivotA_1(this.pointer, temp.vector3.set(pivotA).pointer);
+    }
+    setPivotB(pivotB: Vector3): void {
+        asm.bind_btPoint2PointConstraint_setPivotB_1(this.pointer, temp.vector3.set(pivotB).pointer);
+    }
+    getPivotInA(): btVector3 {
+        return btVector3.from(asm.bind_btPoint2PointConstraint_getPivotInA_0(this.pointer), this);
+    }
+    getPivotInB(): btVector3 {
+        return btVector3.from(asm.bind_btPoint2PointConstraint_getPivotInB_0(this.pointer), this);
+    }
+    get setting(): btConstraintSetting {
+        return btConstraintSetting.from(asm.bind_btPoint2PointConstraint_get_m_setting_0(this.pointer), this);
+    }
+    set setting(cs: btConstraintSetting) {
+        asm.bind_btPoint2PointConstraint_set_m_setting_1(this.pointer, cs.pointer);
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btPoint2PointConstraint___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtGeneric6DofSpringConstraint)*/
+export class btGeneric6DofSpringConstraint extends btGeneric6DofConstraint {
+    constructor(rbA: btRigidBody, rbB: btRigidBody, frameInA: btTransform, frameInB: btTransform, useLinearFrameReferenceFrameA: boolean);
+    constructor(rbB: btRigidBody, frameInB: btTransform, useLinearFrameReferenceFrameB: boolean);
+    constructor(a: btRigidBody, b: btRigidBody | btTransform, c: btTransform | boolean, d?: btTransform, e?: boolean) {
+        super({} as any, {} as any, {} as any/**佔位符*/);
+        this.pointer =
+            d === undefined
+                ? asm.bind_btGeneric6DofSpringConstraint_btGeneric6DofSpringConstraint_3(a.pointer, b.pointer, c as boolean)
+                : asm.bind_btGeneric6DofSpringConstraint_btGeneric6DofSpringConstraint_5(a.pointer, b.pointer, (c as btTransform).pointer, d.pointer, e!);
+        btObject.cache[this.pointer] = this;
+    }
+    enableSpring(index: number, onOff: boolean): void {
+        asm.bind_btGeneric6DofSpringConstraint_enableSpring_2(this.pointer, index, onOff);
+    }
+    setStiffness(index: number, stiffness: number): void {
+        asm.bind_btGeneric6DofSpringConstraint_setStiffness_2(this.pointer, index, stiffness);
+    }
+    setDamping(index: number, damping: number): void {
+        asm.bind_btGeneric6DofSpringConstraint_setDamping_2(this.pointer, index, damping);
+    }
+    setEquilibriumPoint(index: number, val: number): void {
+        index === undefined
+            ? asm.bind_btGeneric6DofSpringConstraint_setEquilibriumPoint_0(this.pointer)
+            : val === undefined
+                ? asm.bind_btGeneric6DofSpringConstraint_setEquilibriumPoint_1(this.pointer, index)
+                : asm.bind_btGeneric6DofSpringConstraint_setEquilibriumPoint_2(this.pointer, index, val);
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btGeneric6DofSpringConstraint___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtConstraintSolver)*/
+export abstract class btConstraintSolver extends btObject {
+    override[DESTROY_FUNC](): void {asm.bind_btConstraintSolver___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtSequentialImpulseConstraintSolver)*/
+export class btSequentialImpulseConstraintSolver extends btConstraintSolver {
+    constructor() {
+        super();
+        this.pointer = asm.bind_btSequentialImpulseConstraintSolver_btSequentialImpulseConstraintSolver_0();
+        btObject.cache[this.pointer] = this;
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btSequentialImpulseConstraintSolver___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtConeTwistConstraint)*/
+export class btConeTwistConstraint extends btTypedConstraint {
+    static override stackAlloc<T extends typeof btObject>(this: T, rbA: btRigidBody, rbB: btRigidBody, rbAFrame: btTransform, rbBFrame: btTransform): InstanceType<T>;
+    static override stackAlloc<T extends typeof btObject>(this: T, rbA: btRigidBody, rbAFrame: btTransform): InstanceType<T>;
+    static override stackAlloc<T extends typeof btObject>(this: T, ...args: any[]): InstanceType<T> {
+        return btObject.stackAlloc.call(this, ...args) as InstanceType<T>;
+    }
+    constructor(rbA: btRigidBody, rbB: btRigidBody, rbAFrame: btTransform, rbBFrame: btTransform);
+    constructor(rbA: btRigidBody, rbAFrame: btTransform);
+    constructor(rbA: btRigidBody, rbB: btRigidBody | btTransform, rbAFrame?: btTransform, rbBFrame?: btTransform) {
+        super();
+        this.pointer =
+            rbAFrame === undefined
+                ? asm.bind_btConeTwistConstraint_btConeTwistConstraint_2(rbA.pointer, rbB.pointer)
+                : asm.bind_btConeTwistConstraint_btConeTwistConstraint_4(rbA.pointer, rbB.pointer, rbAFrame.pointer, rbBFrame!.pointer);
+        btObject.cache[this.pointer] = this;
+    }
+    setLimit(limitIndex: number, limitValue: number): void {
+        asm.bind_btConeTwistConstraint_setLimit_2(this.pointer, limitIndex, limitValue);
+    }
+    setAngularOnly(angularOnly: boolean): void {
+        asm.bind_btConeTwistConstraint_setAngularOnly_1(this.pointer, angularOnly);
+    }
+    setDamping(damping: number): void {
+        asm.bind_btConeTwistConstraint_setDamping_1(this.pointer, damping);
+    }
+    enableMotor(b: boolean): void {
+        asm.bind_btConeTwistConstraint_enableMotor_1(this.pointer, b);
+    }
+    setMaxMotorImpulse(maxMotorImpulse: number): void {
+        asm.bind_btConeTwistConstraint_setMaxMotorImpulse_1(this.pointer, maxMotorImpulse);
+    }
+    setMaxMotorImpulseNormalized(maxMotorImpulse: number): void {
+        asm.bind_btConeTwistConstraint_setMaxMotorImpulseNormalized_1(this.pointer, maxMotorImpulse);
+    }
+    setMotorTarget(q: btQuaternion): void {
+        asm.bind_btConeTwistConstraint_setMotorTarget_1(this.pointer, q.pointer);
+    }
+    setMotorTargetInConstraintSpace(q: btQuaternion): void {
+        asm.bind_btConeTwistConstraint_setMotorTargetInConstraintSpace_1(this.pointer, q.pointer);
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btConeTwistConstraint___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtHingeConstraint)*/
+export class btHingeConstraint extends btTypedConstraint {
+    static override stackAlloc<T extends typeof btObject>(this: T, rbA: btRigidBody, rbB: btRigidBody, pivotInA: btVector3, pivotInB: btVector3, axisInA: btVector3, axisInB: btVector3, useReferenceFrameA?: boolean): InstanceType<T>;
+    static override stackAlloc<T extends typeof btObject>(this: T, rbA: btRigidBody, rbB: btRigidBody, rbAFrame: btTransform, rbBFrame: btTransform, useReferenceFrameA?: boolean): InstanceType<T>;
+    static override stackAlloc<T extends typeof btObject>(this: T, rbA: btRigidBody, rbAFrame: btTransform, useReferenceFrameA?: boolean): InstanceType<T>;
+    static override stackAlloc<T extends typeof btObject>(this: T, ...args: any[]): InstanceType<T> {
+        return btObject.stackAlloc.call(this, ...args) as InstanceType<T>;
+    }
+    // 這多載多少有點過分了啊，實作的參數型別我懶了啊，用了通用的
+    constructor(rbA: btRigidBody, rbB: btRigidBody, pivotInA: btVector3, pivotInB: btVector3, axisInA: btVector3, axisInB: btVector3, useReferenceFrameA?: boolean);
+    constructor(rbA: btRigidBody, rbB: btRigidBody, rbAFrame: btTransform, rbBFrame: btTransform, useReferenceFrameA?: boolean);
+    constructor(rbA: btRigidBody, rbAFrame: btTransform, useReferenceFrameA?: boolean);
+    constructor(a: btObject, b: btObject, c?: btObject | boolean, d?: btObject, e?: btObject | boolean, f?: btObject, g?: boolean) {
+        super();
+        this.pointer =
+            d === undefined
+                ? asm.bind_btHingeConstraint_btHingeConstraint_3(a.pointer, b.pointer, c as boolean ?? false)
+                : f === undefined
+                    ? asm.bind_btHingeConstraint_btHingeConstraint_5(a.pointer, b.pointer, (c as btTransform).pointer, d.pointer, e as boolean ?? false)
+                    : asm.bind_btHingeConstraint_btHingeConstraint_7(a.pointer, b.pointer, (c as btVector3).pointer, d.pointer, (e as btVector3).pointer, f.pointer, g ?? false);
+        btObject.cache[this.pointer] = this;
+    }
+    getHingeAngle(): number {
+        return asm.bind_btHingeConstraint_getHingeAngle_0(this.pointer);
+    }
+    /**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtHingeConstraint#a99cfd186cc4f41246d1cac1ce840eb0d)*/
+    setLimit(low: number, high: number, softness: number = 0.9, biasFactor: number = 0.3, relaxationFactor: number = 1.0): void {
+        asm.bind_btHingeConstraint_setLimit_5(this.pointer, low, high, softness, biasFactor, relaxationFactor);
+    }
+    enableAngularMotor(enableMotor: boolean, targetVelocity: number, maxMotorImpulse: number): void {
+        asm.bind_btHingeConstraint_enableAngularMotor_3(this.pointer, enableMotor, targetVelocity, maxMotorImpulse);
+    }
+    setAngularOnly(angularOnly: boolean): void {
+        asm.bind_btHingeConstraint_setAngularOnly_1(this.pointer, angularOnly);
+    }
+    enableMotor(enableMotor: boolean): void {
+        asm.bind_btHingeConstraint_enableMotor_1(this.pointer, enableMotor);
+    }
+    setMaxMotorImpulse(maxMotorImpulse: number): void {
+        asm.bind_btHingeConstraint_setMaxMotorImpulse_1(this.pointer, maxMotorImpulse);
+    }
+    setMotorTarget(targetAngle: number, dt: number): void {
+        asm.bind_btHingeConstraint_setMotorTarget_2(this.pointer, targetAngle, dt);
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btHingeConstraint___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtSliderConstraint)*/
+export class btSliderConstraint extends btTypedConstraint {
+    static override stackAlloc<T extends typeof btObject>(this: T, rbA: btRigidBody, rbB: btRigidBody, frameInA: btTransform, frameInB: btTransform, useLinearReferenceFrameA: boolean): InstanceType<T>;
+    static override stackAlloc<T extends typeof btObject>(this: T, rbB: btRigidBody, frameInB: btTransform, useLinearReferenceFrameA: boolean): InstanceType<T>;
+    static override stackAlloc<T extends typeof btObject>(this: T, ...args: any[]): InstanceType<T> {
+        return btObject.stackAlloc.call(this, ...args) as InstanceType<T>;
+    }
+    constructor(rbA: btRigidBody, rbB: btRigidBody, frameInA: btTransform, frameInB: btTransform, useLinearReferenceFrameA: boolean);
+    constructor(rbB: btRigidBody, frameInB: btTransform, useLinearReferenceFrameA: boolean);
+    constructor(a: btRigidBody, b: btRigidBody | btTransform, c: btTransform | boolean, d?: btTransform, e?: boolean) {
+        super();
+        this.pointer =
+            d === undefined
+                ? asm.bind_btSliderConstraint_btSliderConstraint_3(a.pointer, b.pointer, c as boolean)
+                : asm.bind_btSliderConstraint_btSliderConstraint_5(a.pointer, b.pointer, (c as btTransform).pointer, d.pointer, e!);
+        btObject.cache[this.pointer] = this;
+    }
+    getLinearPos(): number {
+        return asm.bind_btSliderConstraint_getLinearPos_0(this.pointer);
+    }
+    getAngularPos(): number {
+        return asm.bind_btSliderConstraint_getAngularPos_0(this.pointer);
+    }
+    setLowerLinLimit(lowerLimit: number): void {
+        asm.bind_btSliderConstraint_setLowerLinLimit_1(this.pointer, lowerLimit);
+    }
+    setUpperLinLimit(upperLimit: number): void {
+        asm.bind_btSliderConstraint_setUpperLinLimit_1(this.pointer, upperLimit);
+    }
+    setLowerAngLimit(lowerLimit: number): void {
+        asm.bind_btSliderConstraint_setLowerAngLimit_1(this.pointer, lowerLimit);
+    }
+    setUpperAngLimit(upperLimit: number): void {
+        asm.bind_btSliderConstraint_setUpperAngLimit_1(this.pointer, upperLimit);
+    }
+    setPoweredLinMotor(onOff: boolean): void {
+        asm.bind_btSliderConstraint_setPoweredLinMotor_1(this.pointer, onOff);
+    }
+    setMaxLinMotorForce(maxLinMotorForce: number): void {
+        asm.bind_btSliderConstraint_setMaxLinMotorForce_1(this.pointer, maxLinMotorForce);
+    }
+    setTargetLinMotorVelocity(targetLinMotorVelocity: number): void {
+        asm.bind_btSliderConstraint_setTargetLinMotorVelocity_1(this.pointer, targetLinMotorVelocity);
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btSliderConstraint___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtFixedConstraint)*/
+export class btFixedConstraint extends btTypedConstraint {
+    constructor(rbA: btRigidBody, rbB: btRigidBody, frameInA: btTransform, frameInB: btTransform) {
+        super();
+        this.pointer = asm.bind_btFixedConstraint_btFixedConstraint_4(rbA.pointer, rbB.pointer, frameInA.pointer, frameInB.pointer);
+        btObject.cache[this.pointer] = this;
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btFixedConstraint___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/structbtDispatcherInfo)*/
+export abstract class btDispatcherInfo extends btObject {
+    get timeStep(): number {
+        return asm.bind_btDispatcherInfo_get_m_timeStep_0(this.pointer);
+    }
+    set timeStep(n: number) {
+        asm.bind_btDispatcherInfo_set_m_timeStep_1(this.pointer, n);
+    }
+    get stepCount(): number {
+        return asm.bind_btDispatcherInfo_get_m_stepCount_0(this.pointer);
+    }
+    set stepCount(n: number) {
+        asm.bind_btDispatcherInfo_set_m_stepCount_1(this.pointer, n);
+    }
+    get dispatchFunc(): number {
+        return asm.bind_btDispatcherInfo_get_m_dispatchFunc_0(this.pointer);
+    }
+    set dispatchFunc(n: number) {
+        asm.bind_btDispatcherInfo_set_m_dispatchFunc_1(this.pointer, n);
+    }
+    get timeOfImpact(): number {
+        return asm.bind_btDispatcherInfo_get_m_timeOfImpact_0(this.pointer);
+    }
+    set timeOfImpact(n: number) {
+        asm.bind_btDispatcherInfo_set_m_timeOfImpact_1(this.pointer, n);
+    }
+    get useContinuous(): boolean {
+        return Boolean(asm.bind_btDispatcherInfo_get_m_useContinuous_0(this.pointer));
+    }
+    set useContinuous(b: boolean) {
+        asm.bind_btDispatcherInfo_set_m_useContinuous_1(this.pointer, b);
+    }
+    get enableSatConvex(): boolean {
+        return Boolean(asm.bind_btDispatcherInfo_get_m_enableSatConvex_0(this.pointer));
+    }
+    set enableSatConvex(b: boolean) {
+        asm.bind_btDispatcherInfo_set_m_enableSatConvex_1(this.pointer, b);
+    }
+    get enableSPU(): boolean {
+        return Boolean(asm.bind_btDispatcherInfo_get_m_enableSPU_0(this.pointer));
+    }
+    set enableSPU(b: boolean) {
+        asm.bind_btDispatcherInfo_set_m_enableSPU_1(this.pointer, b);
+    }
+    get useEpa(): boolean {
+        return Boolean(asm.bind_btDispatcherInfo_get_m_useEpa_0(this.pointer));
+    }
+    set useEpa(b: boolean) {
+        asm.bind_btDispatcherInfo_set_m_useEpa_1(this.pointer, b);
+    }
+    get allowedCcdPenetration(): number {
+        return asm.bind_btDispatcherInfo_get_m_allowedCcdPenetration_0(this.pointer);
+    }
+    set allowedCcdPenetration(n: number) {
+        asm.bind_btDispatcherInfo_set_m_allowedCcdPenetration_1(this.pointer, n);
+    }
+    get useConvexConservativeDistanceUtil(): boolean {
+        return Boolean(asm.bind_btDispatcherInfo_get_m_useConvexConservativeDistanceUtil_0(this.pointer));
+    }
+    set useConvexConservativeDistanceUtil(b: boolean) {
+        asm.bind_btDispatcherInfo_set_m_useConvexConservativeDistanceUtil_1(this.pointer, b);
+    }
+    get convexConservativeDistanceThreshold(): number {
+        return asm.bind_btDispatcherInfo_get_m_convexConservativeDistanceThreshold_0(this.pointer);
+    }
+    set convexConservativeDistanceThreshold(n: number) {
+        asm.bind_btDispatcherInfo_set_m_convexConservativeDistanceThreshold_1(this.pointer, n);
+    }
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/structbtContactSolverInfo)*/
+export abstract class btContactSolverInfo extends btObject {
+    get splitImpulse(): boolean {
+        return Boolean(asm.bind_btContactSolverInfo_get_m_splitImpulse_0(this.pointer));
+    }
+    set splitImpulse(b: boolean) {
+        asm.bind_btContactSolverInfo_set_m_splitImpulse_1(this.pointer, b);
+    }
+    get splitImpulsePenetrationThreshold(): number {
+        return asm.bind_btContactSolverInfo_get_m_splitImpulsePenetrationThreshold_0(this.pointer);
+    }
+    set splitImpulsePenetrationThreshold(n: number) {
+        asm.bind_btContactSolverInfo_set_m_splitImpulsePenetrationThreshold_1(this.pointer, n);
+    }
+    get numIterations(): number {
+        return asm.bind_btContactSolverInfo_get_m_numIterations_0(this.pointer);
+    }
+    set numIterations(n: number) {
+        asm.bind_btContactSolverInfo_set_m_numIterations_1(this.pointer, n);
+    }
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtDefaultVehicleRaycaster)*/
+export class btDefaultVehicleRaycaster extends btVehicleRaycaster {
+    constructor(world: btDynamicsWorld) {
+        super();
+        this.pointer = asm.bind_btDefaultVehicleRaycaster_btDefaultVehicleRaycaster_1(world.pointer);
+        btObject.cache[this.pointer] = this;
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btDefaultVehicleRaycaster___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/structbtWheelInfo)*/
+export abstract class btWheelInfoConstructionInfo extends btObject {
+    get chassisConnectionCS() {
+        return btVector3.from(asm.bind_btWheelInfoConstructionInfo_get_m_chassisConnectionCS_0(this.pointer), this);
+    }
+    set chassisConnectionCS(a) {
+        asm.bind_btWheelInfoConstructionInfo_set_m_chassisConnectionCS_1(this.pointer, a.pointer);
+    }
+    get wheelDirectionCS(): btVector3 {
+        return btVector3.from(asm.bind_btWheelInfoConstructionInfo_get_m_wheelDirectionCS_0(this.pointer), this);
+    }
+    set wheelDirectionCS(v: btVector3) {
+        asm.bind_btWheelInfoConstructionInfo_set_m_wheelDirectionCS_1(this.pointer, v.pointer);
+    }
+    get wheelAxleCS(): btVector3 {
+        return btVector3.from(asm.bind_btWheelInfoConstructionInfo_get_m_wheelAxleCS_0(this.pointer), this);
+    }
+    set wheelAxleCS(v: btVector3) {
+        asm.bind_btWheelInfoConstructionInfo_set_m_wheelAxleCS_1(this.pointer, v.pointer);
+    }
+    get suspensionRestLength(): number {
+        return asm.bind_btWheelInfoConstructionInfo_get_m_suspensionRestLength_0(this.pointer);
+    }
+    set suspensionRestLength(n: number) {
+        asm.bind_btWheelInfoConstructionInfo_set_m_suspensionRestLength_1(this.pointer, n);
+    }
+    get maxSuspensionTravelCm(): number {
+        return asm.bind_btWheelInfoConstructionInfo_get_m_maxSuspensionTravelCm_0(this.pointer);
+    }
+    set maxSuspensionTravelCm(n: number) {
+        asm.bind_btWheelInfoConstructionInfo_set_m_maxSuspensionTravelCm_1(this.pointer, n);
+    }
+    get wheelRadius(): number {
+        return asm.bind_btWheelInfoConstructionInfo_get_m_wheelRadius_0(this.pointer);
+    }
+    set wheelRadius(n: number) {
+        asm.bind_btWheelInfoConstructionInfo_set_m_wheelRadius_1(this.pointer, n);
+    }
+    get suspensionStiffness(): number {
+        return asm.bind_btWheelInfoConstructionInfo_get_m_suspensionStiffness_0(this.pointer);
+    }
+    set suspensionStiffness(n: number) {
+        asm.bind_btWheelInfoConstructionInfo_set_m_suspensionStiffness_1(this.pointer, n);
+    }
+    get wheelsDampingCompression(): number {
+        return asm.bind_btWheelInfoConstructionInfo_get_m_wheelsDampingCompression_0(this.pointer);
+    }
+    set wheelsDampingCompression(n: number) {
+        asm.bind_btWheelInfoConstructionInfo_set_m_wheelsDampingCompression_1(this.pointer, n);
+    }
+    get wheelsDampingRelaxation(): number {
+        return asm.bind_btWheelInfoConstructionInfo_get_m_wheelsDampingRelaxation_0(this.pointer);
+    }
+    set wheelsDampingRelaxation(n: number) {
+        asm.bind_btWheelInfoConstructionInfo_set_m_wheelsDampingRelaxation_1(this.pointer, n);
+    }
+    get frictionSlip(): number {
+        return asm.bind_btWheelInfoConstructionInfo_get_m_frictionSlip_0(this.pointer);
+    }
+    set frictionSlip(n: number) {
+        asm.bind_btWheelInfoConstructionInfo_set_m_frictionSlip_1(this.pointer, n);
+    }
+    get maxSuspensionForce(): number {
+        return asm.bind_btWheelInfoConstructionInfo_get_m_maxSuspensionForce_0(this.pointer);
+    }
+    set maxSuspensionForce(n: number) {
+        asm.bind_btWheelInfoConstructionInfo_set_m_maxSuspensionForce_1(this.pointer, n);
+    }
+    get bIsFrontWheel(): boolean {
+        return Boolean(asm.bind_btWheelInfoConstructionInfo_get_m_bIsFrontWheel_0(this.pointer));
+    }
+    set bIsFrontWheel(b: boolean) {
+        asm.bind_btWheelInfoConstructionInfo_set_m_bIsFrontWheel_1(this.pointer, b);
+    }
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/structbtWheelInfo)*/
+export class btWheelInfo extends btObject {
+    constructor(ci: btWheelInfoConstructionInfo) {
+        super();
+        this.pointer = asm.bind_btWheelInfo_btWheelInfo_1(ci.pointer);
+        btObject.cache[this.pointer] = this;
+    }
+    getSuspensionRestLength(): number {
+        return asm.bind_btWheelInfo_getSuspensionRestLength_0(this.pointer);
+    }
+    updateWheel(chassis: btRigidBody, raycastInfo: btWheelInfo.RaycastInfo): void {
+        asm.bind_btWheelInfo_updateWheel_2(this.pointer, chassis.pointer, raycastInfo.pointer);
+    }
+    get suspensionStiffness(): number {
+        return asm.bind_btWheelInfo_get_m_suspensionStiffness_0(this.pointer);
+    }
+    set suspensionStiffness(n: number) {
+        asm.bind_btWheelInfo_set_m_suspensionStiffness_1(this.pointer, n);
+    }
+    get frictionSlip(): number {
+        return asm.bind_btWheelInfo_get_m_frictionSlip_0(this.pointer);
+    }
+    set frictionSlip(n: number) {
+        asm.bind_btWheelInfo_set_m_frictionSlip_1(this.pointer, n);
+    }
+    get engineForce(): number {
+        return asm.bind_btWheelInfo_get_m_engineForce_0(this.pointer);
+    }
+    set engineForce(n: number) {
+        asm.bind_btWheelInfo_set_m_engineForce_1(this.pointer, n);
+    }
+    get rollInfluence(): number {
+        return asm.bind_btWheelInfo_get_m_rollInfluence_0(this.pointer);
+    }
+    set rollInfluence(n: number) {
+        asm.bind_btWheelInfo_set_m_rollInfluence_1(this.pointer, n);
+    }
+    get suspensionRestLength1(): number {
+        return asm.bind_btWheelInfo_get_m_suspensionRestLength1_0(this.pointer);
+    }
+    set suspensionRestLength1(n: number) {
+        asm.bind_btWheelInfo_set_m_suspensionRestLength1_1(this.pointer, n);
+    }
+    get wheelsRadius(): number {
+        return asm.bind_btWheelInfo_get_m_wheelsRadius_0(this.pointer);
+    }
+    set wheelsRadius(n: number) {
+        asm.bind_btWheelInfo_set_m_wheelsRadius_1(this.pointer, n);
+    }
+    get wheelsDampingCompression(): number {
+        return asm.bind_btWheelInfo_get_m_wheelsDampingCompression_0(this.pointer);
+    }
+    set wheelsDampingCompression(n: number) {
+        asm.bind_btWheelInfo_set_m_wheelsDampingCompression_1(this.pointer, n);
+    }
+    get wheelsDampingRelaxation(): number {
+        return asm.bind_btWheelInfo_get_m_wheelsDampingRelaxation_0(this.pointer);
+    }
+    set wheelsDampingRelaxation(n: number) {
+        asm.bind_btWheelInfo_set_m_wheelsDampingRelaxation_1(this.pointer, n);
+    }
+    get steering(): number {
+        return asm.bind_btWheelInfo_get_m_steering_0(this.pointer);
+    }
+    set steering(n: number) {
+        asm.bind_btWheelInfo_set_m_steering_1(this.pointer, n);
+    }
+    get maxSuspensionForce(): number {
+        return asm.bind_btWheelInfo_get_m_maxSuspensionForce_0(this.pointer);
+    }
+    set maxSuspensionForce(n: number) {
+        asm.bind_btWheelInfo_set_m_maxSuspensionForce_1(this.pointer, n);
+    }
+    get maxSuspensionTravelCm(): number {
+        return asm.bind_btWheelInfo_get_m_maxSuspensionTravelCm_0(this.pointer);
+    }
+    set maxSuspensionTravelCm(n: number) {
+        asm.bind_btWheelInfo_set_m_maxSuspensionTravelCm_1(this.pointer, n);
+    }
+    get wheelsSuspensionForce(): number {
+        return asm.bind_btWheelInfo_get_m_wheelsSuspensionForce_0(this.pointer);
+    }
+    set wheelsSuspensionForce(n: number) {
+        asm.bind_btWheelInfo_set_m_wheelsSuspensionForce_1(this.pointer, n);
+    }
+    get bIsFrontWheel(): boolean {
+        return Boolean(asm.bind_btWheelInfo_get_m_bIsFrontWheel_0(this.pointer));
+    }
+    set bIsFrontWheel(b: boolean) {
+        asm.bind_btWheelInfo_set_m_bIsFrontWheel_1(this.pointer, b);
+    }
+    get raycastInfo(): btWheelInfo.RaycastInfo {
+        return btWheelInfo.RaycastInfo.from(asm.bind_btWheelInfo_get_m_raycastInfo_0(this.pointer), this);
+    }
+    set raycastInfo(ri: btWheelInfo.RaycastInfo) {
+        asm.bind_btWheelInfo_set_m_raycastInfo_1(this.pointer, ri.pointer);
+    }
+    get chassisConnectionPointCS(): btVector3 {
+        return btVector3.from(asm.bind_btWheelInfo_get_m_chassisConnectionPointCS_0(this.pointer), this);
+    }
+    set chassisConnectionPointCS(v: btVector3) {
+        asm.bind_btWheelInfo_set_m_chassisConnectionPointCS_1(this.pointer, v.pointer);
+    }
+    get worldTransform(): btTransform {
+        return btTransform.from(asm.bind_btWheelInfo_get_m_worldTransform_0(this.pointer), this);
+    }
+    set worldTransform(t: btTransform) {
+        asm.bind_btWheelInfo_set_m_worldTransform_1(this.pointer, t.pointer);
+    }
+    get wheelDirectionCS(): btVector3 {
+        return btVector3.from(asm.bind_btWheelInfo_get_m_wheelDirectionCS_0(this.pointer), this);
+    }
+    set wheelDirectionCS(v: btVector3) {
+        asm.bind_btWheelInfo_set_m_wheelDirectionCS_1(this.pointer, v.pointer);
+    }
+    get wheelAxleCS(): btVector3 {
+        return btVector3.from(asm.bind_btWheelInfo_get_m_wheelAxleCS_0(this.pointer), this);
+    }
+    set wheelAxleCS(v: btVector3) {
+        asm.bind_btWheelInfo_set_m_wheelAxleCS_1(this.pointer, v.pointer);
+    }
+    get rotation(): number {
+        return asm.bind_btWheelInfo_get_m_rotation_0(this.pointer);
+    }
+    set rotation(n: number) {
+        asm.bind_btWheelInfo_set_m_rotation_1(this.pointer, n);
+    }
+    get deltaRotation(): number {
+        return asm.bind_btWheelInfo_get_m_deltaRotation_0(this.pointer);
+    }
+    set deltaRotation(n: number) {
+        asm.bind_btWheelInfo_set_m_deltaRotation_1(this.pointer, n);
+    }
+    get brake(): number {
+        return asm.bind_btWheelInfo_get_m_brake_0(this.pointer);
+    }
+    set brake(n: number) {
+        asm.bind_btWheelInfo_set_m_brake_1(this.pointer, n);
+    }
+    get clippedInvContactDotSuspension(): number {
+        return asm.bind_btWheelInfo_get_m_clippedInvContactDotSuspension_0(this.pointer);
+    }
+    set clippedInvContactDotSuspension(n: number) {
+        asm.bind_btWheelInfo_set_m_clippedInvContactDotSuspension_1(this.pointer, n);
+    }
+    get suspensionRelativeVelocity(): number {
+        return asm.bind_btWheelInfo_get_m_suspensionRelativeVelocity_0(this.pointer);
+    }
+    set suspensionRelativeVelocity(n: number) {
+        asm.bind_btWheelInfo_set_m_suspensionRelativeVelocity_1(this.pointer, n);
+    }
+    get skidInfo(): number {
+        return asm.bind_btWheelInfo_get_m_skidInfo_0(this.pointer);
+    }
+    set skidInfo(n: number) {
+        asm.bind_btWheelInfo_set_m_skidInfo_1(this.pointer, n);
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btWheelInfo___destroy___0(this.pointer);}
+}
+export namespace btWheelInfo {
+    /**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/structbtWheelInfo_1_1RaycastInfo)*/
+    export abstract class RaycastInfo extends btObject {
+        get contactNormalWS(): btVector3 {
+            return btVector3.from(asm.bind_RaycastInfo_get_m_contactNormalWS_0(this.pointer), this);
+        }
+        set contactNormalWS(v: btVector3) {
+            asm.bind_RaycastInfo_set_m_contactNormalWS_1(this.pointer, v.pointer);
+        }
+        get contactPointWS(): btVector3 {
+            return btVector3.from(asm.bind_RaycastInfo_get_m_contactPointWS_0(this.pointer), this);
+        }
+        set contactPointWS(v: btVector3) {
+            asm.bind_RaycastInfo_set_m_contactPointWS_1(this.pointer, v.pointer);
+        }
+        get suspensionLength(): number {
+            return asm.bind_RaycastInfo_get_m_suspensionLength_0(this.pointer);
+        }
+        set suspensionLength(n: number) {
+            asm.bind_RaycastInfo_set_m_suspensionLength_1(this.pointer, n);
+        }
+        get hardPointWS(): btVector3 {
+            return btVector3.from(asm.bind_RaycastInfo_get_m_hardPointWS_0(this.pointer), this);
+        }
+        set hardPointWS(v: btVector3) {
+            asm.bind_RaycastInfo_set_m_hardPointWS_1(this.pointer, v.pointer);
+        }
+        get wheelDirectionWS(): btVector3 {
+            return btVector3.from(asm.bind_RaycastInfo_get_m_wheelDirectionWS_0(this.pointer), this);
+        }
+        set wheelDirectionWS(v: btVector3) {
+            asm.bind_RaycastInfo_set_m_wheelDirectionWS_1(this.pointer, v.pointer);
+        }
+        get wheelAxleWS(): btVector3 {
+            return btVector3.from(asm.bind_RaycastInfo_get_m_wheelAxleWS_0(this.pointer), this);
+        }
+        set wheelAxleWS(v: btVector3) {
+            asm.bind_RaycastInfo_set_m_wheelAxleWS_1(this.pointer, v.pointer);
+        }
+        get isInContact(): boolean {
+            return Boolean(asm.bind_RaycastInfo_get_m_isInContact_0(this.pointer));
+        }
+        set isInContact(b: boolean) {
+            asm.bind_RaycastInfo_set_m_isInContact_1(this.pointer, b);
+        }
+        get groundObject(): number {
+            return asm.bind_RaycastInfo_get_m_groundObject_0(this.pointer);
+        }
+        set groundObject(n: number) {
+            asm.bind_RaycastInfo_set_m_groundObject_1(this.pointer, n);
+        }
+    }
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtKinematicCharacterController)*/
+export class btKinematicCharacterController extends btActionInterface {
+    constructor(ghostObject: btPairCachingGhostObject, convexShape: btConvexShape, stepHeight: number, upAxis: btVector3 = temp.vector3.set(0, 0, 0)) {
+        super();
+        this.pointer = asm.bind_btKinematicCharacterController_btKinematicCharacterController_4(ghostObject.pointer, convexShape.pointer, stepHeight, upAxis.pointer);
+        btObject.cache[this.pointer] = this;
+    }
+    getGravity(): number {
+        return asm.bind_btKinematicCharacterController_getGravity_0(this.pointer);
+    }
+    setGravity(gravity: number): void {
+        asm.bind_btKinematicCharacterController_setGravity_1(this.pointer, gravity);
+    }
+    setUpAxis(axis: number): void {
+        asm.bind_btKinematicCharacterController_setUpAxis_1(this.pointer, axis);
+    }
+    setWalkDirection(walkDirection: btVector3): void {
+        asm.bind_btKinematicCharacterController_setWalkDirection_1(this.pointer, walkDirection.pointer);
+    }
+    setVelocityForTimeInterval(velocity: btVector3, timeInterval: number): void {
+        asm.bind_btKinematicCharacterController_setVelocityForTimeInterval_2(this.pointer, velocity.pointer, timeInterval);
+    }
+    warp(origin: btVector3): void {
+        asm.bind_btKinematicCharacterController_warp_1(this.pointer, origin.pointer);
+    }
+    preStep(collisionWorld: btCollisionWorld): void {
+        asm.bind_btKinematicCharacterController_preStep_1(this.pointer, collisionWorld.pointer);
+    }
+    playerStep(collisionWorld: btCollisionWorld, dt: number): void {
+        asm.bind_btKinematicCharacterController_playerStep_2(this.pointer, collisionWorld.pointer, dt);
+    }
+    setFallSpeed(fallSpeed: number): void {
+        asm.bind_btKinematicCharacterController_setFallSpeed_1(this.pointer, fallSpeed);
+    }
+    setJumpSpeed(jumpSpeed: number): void {
+        asm.bind_btKinematicCharacterController_setJumpSpeed_1(this.pointer, jumpSpeed);
+    }
+    setMaxJumpHeight(maxJumpHeight: number): void {
+        asm.bind_btKinematicCharacterController_setMaxJumpHeight_1(this.pointer, maxJumpHeight);
+    }
+    canJump(): boolean {
+        return Boolean(asm.bind_btKinematicCharacterController_canJump_0(this.pointer));
+    }
+    jump(): void {
+        asm.bind_btKinematicCharacterController_jump_0(this.pointer);
+    }
+    setMaxSlope(slopeRadians: number): void {
+        asm.bind_btKinematicCharacterController_setMaxSlope_1(this.pointer, slopeRadians);
+    }
+    getMaxSlope(): number {
+        return asm.bind_btKinematicCharacterController_getMaxSlope_0(this.pointer);
+    }
+    getGhostObject(): btPairCachingGhostObject {
+        return btPairCachingGhostObject.from(asm.bind_btKinematicCharacterController_getGhostObject_0(this.pointer), this);
+    }
+    setUseGhostSweepTest(useGhostObjectSweepTest: boolean): void {
+        asm.bind_btKinematicCharacterController_setUseGhostSweepTest_1(this.pointer, useGhostObjectSweepTest);
+    }
+    onGround(): boolean {
+        return Boolean(asm.bind_btKinematicCharacterController_onGround_0(this.pointer));
+    }
+    setUpInterpolate(value: boolean): void {
+        asm.bind_btKinematicCharacterController_setUpInterpolate_1(this.pointer, value);
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btKinematicCharacterController___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtRaycastVehicle)*/
+export class btRaycastVehicle extends btActionInterface {
+    constructor(tuning: btRaycastVehicle.btVehicleTuning, chassis: btRigidBody, raycaster: btVehicleRaycaster) {
+        super();
+        this.pointer = asm.bind_btRaycastVehicle_btRaycastVehicle_3(tuning.pointer, chassis.pointer, raycaster.pointer);
+        btObject.cache[this.pointer] = this;
+    }
+    applyEngineForce(force: number, wheel: number): void {
+        asm.bind_btRaycastVehicle_applyEngineForce_2(this.pointer, force, wheel);
+    }
+    setSteeringValue(steering: number, wheel: number): void {
+        asm.bind_btRaycastVehicle_setSteeringValue_2(this.pointer, steering, wheel);
+    }
+    getWheelTransformWS(wheelIndex: number): btTransform {
+        return btTransform.from(asm.bind_btRaycastVehicle_getWheelTransformWS_1(this.pointer, wheelIndex), this);
+    }
+    updateWheelTransform(wheelIndex: number, interpolatedTransform: boolean): void {
+        asm.bind_btRaycastVehicle_updateWheelTransform_2(this.pointer, wheelIndex, interpolatedTransform);
+    }
+    addWheel(connectionPointCS0: btVector3, wheelDirectionCS0: btVector3, wheelAxleCS: btVector3, suspensionRestLength: number, wheelRadius: number, tuning: btRaycastVehicle.btVehicleTuning, isFrontWheel: boolean): btWheelInfo {
+        return btWheelInfo.from(asm.bind_btRaycastVehicle_addWheel_7(this.pointer, connectionPointCS0.pointer, wheelDirectionCS0.pointer, wheelAxleCS.pointer, suspensionRestLength, wheelRadius, tuning.pointer, isFrontWheel), this);
+    }
+    getNumWheels(): number {
+        return asm.bind_btRaycastVehicle_getNumWheels_0(this.pointer);
+    }
+    getRigidBody(): btRigidBody {
+        return btRigidBody.from(asm.bind_btRaycastVehicle_getRigidBody_0(this.pointer), this);
+    }
+    getWheelInfo(index: number): btWheelInfo {
+        return btWheelInfo.from(asm.bind_btRaycastVehicle_getWheelInfo_1(this.pointer, index), this);
+    }
+    setBrake(brake: number, wheelIndex: number): void {
+        asm.bind_btRaycastVehicle_setBrake_2(this.pointer, brake, wheelIndex);
+    }
+    setCoordinateSystem(rightIndex: number, upIndex: number, forwardIndex: number): void {
+        asm.bind_btRaycastVehicle_setCoordinateSystem_3(this.pointer, rightIndex, upIndex, forwardIndex);
+    }
+    getCurrentSpeedKmHour(): number {
+        return asm.bind_btRaycastVehicle_getCurrentSpeedKmHour_0(this.pointer);
+    }
+    getChassisWorldTransform(): btTransform {
+        return btTransform.from(asm.bind_btRaycastVehicle_getChassisWorldTransform_0(this.pointer), this);
+    }
+    rayCast(wheel: btWheelInfo): number {
+        return asm.bind_btRaycastVehicle_rayCast_1(this.pointer, wheel.pointer);
+    }
+    updateVehicle(step: number): void {
+        asm.bind_btRaycastVehicle_updateVehicle_1(this.pointer, step);
+    }
+    resetSuspension(): void {
+        asm.bind_btRaycastVehicle_resetSuspension_0(this.pointer);
+    }
+    getSteeringValue(wheel: number): number {
+        return asm.bind_btRaycastVehicle_getSteeringValue_1(this.pointer, wheel);
+    }
+    updateWheelTransformsWS(wheel: btWheelInfo, interpolatedTransform: boolean = true): void {
+        asm.bind_btRaycastVehicle_updateWheelTransformsWS_2(this.pointer, wheel.pointer, interpolatedTransform);
+    }
+    setPitchControl(pitch: number): void {
+        asm.bind_btRaycastVehicle_setPitchControl_1(this.pointer, pitch);
+    }
+    updateSuspension(deltaTime: number): void {
+        asm.bind_btRaycastVehicle_updateSuspension_1(this.pointer, deltaTime);
+    }
+    updateFriction(timeStep: number): void {
+        asm.bind_btRaycastVehicle_updateFriction_1(this.pointer, timeStep);
+    }
+    getRightAxis(): number {
+        return asm.bind_btRaycastVehicle_getRightAxis_0(this.pointer);
+    }
+    getUpAxis(): number {
+        return asm.bind_btRaycastVehicle_getUpAxis_0(this.pointer);
+    }
+    getForwardAxis(): number {
+        return asm.bind_btRaycastVehicle_getForwardAxis_0(this.pointer);
+    }
+    getForwardVector(): btVector3 {
+        return btVector3.from(asm.bind_btRaycastVehicle_getForwardVector_0(this.pointer), this);
+    }
+    getUserConstraintType(): number {
+        return asm.bind_btRaycastVehicle_getUserConstraintType_0(this.pointer);
+    }
+    setUserConstraintType(userConstraintType: number): void {
+        asm.bind_btRaycastVehicle_setUserConstraintType_1(this.pointer, userConstraintType);
+    }
+    setUserConstraintId(uid: number): void {
+        asm.bind_btRaycastVehicle_setUserConstraintId_1(this.pointer, uid);
+    }
+    getUserConstraintId(): number {
+        return asm.bind_btRaycastVehicle_getUserConstraintId_0(this.pointer);
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btRaycastVehicle___destroy___0(this.pointer);}
+}
+export namespace btRaycastVehicle {
+    /**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtRaycastVehicle_1_1btVehicleTuning)*/
+    export class btVehicleTuning extends btObject {
+        constructor() {
+            super();
+            this.pointer = asm.bind_btVehicleTuning_btVehicleTuning_0();
+            btObject.cache[this.pointer] = this;
+        }
+        get suspensionStiffness(): number {
+            return asm.bind_btVehicleTuning_get_m_suspensionStiffness_0(this.pointer);
+        }
+        set suspensionStiffness(n: number) {
+            asm.bind_btVehicleTuning_set_m_suspensionStiffness_1(this.pointer, n);
+        }
+        get suspensionCompression(): number {
+            return asm.bind_btVehicleTuning_get_m_suspensionCompression_0(this.pointer);
+        }
+        set suspensionCompression(n: number) {
+            asm.bind_btVehicleTuning_set_m_suspensionCompression_1(this.pointer, n);
+        }
+        get suspensionDamping(): number {
+            return asm.bind_btVehicleTuning_get_m_suspensionDamping_0(this.pointer);
+        }
+        set suspensionDamping(n: number) {
+            asm.bind_btVehicleTuning_set_m_suspensionDamping_1(this.pointer, n);
+        }
+        get maxSuspensionTravelCm(): number {
+            return asm.bind_btVehicleTuning_get_m_maxSuspensionTravelCm_0(this.pointer);
+        }
+        set maxSuspensionTravelCm(n: number) {
+            asm.bind_btVehicleTuning_set_m_maxSuspensionTravelCm_1(this.pointer, n);
+        }
+        get frictionSlip(): number {
+            return asm.bind_btVehicleTuning_get_m_frictionSlip_0(this.pointer);
+        }
+        set frictionSlip(n: number) {
+            asm.bind_btVehicleTuning_set_m_frictionSlip_1(this.pointer, n);
+        }
+        get maxSuspensionForce(): number {
+            return asm.bind_btVehicleTuning_get_m_maxSuspensionForce_0(this.pointer);
+        }
+        set maxSuspensionForce(n: number) {
+            asm.bind_btVehicleTuning_set_m_maxSuspensionForce_1(this.pointer, n);
+        }
+        // 大哥，你的destroy呢www
+    }
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtPairCachingGhostObject)*/
+export class btPairCachingGhostObject extends btGhostObject {
+    constructor() {
+        super();
+        this.pointer = asm.bind_btPairCachingGhostObject_btPairCachingGhostObject_0();
+        btObject.cache[this.pointer] = this;
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btPairCachingGhostObject___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtGhostPairCallback)*/
+export class btGhostPairCallback extends btObject {
+    constructor() {
+        super();
+        this.pointer = asm.bind_btGhostPairCallback_btGhostPairCallback_0();
+        btObject.cache[this.pointer] = this;
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btGhostPairCallback___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/structbtSoftBodyWorldInfo)*/
+export class btSoftBodyWorldInfo extends btObject {
+    constructor() {
+        super();
+        this.pointer = asm.bind_btSoftBodyWorldInfo_btSoftBodyWorldInfo_0();
+        btObject.cache[this.pointer] = this;
+    }
+    get airDensity(): number {
+        return asm.bind_btSoftBodyWorldInfo_get_air_density_0(this.pointer);
+    }
+    set airDensity(n: number) {
+        asm.bind_btSoftBodyWorldInfo_set_air_density_1(this.pointer, n);
+    }
+    get waterDensity(): number {
+        return asm.bind_btSoftBodyWorldInfo_get_water_density_0(this.pointer);
+    }
+    set waterDensity(n: number) {
+        asm.bind_btSoftBodyWorldInfo_set_water_density_1(this.pointer, n);
+    }
+    get waterOffset(): number {
+        return asm.bind_btSoftBodyWorldInfo_get_water_offset_0(this.pointer);
+    }
+    set waterOffset(n: number) {
+        asm.bind_btSoftBodyWorldInfo_set_water_offset_1(this.pointer, n);
+    }
+    get maxDisplacement(): number {
+        return asm.bind_btSoftBodyWorldInfo_get_m_maxDisplacement_0(this.pointer);
+    }
+    set maxDisplacement(n: number) {
+        asm.bind_btSoftBodyWorldInfo_set_m_maxDisplacement_1(this.pointer, n);
+    }
+    get waterNormal(): btVector3 {
+        return btVector3.from(asm.bind_btSoftBodyWorldInfo_get_water_normal_0(this.pointer), this);
+    }
+    set waterNormal(v: Vector3) {
+        asm.bind_btSoftBodyWorldInfo_set_water_normal_1(this.pointer, temp.vector3.set(v).pointer);
+    }
+    get broadphase(): btBroadphaseInterface {
+        return btBroadphaseInterface.from(asm.bind_btSoftBodyWorldInfo_get_m_broadphase_0(this.pointer), this);
+    }
+    set broadphase(bi: btBroadphaseInterface) {
+        asm.bind_btSoftBodyWorldInfo_set_m_broadphase_1(this.pointer, bi.pointer);
+    }
+    get dispatcher(): btDispatcher {
+        return btDispatcher.from(asm.bind_btSoftBodyWorldInfo_get_m_dispatcher_0(this.pointer), this);
+    }
+    set dispatcher(d: btDispatcher) {
+        asm.bind_btSoftBodyWorldInfo_set_m_dispatcher_1(this.pointer, d.pointer);
+    }
+    get gravity(): btVector3 {
+        return btVector3.from(asm.bind_btSoftBodyWorldInfo_get_m_gravity_0(this.pointer), this);
+    }
+    set gravity(v: Vector3) {
+        asm.bind_btSoftBodyWorldInfo_set_m_gravity_1(this.pointer, temp.vector3.set(v).pointer);
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btSoftBodyWorldInfo___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtSoftBody)*/
+export class btSoftBody extends btCollisionObject {
+    constructor(worldInfo: btSoftBodyWorldInfo, nodeCount: number, x: btVector3, m: readonly number[]) {
+        super();
+        resetTempBuffer();
+        this.pointer = asm.bind_btSoftBody_btSoftBody_4(worldInfo.pointer, nodeCount, x.pointer, loadArray(m));
+        btObject.cache[this.pointer] = this;
+    }
+    checkLink(node0: number, node1: number): boolean {
+        return Boolean(asm.bind_btSoftBody_checkLink_2(this.pointer, node0, node1));
+    }
+    checkFace(node0: number, node1: number, node2: number): boolean {
+        return Boolean(asm.bind_btSoftBody_checkFace_3(this.pointer, node0, node1, node2));
+    }
+    appendMaterial(): btSoftBody.Material {
+        return btSoftBody.Material.from(asm.bind_btSoftBody_appendMaterial_0(this.pointer), this);
+    }
+    appendNode(x: btVector3, m: number): void {
+        asm.bind_btSoftBody_appendNode_2(this.pointer, x.pointer, m);
+    }
+    appendLink(node0: number, node1: number, mat: btSoftBody.Material, bcheckexist: boolean): void {
+        asm.bind_btSoftBody_appendLink_4(this.pointer, node0, node1, mat.pointer, bcheckexist);
+    }
+    appendFace(node0: number, node1: number, node2: number, mat: btSoftBody.Material): void {
+        asm.bind_btSoftBody_appendFace_4(this.pointer, node0, node1, node2, mat.pointer);
+    }
+    appendTetra(node0: number, node1: number, node2: number, node3: number, mat: btSoftBody.Material): void {
+        asm.bind_btSoftBody_appendTetra_5(this.pointer, node0, node1, node2, node3, mat.pointer);
+    }
+    appendAnchor(node: number, body: btRigidBody, disableCollisionBetweenLinkedBodies: boolean, influence: number): void {
+        asm.bind_btSoftBody_appendAnchor_4(this.pointer, node, body.pointer, disableCollisionBetweenLinkedBodies, influence);
+    }
+    addForce(force: btVector3, node?: number): void {
+        node === undefined
+            ? asm.bind_btSoftBody_addForce_1(this.pointer, force.pointer)
+            : asm.bind_btSoftBody_addForce_2(this.pointer, force.pointer, node);
+    }
+    addAeroForceToNode(windVelocity: btVector3, nodeIndex: number): void {
+        asm.bind_btSoftBody_addAeroForceToNode_2(this.pointer, windVelocity.pointer, nodeIndex);
+    }
+    getTotalMass(): number {
+        return asm.bind_btSoftBody_getTotalMass_0(this.pointer);
+    }
+    setTotalMass(mass: number, fromfaces: boolean): void {
+        asm.bind_btSoftBody_setTotalMass_2(this.pointer, mass, fromfaces);
+    }
+    setMass(node: number, mass: number): void {
+        asm.bind_btSoftBody_setMass_2(this.pointer, node, mass);
+    }
+    transform(trs: btTransform): void {
+        asm.bind_btSoftBody_transform_1(this.pointer, trs.pointer);
+    }
+    translate(trs: btVector3): void {
+        asm.bind_btSoftBody_translate_1(this.pointer, trs.pointer);
+    }
+    rotate(rot: btQuaternion): void {
+        asm.bind_btSoftBody_rotate_1(this.pointer, rot.pointer);
+    }
+    scale(scl: btVector3): void {
+        asm.bind_btSoftBody_scale_1(this.pointer, scl.pointer);
+    }
+    generateClusters(k: number, maxiterations: number = 8192): number {
+        return asm.bind_btSoftBody_generateClusters_2(this.pointer, k, maxiterations);
+    }
+    generateBendingConstraints(distance: number, mat: btSoftBody.Material): number {
+        return asm.bind_btSoftBody_generateBendingConstraints_2(this.pointer, distance, mat.pointer);
+    }
+    upcast(colObj: btCollisionObject): btSoftBody {
+        return btSoftBody.from(asm.bind_btSoftBody_upcast_1(this.pointer, colObj.pointer), this);
+    }
+    getRestLengthScale(): number {
+        return asm.bind_btSoftBody_getRestLengthScale_0(this.pointer);
+    }
+    setRestLengthScale(restLength: number): void {
+        asm.bind_btSoftBody_setRestLengthScale_1(this.pointer, restLength);
+    }
+    get cfg(): btSoftBody.Config {
+        return btSoftBody.Config.from(asm.bind_btSoftBody_get_m_cfg_0(this.pointer), this);
+    }
+    set cfg(a: btSoftBody.Config) {
+        asm.bind_btSoftBody_set_m_cfg_1(this.pointer, a.pointer);
+    }
+    get nodes(): tNodeArray {
+        return tNodeArray.from(asm.bind_btSoftBody_get_m_nodes_0(this.pointer), this);
+    }
+    set nodes(a: tNodeArray) {
+        asm.bind_btSoftBody_set_m_nodes_1(this.pointer, a.pointer);
+    }
+    get faces(): tFaceArray {
+        return tFaceArray.from(asm.bind_btSoftBody_get_m_faces_0(this.pointer), this);
+    }
+    set faces(a: tFaceArray) {
+        asm.bind_btSoftBody_set_m_faces_1(this.pointer, a.pointer);
+    }
+    get materials(): tMaterialArray {
+        return tMaterialArray.from(asm.bind_btSoftBody_get_m_materials_0(this.pointer), this);
+    }
+    set materials(a: tMaterialArray) {
+        asm.bind_btSoftBody_set_m_materials_1(this.pointer, a.pointer);
+    }
+    get anchors(): tAnchorArray {
+        return tAnchorArray.from(asm.bind_btSoftBody_get_m_anchors_0(this.pointer), this);
+    }
+    set anchors(a: tAnchorArray) {
+        asm.bind_btSoftBody_set_m_anchors_1(this.pointer, a.pointer);
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btSoftBody___destroy___0(this.pointer);}
+}
+export namespace btSoftBody {
+    /**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/structbtSoftBody_1_1Face)*/
+    export abstract class Face extends btObject {
+        // get n(): readonly btSoftBody.Node[] {
+        //     return getCachedInstance(asm.bind_Face_get_m_n_1(this.pointer, ID), btSoftBody.Node);
+        // }
+        // set n(m_n: readonly btSoftBody.Node[]): void {
+        //     ND();
+        //     asm.bind_Face_set_m_n_2(this.pointer, ID, n);
+        // }
+        get normal(): btVector3 {
+            return btVector3.from(asm.bind_Face_get_m_normal_0(this.pointer), this);
+        }
+        set normal(v: btVector3) {
+            asm.bind_Face_set_m_normal_1(this.pointer, v.pointer);
+        }
+        get ra(): number {
+            return asm.bind_Face_get_m_ra_0(this.pointer);
+        }
+        set ra(n: number) {
+            asm.bind_Face_set_m_ra_1(this.pointer, n);
+        }
+    }
+    /**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/structbtSoftBody_1_1Note)*/
+    export abstract class Node extends btObject {
+        get x(): btVector3 {
+            return btVector3.from(asm.bind_Node_get_m_x_0(this.pointer), this);
+        }
+        set x(v: btVector3) {
+            asm.bind_Node_set_m_x_1(this.pointer, v.pointer);
+        }
+        get q(): btVector3 {
+            return btVector3.from(asm.bind_Node_get_m_q_0(this.pointer), this);
+        }
+        set q(v: btVector3) {
+            asm.bind_Node_set_m_q_1(this.pointer, v.pointer);
+        }
+        get v(): btVector3 {
+            return btVector3.from(asm.bind_Node_get_m_v_0(this.pointer), this);
+        }
+        set v(v: btVector3) {
+            asm.bind_Node_set_m_v_1(this.pointer, v.pointer);
+        }
+        get f(): btVector3 {
+            return btVector3.from(asm.bind_Node_get_m_f_0(this.pointer), this);
+        }
+        set f(v: btVector3) {
+            asm.bind_Node_set_m_f_1(this.pointer, v.pointer);
+        }
+        get n(): btVector3 {
+            return btVector3.from(asm.bind_Node_get_m_n_0(this.pointer), this);
+        }
+        set n(v: btVector3) {
+            asm.bind_Node_set_m_n_1(this.pointer, v.pointer);
+        }
+        get im(): number {
+            return asm.bind_Node_get_m_im_0(this.pointer);
+        }
+        set im(n: number) {
+            asm.bind_Node_set_m_im_1(this.pointer, n);
+        }
+        get area(): number {
+            return asm.bind_Node_get_m_area_0(this.pointer);
+        }
+        set area(n: number) {
+            asm.bind_Node_set_m_area_1(this.pointer, n);
+        }
+    }
+    /**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/structbtSoftBody_1_1Material)*/
+    export abstract class Material extends btObject {
+        get kLST(): number {
+            return asm.bind_Material_get_m_kLST_0(this.pointer);
+        }
+        set kLST(n: number) {
+            asm.bind_Material_set_m_kLST_1(this.pointer, n);
+        }
+        get kAST(): number {
+            return asm.bind_Material_get_m_kAST_0(this.pointer);
+        }
+        set kAST(n: number) {
+            asm.bind_Material_set_m_kAST_1(this.pointer, n);
+        }
+        get kVST(): number {
+            return asm.bind_Material_get_m_kVST_0(this.pointer);
+        }
+        set kVST(n: number) {
+            asm.bind_Material_set_m_kVST_1(this.pointer, n);
+        }
+        get flags(): number {
+            return asm.bind_Material_get_m_flags_0(this.pointer);
+        }
+        set flags(n: number) {
+            asm.bind_Material_set_m_flags_1(this.pointer, n);
+        }
+    }
+    /**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/structbtSoftBody_1_1Anchor)*/
+    export abstract class Anchor extends btObject {
+        get node(): btSoftBody.Node {
+            return btSoftBody.Node.from(asm.bind_Anchor_get_m_node_0(this.pointer), this);
+        }
+        set node(nd: btSoftBody.Node) {
+            asm.bind_Anchor_set_m_node_1(this.pointer, nd.pointer);
+        }
+        get local(): btVector3 {
+            return btVector3.from(asm.bind_Anchor_get_m_local_0(this.pointer), this);
+        }
+        set local(v: btVector3) {
+            asm.bind_Anchor_set_m_local_1(this.pointer, v.pointer);
+        }
+        get body(): btRigidBody {
+            return btRigidBody.from(asm.bind_Anchor_get_m_body_0(this.pointer), this);
+        }
+        set body(rb: btRigidBody) {
+            asm.bind_Anchor_set_m_body_1(this.pointer, rb.pointer);
+        }
+        get influence(): number {
+            return asm.bind_Anchor_get_m_influence_0(this.pointer);
+        }
+        set influence(n: number) {
+            asm.bind_Anchor_set_m_influence_1(this.pointer, n);
+        }
+        get c0(): btMatrix3x3 {
+            return btMatrix3x3.from(asm.bind_Anchor_get_m_c0_0(this.pointer), this);
+        }
+        set c0(m: btMatrix3x3) {
+            asm.bind_Anchor_set_m_c0_1(this.pointer, m.pointer);
+        }
+        get c1(): btVector3 {
+            return btVector3.from(asm.bind_Anchor_get_m_c1_0(this.pointer), this);
+        }
+        set c1(v: btVector3) {
+            asm.bind_Anchor_set_m_c1_1(this.pointer, v.pointer);
+        }
+        get c2(): number {
+            return asm.bind_Anchor_get_m_c2_0(this.pointer);
+        }
+        set c2(n: number) {
+            asm.bind_Anchor_set_m_c2_1(this.pointer, n);
+        }
+    }
+    /**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/structbtSoftBody_1_1Config)*/
+    export abstract class Config extends btObject {
+        get kVCF(): number {
+            return asm.bind_Config_get_kVCF_0(this.pointer);
+        }
+        set kVCF(n: number) {
+            asm.bind_Config_set_kVCF_1(this.pointer, n);
+        }
+        get kDP(): number {
+            return asm.bind_Config_get_kDP_0(this.pointer);
+        }
+        set kDP(n: number) {
+            asm.bind_Config_set_kDP_1(this.pointer, n);
+        }
+        get kDG(): number {
+            return asm.bind_Config_get_kDG_0(this.pointer);
+        }
+        set kDG(n: number) {
+            asm.bind_Config_set_kDG_1(this.pointer, n);
+        }
+        get kLF(): number {
+            return asm.bind_Config_get_kLF_0(this.pointer);
+        }
+        set kLF(n: number) {
+            asm.bind_Config_set_kLF_1(this.pointer, n);
+        }
+        get kPR(): number {
+            return asm.bind_Config_get_kPR_0(this.pointer);
+        }
+        set kPR(n: number) {
+            asm.bind_Config_set_kPR_1(this.pointer, n);
+        }
+        get kVC(): number {
+            return asm.bind_Config_get_kVC_0(this.pointer);
+        }
+        set kVC(n: number) {
+            asm.bind_Config_set_kVC_1(this.pointer, n);
+        }
+        get kDF(): number {
+            return asm.bind_Config_get_kDF_0(this.pointer);
+        }
+        set kDF(n: number) {
+            asm.bind_Config_set_kDF_1(this.pointer, n);
+        }
+        get kMT(): number {
+            return asm.bind_Config_get_kMT_0(this.pointer);
+        }
+        set kMT(n: number) {
+            asm.bind_Config_set_kMT_1(this.pointer, n);
+        }
+        get kCHR(): number {
+            return asm.bind_Config_get_kCHR_0(this.pointer);
+        }
+        set kCHR(n: number) {
+            asm.bind_Config_set_kCHR_1(this.pointer, n);
+        }
+        get kKHR(): number {
+            return asm.bind_Config_get_kKHR_0(this.pointer);
+        }
+        set kKHR(n: number) {
+            asm.bind_Config_set_kKHR_1(this.pointer, n);
+        }
+        get kSHR(): number {
+            return asm.bind_Config_get_kSHR_0(this.pointer);
+        }
+        set kSHR(n: number) {
+            asm.bind_Config_set_kSHR_1(this.pointer, n);
+        }
+        get kAHR(): number {
+            return asm.bind_Config_get_kAHR_0(this.pointer);
+        }
+        set kAHR(n: number) {
+            asm.bind_Config_set_kAHR_1(this.pointer, n);
+        }
+        get kSRHR_CL(): number {
+            return asm.bind_Config_get_kSRHR_CL_0(this.pointer);
+        }
+        set kSRHR_CL(n: number) {
+            asm.bind_Config_set_kSRHR_CL_1(this.pointer, n);
+        }
+        get kSKHR_CL(): number {
+            return asm.bind_Config_get_kSKHR_CL_0(this.pointer);
+        }
+        set kSKHR_CL(n: number) {
+            asm.bind_Config_set_kSKHR_CL_1(this.pointer, n);
+        }
+        get kSSHR_CL(): number {
+            return asm.bind_Config_get_kSSHR_CL_0(this.pointer);
+        }
+        set kSSHR_CL(n: number) {
+            asm.bind_Config_set_kSSHR_CL_1(this.pointer, n);
+        }
+        get kSR_SPLT_CL(): number {
+            return asm.bind_Config_get_kSR_SPLT_CL_0(this.pointer);
+        }
+        set kSR_SPLT_CL(n: number) {
+            asm.bind_Config_set_kSR_SPLT_CL_1(this.pointer, n);
+        }
+        get kSK_SPLT_CL(): number {
+            return asm.bind_Config_get_kSK_SPLT_CL_0(this.pointer);
+        }
+        set kSK_SPLT_CL(n: number) {
+            asm.bind_Config_set_kSK_SPLT_CL_1(this.pointer, n);
+        }
+        get kSS_SPLT_CL(): number {
+            return asm.bind_Config_get_kSS_SPLT_CL_0(this.pointer);
+        }
+        set kSS_SPLT_CL(n: number) {
+            asm.bind_Config_set_kSS_SPLT_CL_1(this.pointer, n);
+        }
+        get maxvolume(): number {
+            return asm.bind_Config_get_maxvolume_0(this.pointer);
+        }
+        set maxvolume(n: number) {
+            asm.bind_Config_set_maxvolume_1(this.pointer, n);
+        }
+        get timescale(): number {
+            return asm.bind_Config_get_timescale_0(this.pointer);
+        }
+        set timescale(n: number) {
+            asm.bind_Config_set_timescale_1(this.pointer, n);
+        }
+        get viterations(): number {
+            return asm.bind_Config_get_viterations_0(this.pointer);
+        }
+        set viterations(n: number) {
+            asm.bind_Config_set_viterations_1(this.pointer, n);
+        }
+        get piterations(): number {
+            return asm.bind_Config_get_piterations_0(this.pointer);
+        }
+        set piterations(n: number) {
+            asm.bind_Config_set_piterations_1(this.pointer, n);
+        }
+        get diterations(): number {
+            return asm.bind_Config_get_diterations_0(this.pointer);
+        }
+        set diterations(n: number) {
+            asm.bind_Config_set_diterations_1(this.pointer, n);
+        }
+        get citerations(): number {
+            return asm.bind_Config_get_citerations_0(this.pointer);
+        }
+        set citerations(n: number) {
+            asm.bind_Config_set_citerations_1(this.pointer, n);
+        }
+        get collisions(): number {
+            return asm.bind_Config_get_collisions_0(this.pointer);
+        }
+        set collisions(n: number) {
+            asm.bind_Config_set_collisions_1(this.pointer, n);
+        }
+    }
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtSoftBodyRigidBodyCollisionConfiguration)*/
+export class btSoftBodyRigidBodyCollisionConfiguration extends btDefaultCollisionConfiguration {
+    constructor(info?: btDefaultCollisionConstructionInfo) {
+        super();
+        this.pointer =
+            info === undefined
+                ? asm.bind_btSoftBodyRigidBodyCollisionConfiguration_btSoftBodyRigidBodyCollisionConfiguration_0()
+                : asm.bind_btSoftBodyRigidBodyCollisionConfiguration_btSoftBodyRigidBodyCollisionConfiguration_1(info.pointer);
+        btObject.cache[this.pointer] = this;
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btSoftBodyRigidBodyCollisionConfiguration___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtDefaultSoftBodySolver)*/
+export class btDefaultSoftBodySolver extends btSoftBodySolver {
+    constructor() {
+        super();
+        this.pointer = asm.bind_btDefaultSoftBodySolver_btDefaultSoftBodySolver_0();
+        btObject.cache[this.pointer] = this;
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btDefaultSoftBodySolver___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/classbtSoftRigidDynamicsWorld)*/
+export class btSoftRigidDynamicsWorld extends btDiscreteDynamicsWorld {
+    constructor(dispatcher: btDispatcher, pairCache: btBroadphaseInterface, constraintSolver: btConstraintSolver, collisionConfiguration: btCollisionConfiguration, softBodySolver: btSoftBodySolver) {
+        super({} as any/**佔位符*/);
+        this.pointer = asm.bind_btSoftRigidDynamicsWorld_btSoftRigidDynamicsWorld_5(dispatcher.pointer, pairCache.pointer, constraintSolver.pointer, collisionConfiguration.pointer, softBodySolver.pointer);
+        btObject.cache[this.pointer] = this;
+    }
+    addSoftBody(body: btSoftBody, collisionFilterGroup: CollisionFilterGroups, collisionFilterMask: CollisionFilterGroups): void {
+        asm.bind_btSoftRigidDynamicsWorld_addSoftBody_3(this.pointer, body.pointer, collisionFilterGroup, collisionFilterMask);
+    }
+    removeSoftBody(body: btSoftBody): void {
+        asm.bind_btSoftRigidDynamicsWorld_removeSoftBody_1(this.pointer, body.pointer);
+    }
+    getWorldInfo(): btSoftBodyWorldInfo {
+        return btSoftBodyWorldInfo.from(asm.bind_btSoftRigidDynamicsWorld_getWorldInfo_0(this.pointer), this);
+    }
+    getSoftBodyArray(): btSoftBodyArray {
+        return btSoftBodyArray.from(asm.bind_btSoftRigidDynamicsWorld_getSoftBodyArray_0(this.pointer), this);
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btSoftRigidDynamicsWorld___destroy___0(this.pointer);}
+}
+/**[Bullet Documentation](https://pybullet.org/Bullet/BulletFull/structbtSoftBodyHelpers)*/
+export class btSoftBodyHelpers extends btObject {
+    constructor() {
+        super();
+        this.pointer = asm.bind_btSoftBodyHelpers_btSoftBodyHelpers_0();
+        btObject.cache[this.pointer] = this;
+    }
+    createRope(worldInfo: btSoftBodyWorldInfo, from: btVector3, to: btVector3, res: number, fixeds: number): btSoftBody {
+        return btSoftBody.from(asm.bind_btSoftBodyHelpers_CreateRope_5(this.pointer, worldInfo.pointer, from.pointer, to.pointer, res, fixeds), this);
+    }
+    createPatch(worldInfo: btSoftBodyWorldInfo, corner00: btVector3, corner10: btVector3, corner01: btVector3, corner11: btVector3, resx: number, resy: number, fixeds: number, gendiags: boolean): btSoftBody {
+        return btSoftBody.from(asm.bind_btSoftBodyHelpers_CreatePatch_9(this.pointer, worldInfo.pointer, corner00.pointer, corner10.pointer, corner01.pointer, corner11.pointer, resx, resy, fixeds, gendiags), this);
+    }
+    createPatchUV(worldInfo: btSoftBodyWorldInfo, corner00: btVector3, corner10: btVector3, corner01: btVector3, corner11: btVector3, resx: number, resy: number, fixeds: number, gendiags: boolean, texCoords: readonly number[]): btSoftBody {
+        resetTempBuffer();
+        return btSoftBody.from(asm.bind_btSoftBodyHelpers_CreatePatchUV_10(this.pointer, worldInfo.pointer, corner00.pointer, corner10.pointer, corner01.pointer, corner11.pointer, resx, resy, fixeds, gendiags, loadArray(texCoords)), this);
+    }
+    createEllipsoid(worldInfo: btSoftBodyWorldInfo, center: btVector3, radius: btVector3, res: number): btSoftBody {
+        return btSoftBody.from(asm.bind_btSoftBodyHelpers_CreateEllipsoid_4(this.pointer, worldInfo.pointer, center.pointer, radius.pointer, res), this);
+    }
+    createFromTriMesh(worldInfo: btSoftBodyWorldInfo, vertices: readonly number[], triangles: readonly number[], ntriangles: number, randomizeConstraints: boolean): btSoftBody {
+        resetTempBuffer();
+        const z = allocArray(triangles, HEAP32);
+        copyTo(triangles, HEAP32, z);
+        return btSoftBody.from(asm.bind_btSoftBodyHelpers_CreateFromTriMesh_5(this.pointer, worldInfo.pointer, loadArray(vertices), z, ntriangles, randomizeConstraints), this);
+    }
+    createFromConvexHull(worldInfo: btSoftBodyWorldInfo, vertices: btVector3, nvertices: number, randomizeConstraints: boolean): btSoftBody {
+        return btSoftBody.from(asm.bind_btSoftBodyHelpers_CreateFromConvexHull_4(this.pointer, worldInfo.pointer, vertices.pointer, nvertices, randomizeConstraints), this);
+    }
+    override[DESTROY_FUNC](): void {asm.bind_btSoftBodyHelpers___destroy___0(this.pointer);}
+}
+/***/
+export abstract class btConstCollisionObjectArray extends btObject {
+    size(): number {
+        return asm.bind_btConstCollisionObjectArray_size_0(this.pointer);
+    }
+    at(index: number): btCollisionObject {
+        return btCollisionObject.from(asm.bind_btConstCollisionObjectArray_at_1(this.pointer, index), this);
+    }
+}
+/***/
+export abstract class btScalarArray extends btObject {
+    size(): number {
+        return asm.bind_btScalarArray_size_0(this.pointer);
+    }
+    at(index: number): number {
+        return asm.bind_btScalarArray_at_1(this.pointer, index);
+    }
+}
+/***/
+export abstract class btSoftBodyArray extends btObject {
+    size(): number {
+        return asm.bind_btSoftBodyArray_size_0(this.pointer);
+    }
+    at(index: number): btSoftBody {
+        return btSoftBody.from(asm.bind_btSoftBodyArray_at_1(this.pointer, index), this);
+    }
+}
+/***/
+export abstract class tFaceArray extends btObject {
+    size(): number {
+        return asm.bind_tFaceArray_size_0(this.pointer);
+    }
+    at(index: number): btSoftBody.Face {
+        return btSoftBody.Face.from(asm.bind_tFaceArray_at_1(this.pointer, index), this);
+    }
+}
+/***/
+export abstract class tNodeArray extends btObject {
+    size(): number {
+        return asm.bind_tNodeArray_size_0(this.pointer);
+    }
+    at(index: number): btSoftBody.Node {
+        return btSoftBody.Node.from(asm.bind_tNodeArray_at_1(this.pointer, index), this);
+    }
+}
+/***/
+export abstract class tMaterialArray extends btObject {
+    size(): number {
+        return asm.bind_tMaterialArray_size_0(this.pointer);
+    }
+    at(index: number): btSoftBody.Material {
+        return btSoftBody.Material.from(asm.bind_tMaterialArray_at_1(this.pointer, index), this);
+    }
+}
+/***/
+export abstract class btIntArray extends btObject {
+    size(): number {
+        return asm.bind_btIntArray_size_0(this.pointer);
+    }
+    at(index: number): number {
+        return asm.bind_btIntArray_at_1(this.pointer, index);
+    }
+}
+/***/
+export abstract class btVector3Array extends btObject {
+    size(): number {
+        return asm.bind_btVector3Array_size_0(this.pointer);
+    }
+    at(index: number): btVector3 {
+        return btVector3.from(asm.bind_btVector3Array_at_1(this.pointer, index), this);
+    }
+}
+/***/
+export abstract class btFaceArray extends btObject {
+    size(): number {
+        return asm.bind_btFaceArray_size_0(this.pointer);
+    }
+    at(index: number): btFace {
+        return btFace.from(asm.bind_btFaceArray_at_1(this.pointer, index), this);
+    }
+}
+/***/
+export abstract class btIndexedMeshArray extends btObject {
+    size(): number {
+        return asm.bind_btIndexedMeshArray_size_0(this.pointer);
+    }
+    at(index: number): btIndexedMesh {
+        return btIndexedMesh.from(asm.bind_btIndexedMeshArray_at_1(this.pointer, index), this);
+    }
+}
+/***/
+export abstract class tAnchorArray extends btObject {
+    push_back(a: btSoftBody.Anchor): void {
+        asm.bind_tAnchorArray_push_back_1(this.pointer, a.pointer);
+    }
+    pop_back(): void {
+        asm.bind_tAnchorArray_pop_back_0(this.pointer);
+    }
+    size(): number {
+        return asm.bind_tAnchorArray_size_0(this.pointer);
+    }
+    at(index: number): btSoftBody.Anchor {
+        return btSoftBody.Anchor.from(asm.bind_tAnchorArray_at_1(this.pointer, index), this);
+    }
+    clear(): void {
+        asm.bind_tAnchorArray_clear_0(this.pointer);
+    }
+}
+
+// 所有btObject導出
+export const moduleList = new Set<typeof btObject>([btCollisionWorld.AllHitsRayResultCallback, btSoftBody.Anchor, btCollisionWorld.ClosestConvexResultCallback, btCollisionWorld.ClosestRayResultCallback, btGImpactCompoundShape.CompoundPrimitiveManager, ConcreteContactResultCallback, btSoftBody.Config, btCollisionWorld.ContactResultCallback, btCollisionWorld.ConvexResultCallback, btSoftBody.Face, btCollisionWorld.LocalConvexResult, btCollisionWorld.LocalShapeInfo, btSoftBody.Material, MotionState, btSoftBody.Node, btCollisionWorld.RayResultCallback, btWheelInfo.RaycastInfo, btGImpactMeshShapePart.TrimeshPrimitiveManager, VoidPtr, btAABB, btActionInterface, btActivatingCollisionAlgorithm, btAxisSweep3, btBoxShape, btBroadphaseInterface, btBroadphaseProxy, btBvhTriangleMeshShape, btCapsuleShape, btCapsuleShapeX, btCapsuleShapeZ, btCollisionAlgorithm, btCollisionAlgorithmConstructionInfo, btCollisionConfiguration, btCollisionDispatcher, btCollisionObject, btCollisionObjectWrapper, btCollisionShape, btCollisionWorld, btCompoundShape, btConcaveShape, btConeShape, btConeShapeX, btConeShapeZ, btConeTwistConstraint, btConstCollisionObjectArray, btConstraintSetting, btConstraintSolver, btContactSolverInfo, btConvexHullShape, btConvexPolyhedron, btConvexShape, btConvexTriangleMeshShape, btCylinderShape, btCylinderShapeX, btCylinderShapeZ, btDbvtBroadphase, btDefaultCollisionConfiguration, btDefaultCollisionConstructionInfo, btDefaultMotionState, btDefaultSoftBodySolver, btDefaultVehicleRaycaster, btDiscreteDynamicsWorld, btDispatcher, btDispatcherInfo, btDynamicsWorld, btEmptyShape, btFace, btFaceArray, btFixedConstraint, btGImpactCollisionAlgorithm, btGImpactCompoundShape, btGImpactMeshShape, btGImpactMeshShapePart, btGImpactShapeInterface, btGeneric6DofConstraint, btGeneric6DofSpringConstraint, btGhostObject, btGhostPairCallback, btHeightfieldTerrainShape, btHingeConstraint, btIndexedMesh, btIndexedMeshArray, btIntArray, btKinematicCharacterController, btManifoldPoint, btMatrix3x3, btMotionState, btMultiSphereShape, btObject, btOverlappingPairCache, btOverlappingPairCallback, btPairCachingGhostObject, btPersistentManifold, btPoint2PointConstraint, btPrimitiveManagerBase, btPrimitiveTriangle, btQuaternion, btRaycastVehicle, btRigidBody, btRigidBody.ConstructionInfo, btScalarArray, btSequentialImpulseConstraintSolver, btShapeHull, btSliderConstraint, btSoftBody, btSoftBodyArray, btSoftBodyHelpers, btSoftBodyRigidBodyCollisionConfiguration, btSoftBodySolver, btSoftBodyWorldInfo, btSoftRigidDynamicsWorld, btSphereShape, btStaticPlaneShape, btStridingMeshInterface, btTetrahedronShapeEx, btTransform, btTriangleMesh, btTriangleMeshShape, btTriangleShapeEx, btTypedConstraint, btVector3, btVector3Array, btVector4, btVehicleRaycaster, btVehicleRaycaster.btVehicleRaycasterResult, btRaycastVehicle.btVehicleTuning, btWheelInfo, btWheelInfoConstructionInfo, tAnchorArray, tFaceArray, tMaterialArray, tNodeArray]);
+
+export interface WorldConfig {
+    readonly gravity?: Vector3;
+}
+export class World extends btDiscreteDynamicsWorld {
+    readonly collisionConfiguration: btDefaultCollisionConfiguration;
+    readonly dispatcher: btCollisionDispatcher;
+    readonly pairCache: btDbvtBroadphase;
+    readonly constraintSolver: btSequentialImpulseConstraintSolver;
+    constructor(config: WorldConfig = {}) {
+        const {
+            gravity
+        } = config;
+        const collisionConfiguration = new btDefaultCollisionConfiguration();
+        const dispatcher = new btCollisionDispatcher(collisionConfiguration);
+        const pairCache = new btDbvtBroadphase();
+        const constraintSolver = new btSequentialImpulseConstraintSolver();
+        super(
+            dispatcher,
+            pairCache,
+            constraintSolver,
+            collisionConfiguration
+        );
+        this.collisionConfiguration = collisionConfiguration;
+        this.dispatcher = dispatcher;
+        this.pairCache = pairCache;
+        this.constraintSolver = constraintSolver;
+        // 加入members以在主體銷毀時一起銷毀
+        this.members.push(collisionConfiguration, dispatcher, pairCache, constraintSolver);
+        gravity != null && this.setGravity(gravity);
+    }
+}
+export interface SoftWorldConfig {
+    readonly gravity?: Vector3;
+    readonly softGravity?: Vector3;
+    readonly airDensity?: number;
+    readonly waterDensity?: number;
+    readonly waterOffset?: number;
+    readonly waterNormal?: Vector3;
+    readonly maxDisplacement?: number;
+    readonly useBroadphase?: boolean;
+    readonly useDispatcher?: boolean;
+}
+export class SoftWorld extends btSoftRigidDynamicsWorld {
+    readonly softBodyWorldInfo: btSoftBodyWorldInfo;
+    readonly collisionConfiguration: btSoftBodyRigidBodyCollisionConfiguration;
+    readonly dispatcher: btCollisionDispatcher;
+    readonly pairCache: btDbvtBroadphase;
+    readonly constraintSolver: btSequentialImpulseConstraintSolver;
+    readonly softBodySolver: btDefaultSoftBodySolver;
+    constructor(config: SoftWorldConfig = {}) {
+        const softBodyWorldInfo = new btSoftBodyWorldInfo();
+        const collisionConfiguration = new btSoftBodyRigidBodyCollisionConfiguration();
+        const dispatcher = new btCollisionDispatcher(collisionConfiguration);
+        const pairCache = new btDbvtBroadphase();
+        const constraintSolver = new btSequentialImpulseConstraintSolver();
+        const softBodySolver = new btDefaultSoftBodySolver();
+        super(
+            dispatcher,
+            pairCache,
+            constraintSolver,
+            collisionConfiguration,
+            softBodySolver
+        );
+        this.softBodyWorldInfo = softBodyWorldInfo;
+        this.collisionConfiguration = collisionConfiguration;
+        this.dispatcher = dispatcher;
+        this.pairCache = pairCache;
+        this.constraintSolver = constraintSolver;
+        this.softBodySolver = softBodySolver;
+        // 加入members以在主體銷毀時一起銷毀
+        this.members.push(softBodyWorldInfo, collisionConfiguration, dispatcher, pairCache, constraintSolver, softBodySolver);
+        config.gravity != null && this.setGravity(config.gravity);
+        config.softGravity != null && this.setSoftGravity(config.softGravity);
+        config.airDensity != null && (softBodyWorldInfo.airDensity = config.airDensity);
+        config.waterDensity != null && (softBodyWorldInfo.waterDensity = config.waterDensity);
+        config.waterOffset != null && (softBodyWorldInfo.waterOffset = config.waterOffset);
+        config.waterNormal != null && (softBodyWorldInfo.waterNormal = config.waterNormal);
+        config.maxDisplacement != null && (softBodyWorldInfo.maxDisplacement = config.maxDisplacement);
+        config.useBroadphase && (softBodyWorldInfo.broadphase = this.getBroadphase());
+        config.useDispatcher && (softBodyWorldInfo.dispatcher = this.getDispatcher());
+    }
+    setSoftGravity(x: number, y: number, z: number): this;
+    setSoftGravity(gravity: Vector3): this;
+    setSoftGravity(x: number | Vector3, y?: number, z?: number): this {
+        this.softBodyWorldInfo.gravity = typeof x === 'object' ? x : new Vector3(x, y, z);
+        return this;
+    }
+}
+export interface RigidBodyConfig {
+    readonly mass?: number;
+    readonly friction?: number;
+    readonly restitution?: number;
+    readonly rollingFriction?: number;
+    readonly contactProcessingThreshold?: number;
+    readonly activationState?: ActivationState;
+    /**@see {@link CollisionFlags}*/
+    readonly collisionFlags?: number;
+    readonly rotation?: Quaternion;
+    readonly position?: Vector3;
+    readonly halfExtents?: Vector3;
+    readonly linearFactor?: Vector3;
+    readonly angularFactor?: Vector3;
+    readonly gravity?: Vector3;
+    readonly damping?: {lin: number, ang: number};
+}
+export class RigidBody extends btRigidBody {
+    private _mass: number;
+    private _motionState: btMotionState;
+    constructor(config: RigidBodyConfig = {}) {
+        const {mass = 1} = config;
+        const halfExtents = config.halfExtents != null ? temp.vector3.set(config.halfExtents) : temp.vector3.set(0, 0, 0);
+        const shape = new btBoxShape(halfExtents);
+        const startTrans = new Transform(config.rotation, config.position);
+        const motionState = new btDefaultMotionState(temp.transform.set(startTrans.rotation, startTrans.position));
+        const localInertia = temp.vector3.set(0, 0, 0);
+        if (mass > 0) shape.calculateLocalInertia(mass, localInertia);
+        const rbInfo = new btRigidBody.ConstructionInfo(mass, motionState, shape, localInertia);
+
+        super(rbInfo);
+        destroy(rbInfo);
+        this._motionState = this.getMotionState();
+
+        config.friction != null                   && this.setFriction(config.friction);
+        config.restitution != null                && this.setRestitution(config.restitution);
+        config.rollingFriction != null            && this.setRollingFriction(config.rollingFriction);
+        config.contactProcessingThreshold != null && this.setContactProcessingThreshold(config.contactProcessingThreshold);
+        config.activationState != null            && this.setActivationState(config.activationState);
+        config.collisionFlags != null             && this.setCollisionFlags(config.collisionFlags);
+        config.linearFactor != null               && this.setLinearFactor(temp.vector3.set(config.linearFactor));
+        config.angularFactor != null              && this.setAngularFactor(temp.vector3.set(config.angularFactor));
+        config.gravity != null                    && this.setGravity(temp.vector3.set(config.gravity));
+        config.damping != null                    && this.setDamping(config.damping.lin, config.damping.ang);
+    }
+    get mass(): number {
+        return this._mass;
+    }
+    set mass(v: number) {
+        this._mass = v;
+        const localInertia = temp.vector3.set(0, 0, 0);
+        // 重新計算慣性(只有非靜態剛體需要)
+        if (v !== 0) {
+            this.getCollisionShape().calculateLocalInertia(v, localInertia);
+        }
+        this.setMassProps(v, localInertia); // 更新質量與慣性
+        this.updateInertiaTensor(); // 立即更新運動狀態
+    }
+    getState(): Transform {
+        this._motionState.getWorldTransform(temp.transform);
+        const rotation = temp.transform.getRotation();
+        const position = temp.transform.getOrigin();
+        return new Transform(rotation, position);
+    }
+    setState(transform: Transform): this {
+        temp.transform.setOrigin(transform.position);
+        temp.transform.setRotation(transform.rotation);
+        // 更新世界 transform (同步 motionState)
+        this.setWorldTransform(temp.transform);
+        this._motionState.setWorldTransform(temp.transform);
+        // 啟用剛體(確保物理引擎重新計算碰撞)
+        this.activate(true);
+        return this;
+    }
+    setPosition(position: Vector3): this {
+        this.setState(new Transform(undefined, position));
+        return this;
+    }
+    setRotation(rotation: Quaternion): this {
+        this.setState(new Transform(rotation));
+        return this;
+    }
+}
+// export interface SoftBodyConfig {
+
+// }
+// export class SoftBody extends btSoftBody {
+//     constructor() {
+//         super();
+//     }
+// }
+
+export class Vector3 {
+    constructor(
+        public x: number = 0,
+        public y: number = 0,
+        public z: number = 0
+    ) {}
+}
+export interface Vector3 {
+    [key: string | symbol]: any;
+}
+export class Vector4 extends Vector3 {
+    constructor(
+        x: number = 0,
+        y: number = 0,
+        z: number = 0,
+        public w: number = 0
+    ) {super(x, y, z);}
+}
+export class Quaternion extends Vector4 {
+    constructor(
+        x: number = 0,
+        y: number = 0,
+        z: number = 0,
+        w: number = 1
+    ) {super(x, y, z, w);}
+}
+export class Transform {
+    constructor(
+        public rotation: Quaternion = new Quaternion(0, 0, 0, 1),
+        public position: Vector3 = new Vector3(0, 0, 0)
+    ) {}
+}
+export interface Transform {
+    [key: string | symbol]: any;
+}
+
+// ConstructorParameters 抓不到overload
+// Vector3 ois
+// TODO isMember isRefer
+// temp.vector3
+// 去除佔位符

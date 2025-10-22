@@ -1,0 +1,41 @@
+{
+  "name": "ammo-es",
+  "version": "1.0.0",
+  "description": "TypeScript/ESM rewrite of Ammo.js glue code with modified API for 3D physics simulation",
+  "scripts": {
+    "build": "npx rollup -c rollup.config.js -w"
+  },
+  "keywords": [
+    "ammo.js",
+    "physics",
+    "esm",
+    "umd",
+    "cjs"
+  ],
+  "author": "Jerrykelft",
+  "license": "Apache-2.0",
+  "type": "module",
+  "types": "./dist/ammo-es.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/ammo-es.d.ts",
+      "import": "./dist/ammo-es.js",
+      "require": "./dist/ammo-es.umd.js",
+      "default": "./dist/ammo-es.js"
+    }
+  },
+  "engines": {
+    "node": ">=16.4.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^12.1.4",
+    "rollup-plugin-string": "^3.0.0",
+    "rollup": "^4.52.3",
+    "tslib": "^2.8.1",
+    "typescript": "^5.9.2"
+  },
+  "contributors": [
+    "Original ammo.js contributors"
+  ]
+}
