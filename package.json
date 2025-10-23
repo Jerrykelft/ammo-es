@@ -1,6 +1,6 @@
 {
   "name": "ammo-es",
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0-beta.2.1",
   "description": "TypeScript/ESM rewrite of Ammo.js glue code with modified API for 3D physics simulation",
   "scripts": {
     "build": "npx rollup -c rollup.config.js -w"
